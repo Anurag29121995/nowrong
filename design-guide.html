@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntiChat - Finalized Mobile Design System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* FINALIZED COLOR PALETTE - ROMANTIC BLACK & ROSE */
+            
+            /* Background Colors */
+            --bg-primary: #000000;        /* Pure black - main background */
+            --bg-secondary: #0A0A0A;      /* Deep black - sections */
+            --bg-tertiary: #111111;       /* Dark gray - cards */
+            --bg-card: rgba(18, 10, 12, 0.8);        /* Card background with red tint */
+            --bg-card-hover: rgba(25, 12, 15, 0.9);  /* Card hover state */
+            --bg-input: rgba(15, 8, 10, 0.9);        /* Input backgrounds */
+            
+            /* Accent Colors - Romantic Rose & Wine */
+            --accent-primary: #BE185D;    /* Rose wine - main accent */
+            --accent-secondary: #881337;  /* Deep burgundy - secondary */
+            --accent-soft: #F43F5E;       /* Soft rose - highlights */
+            --accent-blush: #FB7185;      /* Blush pink - subtle touches */
+            --accent-dark: #701A2E;       /* Dark wine - shadows */
+            
+            /* Text Colors */
+            --text-primary: #FFFFFF;      /* Pure white - headings */
+            --text-secondary: #E5E5E5;    /* Light gray - body text */
+            --text-muted: #A8A8A8;        /* Medium gray - captions */
+            --text-dim: #787878;          /* Dark gray - placeholders */
+            --text-accent: #F43F5E;       /* Rose - links/highlights */
+            
+            /* Border & Effect Colors */
+            --border-color: rgba(255, 255, 255, 0.04);      /* Subtle borders */
+            --border-hover: rgba(190, 24, 93, 0.25);        /* Hover borders */
+            --border-focus: rgba(244, 63, 94, 0.4);         /* Focus states */
+            
+            /* Shadow & Glow Effects */
+            --shadow-glow: 0 0 40px rgba(190, 24, 93, 0.12);       /* Accent glow */
+            --shadow-card: 0 15px 50px rgba(0, 0, 0, 0.6);         /* Card shadows */
+            --shadow-button: 0 4px 25px rgba(190, 24, 93, 0.25);   /* Button shadows */
+            --shadow-focus: 0 0 0 3px rgba(244, 63, 94, 0.15);     /* Focus outline */
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #111111 0%, #000000 100%);
+            --gradient-accent: linear-gradient(135deg, #BE185D 0%, #881337 100%);
+            --gradient-love: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%);
+            --gradient-subtle: linear-gradient(180deg, rgba(190, 24, 93, 0.06) 0%, transparent 100%);
+            --gradient-card: linear-gradient(135deg, rgba(190, 24, 93, 0.08), rgba(136, 19, 55, 0.08));
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Mobile-First Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 16px 0;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            background: var(--gradient-love);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        .nav-toggle {
+            display: block;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            nav {
+                padding: 20px 0;
+            }
+            .nav-container {
+                max-width: 1200px;
+                padding: 0 20px;
+            }
+            .logo {
+                font-size: 24px;
+            }
+            .nav-links {
+                display: flex;
+                gap: 32px;
+                list-style: none;
+            }
+            .nav-links a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 15px;
+                transition: all 0.3s ease;
+            }
+            .nav-links a:hover {
+                color: var(--text-accent);
+            }
+            .nav-toggle {
+                display: none;
+            }
+        }
+
+        /* Mobile-First Container */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 80px 16px 60px;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 12px;
+            background: var(--gradient-love);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 36px;
+                margin-bottom: 15px;
+            }
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        @media (min-width: 768px) {
+            .section-subtitle {
+                font-size: 16px;
+                margin-bottom: 40px;
+            }
+        }
+
+        /* Mobile-First Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            .grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
+            }
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+                padding: 100px 20px 80px;
+            }
+            .grid-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Mobile-First Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .color-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        .color-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .color-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--border-hover);
+        }
+
+        .color-sample {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .color-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .color-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Typography Showcase */
+        .typography-showcase {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .typography-showcase h1 {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: var(--gradient-love);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .typography-showcase h2 {
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .typography-showcase h3 {
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .typography-showcase h4 {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .typography-showcase h5 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .typography-showcase h6 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .typography-showcase .lead {
+            font-size: 20px;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .typography-showcase p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .typography-showcase .small {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .typography-showcase .caption {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile-First Button Showcase */
+        .button-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .button-showcase {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 20px;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: var(--shadow-button);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 35px rgba(190, 24, 93, 0.35);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+        }
+
+        .btn-ghost:hover {
+            color: var(--accent-primary);
+            background: rgba(190, 24, 93, 0.1);
+        }
+
+        .btn-large {
+            padding: 16px 48px;
+            font-size: 18px;
+        }
+
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+
+        .btn-icon {
+            padding: 12px;
+            min-width: 44px;
+            justify-content: center;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .btn-icon:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Button State Variations */
+        .btn-disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            filter: grayscale(100%);
+            pointer-events: none;
+        }
+
+        .btn-active {
+            background: var(--gradient-love) !important;
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4) !important;
+            transform: scale(1.02);
+        }
+
+        /* Form Elements */
+        .form-showcase {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-focus);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            min-height: 120px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-focus);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .form-checkbox input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-primary);
+        }
+
+        /* Card Components */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient-love);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+            border-color: var(--border-hover);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-compact {
+            padding: 20px;
+        }
+
+        .card-featured {
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 0 30px rgba(190, 24, 93, 0.1);
+        }
+
+        /* Chat Message Samples */
+        .chat-showcase {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-love);
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .message-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .message-text {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .message.own {
+            flex-direction: row-reverse;
+        }
+
+        .message.own .message-text {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        /* Status & Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .badge-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .badge-success {
+            background: #059669;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #D97706;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #DC2626;
+            color: white;
+        }
+
+        /* Loading & Progress */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--bg-tertiary);
+            border-top: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal & Popup Components */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 20px 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-primary);
+            background: rgba(190, 24, 93, 0.1);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 0 20px 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* Alert Components */
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-icon {
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .alert-message {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .alert-success {
+            background: rgba(5, 150, 105, 0.1);
+            border-left-color: #059669;
+            color: #10B981;
+        }
+
+        .alert-warning {
+            background: rgba(217, 119, 6, 0.1);
+            border-left-color: #D97706;
+            color: #F59E0B;
+        }
+
+        .alert-error {
+            background: rgba(220, 38, 38, 0.1);
+            border-left-color: #DC2626;
+            color: #EF4444;
+        }
+
+        .alert-info {
+            background: rgba(190, 24, 93, 0.1);
+            border-left-color: var(--accent-primary);
+            color: var(--accent-soft);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 16px;
+            left: 16px;
+            z-index: 3000;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-card);
+            animation: toastSlideIn 0.3s ease-out;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            height: 500px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-love);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .chat-user-info {
+            flex: 1;
+        }
+
+        .chat-user-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .chat-user-status {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10B981;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-action-btn:hover {
+            color: var(--accent-primary);
+            background: rgba(190, 24, 93, 0.1);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 8px;
+            max-width: 85%;
+        }
+
+        .chat-message.own {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-message-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            flex-shrink: 0;
+        }
+
+        .chat-message.own .chat-message-avatar {
+            background: var(--gradient-love);
+        }
+
+        .chat-message-bubble {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            border-radius: 18px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .chat-message.own .chat-message-bubble {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .chat-message-time {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        .chat-message.own .chat-message-time {
+            text-align: right;
+        }
+
+        .chat-input-container {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 14px;
+            resize: none;
+            min-height: 40px;
+            max-height: 120px;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .chat-send-btn {
+            background: var(--gradient-accent);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(190, 24, 93, 0.3);
+        }
+
+        /* Popup/Dropdown Menus */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 0;
+            min-width: 200px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-card);
+            z-index: 1000;
+            animation: dropdownFadeIn 0.2s ease-out;
+        }
+
+        @keyframes dropdownFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(190, 24, 93, 0.1);
+            color: var(--accent-primary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">IntiChat - Finalized Design System</div>
+            <button class="nav-toggle">☰</button>
+            <ul class="nav-links">
+                <li><a href="#colors">Colors</a></li>
+                <li><a href="#typography">Typography</a></li>
+                <li><a href="#buttons">Buttons</a></li>
+                <li><a href="#forms">Forms</a></li>
+                <li><a href="#components">Components</a></li>
+                <li><a href="#modals">Modals</a></li>
+                <li><a href="#alerts">Alerts</a></li>
+                <li><a href="#chat">Chat</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Color Palette Section -->
+        <section class="section" id="colors">
+            <h2 class="section-title">Finalized Color Palette</h2>
+            <p class="section-subtitle">✨ APPROVED: Romantic black and rose theme for intimate, premium mobile experiences</p>
+            
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-sample" style="background: #000000; color: #666;">Primary BG</div>
+                    <div class="color-info">
+                        <h4>Pure Black</h4>
+                        <p>#000000</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-sample" style="background: #0A0A0A; color: #666;">Secondary BG</div>
+                    <div class="color-info">
+                        <h4>Deep Black</h4>
+                        <p>#0A0A0A</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-sample" style="background: linear-gradient(135deg, #BE185D, #881337); color: white;">Primary Accent</div>
+                    <div class="color-info">
+                        <h4>Rose Wine</h4>
+                        <p>#BE185D</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-sample" style="background: linear-gradient(135deg, #F43F5E, #FB7185); color: white;">Romantic</div>
+                    <div class="color-info">
+                        <h4>Soft Rose</h4>
+                        <p>#F43F5E</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-sample" style="background: #FFFFFF; color: #333;">Primary Text</div>
+                    <div class="color-info">
+                        <h4>Pure White</h4>
+                        <p>#FFFFFF</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-sample" style="background: #E5E5E5; color: #333;">Secondary Text</div>
+                    <div class="color-info">
+                        <h4>Light Gray</h4>
+                        <p>#E5E5E5</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography Section -->
+        <section class="section" id="typography">
+            <h2 class="section-title">Typography System</h2>
+            <p class="section-subtitle">Elegant, readable hierarchy for romantic communication</p>
+            
+            <div class="typography-showcase">
+                <div class="caption">Hero Heading</div>
+                <h1>Find People With No Boundaries</h1>
+                
+                <div class="caption">Page Heading</div>
+                <h2>Welcome to Intimate Connections</h2>
+                
+                <div class="caption">Section Heading</div>
+                <h3>Features That Matter</h3>
+                
+                <div class="caption">Card Heading</div>
+                <h4>Private & Secure</h4>
+                
+                <div class="caption">List Heading</div>
+                <h5>Safety First</h5>
+                
+                <div class="caption">Label Text</div>
+                <h6>Settings</h6>
+                
+                <div class="caption">Lead Paragraph</div>
+                <p class="lead">Experience meaningful connections in a safe, premium environment designed for authentic interactions between like-minded individuals.</p>
+                
+                <div class="caption">Body Text</div>
+                <p>Our platform brings together people seeking deeper, more personal conversations. We prioritize your privacy while creating an atmosphere of openness and acceptance.</p>
+                
+                <div class="caption">Small Text</div>
+                <p class="small">Terms and conditions apply. Must be 18+ to use this service. By continuing, you agree to our privacy policy.</p>
+            </div>
+        </section>
+
+        <!-- Button Variations Section -->
+        <section class="section" id="buttons">
+            <h2 class="section-title">Button Components</h2>
+            <p class="section-subtitle">Interactive elements with romantic hover effects</p>
+            
+            <div class="grid-2">
+                <div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">Primary Actions</h4>
+                    <div class="button-showcase">
+                        <button class="btn btn-primary">Start Chatting</button>
+                        <button class="btn btn-primary btn-large">Begin Your Journey</button>
+                        <button class="btn btn-primary btn-small">Join Now</button>
+                    </div>
+                    
+                    <h4 style="color: var(--text-primary); margin: 30px 0 20px;">Secondary Actions</h4>
+                    <div class="button-showcase">
+                        <button class="btn btn-secondary">Learn More</button>
+                        <button class="btn btn-outline">View Profile</button>
+                        <button class="btn btn-ghost">Skip</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">Special Buttons</h4>
+                    <div class="button-showcase">
+                        <button class="btn btn-icon">❤</button>
+                        <button class="btn btn-icon">💬</button>
+                        <button class="btn btn-icon">🔒</button>
+                    </div>
+                    
+                    <h4 style="color: var(--text-primary); margin: 30px 0 20px;">States</h4>
+                    <div class="button-showcase">
+                        <button class="btn btn-primary">Normal</button>
+                        <button class="btn btn-primary btn-disabled">Disabled</button>
+                        <button class="btn btn-primary btn-active">Active</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Elements Section -->
+        <section class="section" id="forms">
+            <h2 class="section-title">Form Components</h2>
+            <p class="section-subtitle">Input elements with romantic focus states</p>
+            
+            <div class="grid-2">
+                <div class="form-showcase">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" placeholder="Choose your identity...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="your@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Age Range</label>
+                        <select class="form-select">
+                            <option>18-25</option>
+                            <option>26-35</option>
+                            <option>36-45</option>
+                            <option>45+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">About Yourself</label>
+                        <textarea class="form-textarea" placeholder="Tell us what makes you unique..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-showcase">
+                    <div class="form-group">
+                        <label class="form-label">Preferences</label>
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="private">
+                            <label for="private">Keep profile private</label>
+                        </div>
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="notifications">
+                            <label for="notifications">Enable notifications</label>
+                        </div>
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="matching">
+                            <label for="matching">Auto-matching</label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%;">Create Profile</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component Variations Section -->
+        <section class="section" id="components">
+            <h2 class="section-title">UI Components</h2>
+            <p class="section-subtitle">Cards, messages, badges and interactive elements</p>
+            
+            <!-- Card Examples -->
+            <h4 style="color: var(--text-primary); margin-bottom: 20px;">Card Variations</h4>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Standard Card</h3>
+                    <p>Regular content card with hover effects and romantic border animations.</p>
+                    <button class="btn btn-outline">Learn More</button>
+                </div>
+                
+                <div class="card card-featured">
+                    <h3>Featured Card</h3>
+                    <p>Premium card with accent border and enhanced glow effects for special content.</p>
+                    <button class="btn btn-primary">Get Started</button>
+                </div>
+                
+                <div class="card card-compact">
+                    <h3>Compact Card</h3>
+                    <p>Smaller card for lists and grids with less padding but same styling.</p>
+                    <button class="btn btn-ghost">View</button>
+                </div>
+            </div>
+            
+            <!-- Chat Message Examples -->
+            <h4 style="color: var(--text-primary); margin: 40px 0 20px;">Chat Interface</h4>
+            <div class="chat-showcase">
+                <div class="message">
+                    <div class="message-avatar"></div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-name">Anonymous</span>
+                            <span class="message-time">2 minutes ago</span>
+                        </div>
+                        <div class="message-text">Hey there, I love your energy in the chat room. Would you like to have a more private conversation?</div>
+                    </div>
+                </div>
+                
+                <div class="message own">
+                    <div class="message-avatar"></div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-name">You</span>
+                            <span class="message-time">Just now</span>
+                        </div>
+                        <div class="message-text">I'd love that. You seem really interesting and I'm curious to know more about you.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Badges and Status -->
+            <h4 style="color: var(--text-primary); margin: 40px 0 20px;">Badges & Status</h4>
+            <div class="button-showcase">
+                <span class="badge badge-primary">Premium</span>
+                <span class="badge badge-success">Online</span>
+                <span class="badge badge-warning">Away</span>
+                <span class="badge badge-danger">Busy</span>
+                <span class="badge badge-secondary">Offline</span>
+            </div>
+            
+            <!-- Progress & Loading -->
+            <h4 style="color: var(--text-primary); margin: 40px 0 20px;">Loading States</h4>
+            <div class="grid-2">
+                <div>
+                    <p style="color: var(--text-secondary); margin-bottom: 10px;">Profile completion (75%)</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="spinner"></div>
+                    <span style="color: var(--text-secondary);">Loading messages...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal Examples Section -->
+        <section class="section" id="modals">
+            <h2 class="section-title">Modals & Popups</h2>
+            <p class="section-subtitle">Overlay dialogs optimized for mobile interaction</p>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Profile Modal Example</h3>
+                    <div class="modal" style="position: relative; max-width: none; animation: none;">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Edit Profile</h3>
+                            <button class="modal-close">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="form-label">Display Name</label>
+                                <input type="text" class="form-input" value="Anonymous">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bio</label>
+                                <textarea class="form-textarea" placeholder="Tell us about yourself..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary btn-small">Cancel</button>
+                            <button class="btn btn-primary btn-small">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Dropdown Menu</h3>
+                    <div class="dropdown" style="position: relative;">
+                        <div class="dropdown-menu" style="position: relative; animation: none;">
+                            <a href="#" class="dropdown-item">
+                                <span>👤</span> View Profile
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span>⚙️</span> Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <span>🚪</span> Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts & Notifications Section -->
+        <section class="section" id="alerts">
+            <h2 class="section-title">Alerts & Notifications</h2>
+            <p class="section-subtitle">Status messages and toast notifications for mobile</p>
+            
+            <div class="grid-2">
+                <div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 16px;">Alert Messages</h4>
+                    <div class="alert alert-success">
+                        <div class="alert-icon">✓</div>
+                        <div class="alert-content">
+                            <div class="alert-title">Profile Updated</div>
+                            <div class="alert-message">Your profile has been successfully updated.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <div class="alert-icon">⚠</div>
+                        <div class="alert-content">
+                            <div class="alert-title">Incomplete Profile</div>
+                            <div class="alert-message">Please complete your profile to start matching.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-error">
+                        <div class="alert-icon">✕</div>
+                        <div class="alert-content">
+                            <div class="alert-title">Connection Failed</div>
+                            <div class="alert-message">Unable to connect to chat. Please try again.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <div class="alert-icon">💡</div>
+                        <div class="alert-content">
+                            <div class="alert-title">New Feature</div>
+                            <div class="alert-message">Voice messages are now available in private chats.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 16px;">Toast Notifications</h4>
+                    <div class="toast-container" style="position: relative; top: auto; right: auto; left: auto;">
+                        <div class="toast" style="animation: none;">
+                            <div class="toast-icon">💬</div>
+                            <div class="toast-content">
+                                <div class="toast-title">New Message</div>
+                                <div class="toast-message">You have a new message from Anonymous</div>
+                            </div>
+                        </div>
+                        
+                        <div class="toast" style="animation: none;">
+                            <div class="toast-icon">❤️</div>
+                            <div class="toast-content">
+                                <div class="toast-title">Match Found</div>
+                                <div class="toast-message">You have a new match waiting</div>
+                            </div>
+                        </div>
+                        
+                        <div class="toast" style="animation: none;">
+                            <div class="toast-icon">🔒</div>
+                            <div class="toast-content">
+                                <div class="toast-title">Privacy Mode</div>
+                                <div class="toast-message">Your location is now hidden</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Interface Section -->
+        <section class="section" id="chat">
+            <h2 class="section-title">Chat Interface</h2>
+            <p class="section-subtitle">Mobile-optimized chat experience for intimate conversations</p>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-avatar">A</div>
+                    <div class="chat-user-info">
+                        <div class="chat-user-name">Anonymous</div>
+                        <div class="chat-user-status">
+                            <div class="status-dot"></div>
+                            Online now
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="chat-action-btn">📞</button>
+                        <button class="chat-action-btn">📹</button>
+                        <button class="chat-action-btn">⚙️</button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages">
+                    <div class="chat-message">
+                        <div class="chat-message-avatar"></div>
+                        <div>
+                            <div class="chat-message-bubble">
+                                Hey there! I noticed we have a lot in common. Would you like to have a more private conversation?
+                            </div>
+                            <div class="chat-message-time">2:34 PM</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-message own">
+                        <div class="chat-message-avatar"></div>
+                        <div>
+                            <div class="chat-message-bubble">
+                                I'd love that! You seem really interesting. What brings you to this platform?
+                            </div>
+                            <div class="chat-message-time">2:35 PM</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-message">
+                        <div class="chat-message-avatar"></div>
+                        <div>
+                            <div class="chat-message-bubble">
+                                I'm looking for genuine connections without all the judgment. It's refreshing to find someone who gets it.
+                            </div>
+                            <div class="chat-message-time">2:36 PM</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-message own">
+                        <div class="chat-message-avatar"></div>
+                        <div>
+                            <div class="chat-message-bubble">
+                                Absolutely! That's exactly what I was hoping to find here. Want to move to a private room?
+                            </div>
+                            <div class="chat-message-time">Just now</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <textarea class="chat-input" placeholder="Type your message..." rows="1"></textarea>
+                        <button class="chat-send-btn">→</button>
+                    </div>
+                </div>
+            </div>
+            
+            <h4 style="color: var(--text-primary); margin: 32px 0 16px;">Chat Features</h4>
+            <div class="grid-3">
+                <div class="card card-compact">
+                    <div class="feature-icon"></div>
+                    <h3>Voice Messages</h3>
+                    <p>Send intimate voice messages for deeper connection</p>
+                </div>
+                <div class="card card-compact">
+                    <div class="feature-icon"></div>
+                    <h3>Disappearing Messages</h3>
+                    <p>Messages auto-delete for privacy and discretion</p>
+                </div>
+                <div class="card card-compact">
+                    <div class="feature-icon"></div>
+                    <h3>Typing Indicators</h3>
+                    <p>See when your partner is typing a response</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile Optimization Notes -->
+        <section class="section">
+            <h2 class="section-title">Mobile-First Design Principles</h2>
+            <p class="section-subtitle">Key considerations for smartphone-optimized intimate chat experience</p>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Touch-First Interface</h3>
+                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
+                        <li>Minimum 44px touch targets</li>
+                        <li>Thumb-friendly navigation zones</li>
+                        <li>Swipe gestures for common actions</li>
+                        <li>Haptic feedback integration</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Performance Optimized</h3>
+                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
+                        <li>Lazy loading for images</li>
+                        <li>Optimized animations (60fps)</li>
+                        <li>Minimal bundle size</li>
+                        <li>Offline message caching</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Privacy Features</h3>
+                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
+                        <li>Screen recording protection</li>
+                        <li>Screenshot notifications</li>
+                        <li>Biometric app lock</li>
+                        <li>Private browsing mode</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Accessibility</h3>
+                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
+                        <li>Voice control support</li>
+                        <li>High contrast mode</li>
+                        <li>Screen reader compatibility</li>
+                        <li>Large text options</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntiChat - Find People With No Boundaries</title>
+    <meta name="description" content="Connect with like-minded people in a safe, private environment. Start intimate conversations without boundaries.">
+    <meta name="keywords" content="intimate chat, private conversations, anonymous chat, adult chat">
+    <meta property="og:title" content="IntiChat - Find People With No Boundaries">
+    <meta property="og:description" content="Connect with like-minded people in a safe, private environment.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors - Pure Black */
+            --bg-primary: #000000;
+            --bg-secondary: #0A0A0A;
+            --bg-tertiary: #111111;
+            --bg-card: rgba(18, 10, 12, 0.8);
+            
+            /* Accent Colors - Romantic Rose & Wine */
+            --accent-primary: #BE185D;
+            --accent-secondary: #881337;
+            --accent-soft: #F43F5E;
+            --accent-blush: #FB7185;
+            --accent-glow: rgba(190, 24, 93, 0.12);
+            
+            /* Text Colors */
+            --text-primary: #FFFFFF;
+            --text-secondary: #E5E5E5;
+            --text-muted: #A8A8A8;
+            --text-dim: #787878;
+            
+            /* Borders & Effects */
+            --border-color: rgba(255, 255, 255, 0.04);
+            --shadow-glow: 0 0 40px rgba(190, 24, 93, 0.12);
+            --shadow-card: 0 15px 50px rgba(0, 0, 0, 0.6);
+            
+            /* Gradients */
+            --gradient-accent: linear-gradient(135deg, #BE185D 0%, #881337 100%);
+            --gradient-love: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 20px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            background: var(--gradient-love);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 80px;
+            background: radial-gradient(circle at 50% 50%, rgba(190, 24, 93, 0.06) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            background: var(--gradient-love);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .hero-banner {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(190, 24, 93, 0.1), rgba(136, 19, 55, 0.1)),
+                        var(--bg-tertiary);
+            border-radius: 20px;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-dim);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient-love);
+            opacity: 0.3;
+        }
+
+        .btn-primary {
+            padding: 16px 48px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 25px rgba(190, 24, 93, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 35px rgba(190, 24, 93, 0.35);
+        }
+
+        /* Safety Section */
+        .safety {
+            padding: 80px 20px;
+            background: var(--bg-secondary);
+        }
+
+        .safety-icons {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+
+        .safety-item {
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .safety-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-love);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .safety-item h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .safety-item p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Download Section */
+        .download {
+            padding: 100px 20px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, rgba(190, 24, 93, 0.04) 0%, transparent 50%);
+        }
+
+        .download h2 {
+            font-size: 42px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            background: var(--gradient-love);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .store-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .store-btn {
+            padding: 12px 24px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+
+        .store-btn:hover {
+            background: rgba(190, 24, 93, 0.1);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .store-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--text-muted);
+            border-radius: 4px;
+        }
+
+        .store-text {
+            text-align: left;
+        }
+
+        .store-text span {
+            display: block;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .store-text strong {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 20px;
+            background: var(--bg-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+            border-color: rgba(190, 24, 93, 0.2);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-love);
+            border-radius: 12px;
+            margin: 0 auto 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .features-banner {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(190, 24, 93, 0.08), rgba(136, 19, 55, 0.08)),
+                        var(--bg-tertiary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-dim);
+            border: 1px solid var(--border-color);
+        }
+
+        /* How to Use Section */
+        .how-to-use {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .how-to-use h2 {
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 60px;
+            color: var(--text-primary);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+        }
+
+        .step {
+            max-width: 250px;
+        }
+
+        .step-image {
+            width: 200px;
+            height: 356px; /* 9:16 aspect ratio */
+            background: linear-gradient(135deg, rgba(190, 24, 93, 0.05), rgba(136, 19, 55, 0.05)),
+                        var(--bg-tertiary);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            border: 1px solid var(--border-color);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--gradient-love);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 auto 15px;
+        }
+
+        .step h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 20px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, rgba(190, 24, 93, 0.06) 0%, transparent 50%);
+        }
+
+        .cta h2 {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            background: var(--gradient-love);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 20px 30px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-banner {
+                height: 250px;
+            }
+
+            .safety-icons {
+                gap: 40px;
+            }
+
+            .steps {
+                gap: 30px;
+            }
+
+            .step-image {
+                width: 160px;
+                height: 284px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">IntiChat</div>
+            <ul class="nav-links">
+                <li><a href="#chat">Chat</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#terms">Terms & Conditions</a></li>
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find People With No Boundaries</h1>
+            <div class="hero-banner">
+                [Banner Image Placeholder]
+            </div>
+            <a href="#chat" class="btn-primary">Chat Now</a>
+        </div>
+    </section>
+
+    <!-- Safety Section -->
+    <section class="safety">
+        <div class="container">
+            <div class="safety-icons">
+                <div class="safety-item">
+                    <div class="safety-icon">🔒</div>
+                    <h3>End-to-End Encrypted</h3>
+                    <p>Your conversations remain private</p>
+                </div>
+                <div class="safety-item">
+                    <div class="safety-icon">👤</div>
+                    <h3>Anonymous Chat</h3>
+                    <p>No personal details required</p>
+                </div>
+                <div class="safety-item">
+                    <div class="safety-icon">✓</div>
+                    <h3>Verified Users</h3>
+                    <p>Safe and authentic connections</p>
+                </div>
+                <div class="safety-item">
+                    <div class="safety-icon">🛡️</div>
+                    <h3>24/7 Moderation</h3>
+                    <p>Safe environment guaranteed</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download" id="download">
+        <div class="container">
+            <h2>Download Our App</h2>
+            <div class="store-buttons">
+                <a href="#" class="store-btn">
+                    <div class="store-icon"></div>
+                    <div class="store-text">
+                        <span>Download on the</span>
+                        <strong>App Store</strong>
+                    </div>
+                </a>
+                <a href="#" class="store-btn">
+                    <div class="store-icon"></div>
+                    <div class="store-text">
+                        <span>Get it on</span>
+                        <strong>Google Play</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Instant Matching</h3>
+                    <p>Connect with like-minded people instantly based on your interests and desires</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Private Rooms</h3>
+                    <p>Create intimate spaces for deeper, more personal conversations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Voice & Video</h3>
+                    <p>Take your connections beyond text with crystal-clear calls</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>No Judgement Zone</h3>
+                    <p>Express yourself freely in a safe, accepting environment</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Mood Settings</h3>
+                    <p>Set your mood and find others who match your vibe</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Disappearing Messages</h3>
+                    <p>Keep your conversations ephemeral and worry-free</p>
+                </div>
+            </div>
+            <div class="features-banner">
+                [Features Banner Placeholder]
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use Section -->
+    <section class="how-to-use">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-image">[9:16 Image]</div>
+                    <div class="step-number">1</div>
+                    <h3>Sign Up Anonymously</h3>
+                    <p>Create your profile without revealing your identity</p>
+                </div>
+                <div class="step">
+                    <div class="step-image">[9:16 Image]</div>
+                    <div class="step-number">2</div>
+                    <h3>Set Your Preferences</h3>
+                    <p>Choose your interests and what you're looking for</p>
+                </div>
+                <div class="step">
+                    <div class="step-image">[9:16 Image]</div>
+                    <div class="step-number">3</div>
+                    <h3>Start Connecting</h3>
+                    <p>Match and chat with people who share your desires</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Connect?</h2>
+            <p>Join thousands finding meaningful connections every day</p>
+            <a href="#chat" class="btn-primary">Start Chatting Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#careers">Careers</a></li>
+                    <li><a href="#press">Press</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#help">Help Center</a></li>
+                    <li><a href="#safety">Safety Tips</a></li>
+                    <li><a href="#community">Community Guidelines</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#cookies">Cookie Policy</a></li>
+                    <li><a href="#dmca">DMCA</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#twitter">Twitter</a></li>
+                    <li><a href="#instagram">Instagram</a></li>
+                    <li><a href="#facebook">Facebook</a></li>
+                    <li><a href="#discord">Discord</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 IntiChat. All rights reserved. | 18+ Only</p>
+        </div>
+    </footer>
+</body>
+</html>
