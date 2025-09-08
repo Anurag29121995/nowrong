@@ -1,6 +1,6 @@
-# IntiChat Homepage
+# NoWrong
 
-A romantic, mobile-first landing page for an intimate chat application.
+A romantic, mobile-first landing page for an intimate chat application where there's no wrong in being yourself.
 
 ## Features
 - 🎨 Dark romantic theme (black & rose)
