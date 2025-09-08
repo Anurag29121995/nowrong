@@ -9,7 +9,10 @@
     <meta property="og:title" content="NoWrong - Find People With No Boundaries">
     <meta property="og:description" content="Connect with like-minded people in a safe, private environment.">
     <meta property="og:type" content="website">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💫</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,522 +21,706 @@
         }
 
         :root {
-            /* Primary Colors - Pure Black */
+            /* Primary Colors - Sophisticated Black */
             --bg-primary: #000000;
             --bg-secondary: #0A0A0A;
             --bg-tertiary: #111111;
-            --bg-card: rgba(18, 10, 12, 0.8);
+            --bg-glass: rgba(15, 8, 12, 0.4);
+            --bg-glass-hover: rgba(20, 10, 15, 0.6);
             
-            /* Accent Colors - Romantic Rose & Wine */
+            /* Accent Colors - Premium Rose & Burgundy */
             --accent-primary: #BE185D;
             --accent-secondary: #881337;
             --accent-soft: #F43F5E;
             --accent-blush: #FB7185;
-            --accent-glow: rgba(190, 24, 93, 0.12);
+            --accent-gold: #D4AF37;
+            --accent-glow: rgba(190, 24, 93, 0.15);
             
-            /* Text Colors */
+            /* Text Colors - Refined Hierarchy */
             --text-primary: #FFFFFF;
-            --text-secondary: #E5E5E5;
-            --text-muted: #A8A8A8;
-            --text-dim: #787878;
+            --text-secondary: #E8E8E8;
+            --text-muted: #B0B0B0;
+            --text-dim: #808080;
+            --text-accent: #F43F5E;
             
-            /* Borders & Effects */
-            --border-color: rgba(255, 255, 255, 0.04);
-            --shadow-glow: 0 0 40px rgba(190, 24, 93, 0.12);
-            --shadow-card: 0 15px 50px rgba(0, 0, 0, 0.6);
+            /* Shadows & Effects */
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-medium: 0 10px 40px rgba(0, 0, 0, 0.4);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 50px rgba(190, 24, 93, 0.2);
+            --shadow-glow-strong: 0 0 80px rgba(190, 24, 93, 0.3);
             
-            /* Gradients */
+            /* Gradients - Sophisticated */
+            --gradient-hero: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%);
             --gradient-accent: linear-gradient(135deg, #BE185D 0%, #881337 100%);
-            --gradient-love: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%);
+            --gradient-subtle: linear-gradient(180deg, rgba(190, 24, 93, 0.08) 0%, transparent 50%);
+            --gradient-mesh: 
+                radial-gradient(at 20% 30%, rgba(190, 24, 93, 0.15) 0px, transparent 45%),
+                radial-gradient(at 80% 70%, rgba(244, 63, 94, 0.1) 0px, transparent 50%),
+                radial-gradient(at 40% 90%, rgba(136, 19, 55, 0.12) 0px, transparent 40%);
+            
+            /* Border Colors */
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-soft: rgba(255, 255, 255, 0.1);
+            --border-accent: rgba(190, 24, 93, 0.3);
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Navigation */
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-mesh);
+            opacity: 0.6;
+            z-index: 0;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Navigation - Mobile First */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border-subtle);
             z-index: 1000;
-            padding: 20px 0;
+            padding: 16px 0;
+            transition: all 0.3s ease;
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 600;
-            background: var(--gradient-love);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 15px;
-            transition: all 0.3s ease;
             position: relative;
         }
 
-        .nav-links a::after {
-            content: '';
+        .logo {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '✨';
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-primary);
-            transition: width 0.3s ease;
+            top: -8px;
+            right: -20px;
+            font-size: 14px;
+            opacity: 0.7;
+            animation: sparkle 2s ease-in-out infinite;
         }
 
-        .nav-links a:hover {
-            color: var(--text-primary);
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
+        .nav-menu {
+            display: none; /* Hidden on mobile, shown on desktop */
         }
 
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Hero Section */
+        /* Hero Section - Mobile First */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 100px 20px 80px;
-            background: radial-gradient(circle at 50% 50%, rgba(190, 24, 93, 0.06) 0%, transparent 50%);
+            position: relative;
+            z-index: 1;
+            padding: 120px 20px 60px;
+            background: var(--gradient-subtle);
         }
 
         .hero-content {
             text-align: center;
-            max-width: 900px;
-        }
-
-        .hero h1 {
-            font-size: 56px;
-            font-weight: 300;
-            line-height: 1.2;
-            margin-bottom: 30px;
-            background: var(--gradient-love);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-        }
-
-        .hero-banner {
+            max-width: 400px;
             width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, rgba(190, 24, 93, 0.1), rgba(136, 19, 55, 0.1)),
-                        var(--bg-tertiary);
-            border-radius: 20px;
-            margin: 40px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: var(--text-dim);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
             position: relative;
         }
 
-        .hero-banner::before {
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-soft);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-accent);
+            margin-bottom: 32px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .hero-badge::before {
+            content: '🔒';
+            font-size: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 8vw, 56px);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1.5px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .hero-cta {
+            margin-bottom: 50px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-medium), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-glow-strong), var(--shadow-strong);
+        }
+
+        .btn-primary::after {
+            content: '→';
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(4px);
+        }
+
+        /* Hero Image */
+        .hero-image {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 40px auto;
+            position: relative;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--border-soft);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            filter: brightness(0.8) saturate(1.1);
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+            filter: brightness(0.9) saturate(1.2);
+        }
+
+        .hero-trust {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 50px;
+            opacity: 0.7;
+        }
+
+        .trust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .trust-icon {
+            font-size: 24px;
+            opacity: 0.8;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+
+        .features-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .features-title {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .features-grid {
+            display: grid;
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 1px;
-            background: var(--gradient-love);
-            opacity: 0.3;
-        }
-
-        .btn-primary {
-            padding: 16px 48px;
-            background: var(--gradient-accent);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 4px 25px rgba(190, 24, 93, 0.25);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 35px rgba(190, 24, 93, 0.35);
-        }
-
-        /* Safety Section */
-        .safety {
-            padding: 80px 20px;
-            background: var(--bg-secondary);
-        }
-
-        .safety-icons {
-            display: flex;
-            justify-content: center;
-            gap: 80px;
-            flex-wrap: wrap;
-        }
-
-        .safety-item {
-            text-align: center;
-            max-width: 200px;
-        }
-
-        .safety-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-love);
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .safety-item h3 {
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .safety-item p {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        /* Download Section */
-        .download {
-            padding: 100px 20px;
-            text-align: center;
-            background: radial-gradient(circle at 50% 50%, rgba(190, 24, 93, 0.04) 0%, transparent 50%);
-        }
-
-        .download h2 {
-            font-size: 42px;
-            font-weight: 300;
-            margin-bottom: 40px;
-            background: var(--gradient-love);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .store-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .store-btn {
-            padding: 12px 24px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-            min-width: 180px;
-        }
-
-        .store-btn:hover {
-            background: rgba(190, 24, 93, 0.1);
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
-
-        .store-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--text-muted);
-            border-radius: 4px;
-        }
-
-        .store-text {
-            text-align: left;
-        }
-
-        .store-text span {
-            display: block;
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        .store-text strong {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 100px 20px;
-            background: var(--bg-secondary);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            background: var(--gradient-hero);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-card);
-            border-color: rgba(190, 24, 93, 0.2);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--border-accent);
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.8;
         }
 
         .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-love);
-            border-radius: 12px;
-            margin: 0 auto 20px;
+            font-size: 32px;
+            margin-bottom: 20px;
+            display: block;
         }
 
-        .feature-card h3 {
+        .feature-title {
             font-size: 20px;
             font-weight: 500;
             margin-bottom: 12px;
             color: var(--text-primary);
         }
 
-        .feature-card p {
+        .feature-description {
             font-size: 14px;
             color: var(--text-muted);
             line-height: 1.6;
         }
 
-        .features-banner {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, rgba(190, 24, 93, 0.08), rgba(136, 19, 55, 0.08)),
-                        var(--bg-tertiary);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: var(--text-dim);
-            border: 1px solid var(--border-color);
+        /* How It Works Section */
+        .how-it-works {
+            padding: 80px 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        /* How to Use Section */
-        .how-to-use {
-            padding: 100px 20px;
+        .how-container {
+            max-width: 400px;
+            margin: 0 auto;
             text-align: center;
         }
 
-        .how-to-use h2 {
-            font-size: 36px;
+        .how-title {
+            font-size: 32px;
             font-weight: 300;
-            margin-bottom: 60px;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
             color: var(--text-primary);
         }
 
+        .how-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
         .steps {
-            display: flex;
-            justify-content: center;
+            display: grid;
             gap: 40px;
-            flex-wrap: wrap;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
         .step {
-            max-width: 250px;
+            position: relative;
+            text-align: center;
         }
 
         .step-image {
             width: 200px;
             height: 356px; /* 9:16 aspect ratio */
-            background: linear-gradient(135deg, rgba(190, 24, 93, 0.05), rgba(136, 19, 55, 0.05)),
-                        var(--bg-tertiary);
-            border-radius: 20px;
             margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-dim);
-            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--border-soft);
+        }
+
+        .step-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            filter: brightness(0.75) saturate(1.1);
+        }
+
+        .step-image:hover img {
+            transform: scale(1.03);
+            filter: brightness(0.85) saturate(1.2);
         }
 
         .step-number {
-            width: 30px;
-            height: 30px;
-            background: var(--gradient-love);
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-accent);
             border-radius: 50%;
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            margin: 0 auto 15px;
-        }
-
-        .step h3 {
+            margin: 0 auto 20px;
             font-size: 18px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 8px;
+            font-weight: 600;
+            color: white;
+            box-shadow: var(--shadow-soft);
         }
 
-        .step p {
+        .step-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .step-description {
             font-size: 14px;
             color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 300px;
+            margin: 0 auto;
         }
 
         /* CTA Section */
         .cta {
-            padding: 100px 20px;
+            padding: 80px 20px;
             text-align: center;
-            background: radial-gradient(circle at 50% 50%, rgba(190, 24, 93, 0.06) 0%, transparent 50%);
+            position: relative;
+            z-index: 1;
+            background: var(--gradient-subtle);
         }
 
-        .cta h2 {
-            font-size: 48px;
+        .cta-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 36px;
             font-weight: 300;
-            margin-bottom: 20px;
-            background: var(--gradient-love);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            background: var(--gradient-hero);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .cta p {
-            font-size: 18px;
+        .cta-subtitle {
+            font-size: 16px;
             color: var(--text-secondary);
             margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .cta-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 50px;
+            padding-top: 50px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-accent);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Footer */
         footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            padding: 60px 20px 30px;
+            padding: 60px 20px 40px;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 400px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
         }
 
-        .footer-section h3 {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--text-primary);
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 600;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
         }
 
-        .footer-section ul {
-            list-style: none;
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        .footer-section ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-section ul li a {
+        .footer-link {
             color: var(--text-muted);
             text-decoration: none;
             font-size: 14px;
             transition: color 0.3s ease;
         }
 
-        .footer-section ul li a:hover {
-            color: var(--accent-primary);
+        .footer-link:hover {
+            color: var(--text-accent);
         }
 
         .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: 30px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
             color: var(--text-dim);
-            font-size: 14px;
+            font-size: 12px;
+            opacity: 0.7;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .nav-container {
+                padding: 0 40px;
+                justify-content: space-between;
             }
 
-            .hero h1 {
-                font-size: 36px;
+            .nav-menu {
+                display: flex;
+                gap: 32px;
+                list-style: none;
             }
 
-            .hero-banner {
-                height: 250px;
+            .nav-menu a {
+                color: var(--text-muted);
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                position: relative;
             }
 
-            .safety-icons {
-                gap: 40px;
+            .nav-menu a::after {
+                content: '';
+                position: absolute;
+                bottom: -6px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--accent-primary);
+                transition: width 0.3s ease;
+            }
+
+            .nav-menu a:hover {
+                color: var(--text-primary);
+            }
+
+            .nav-menu a:hover::after {
+                width: 100%;
+            }
+
+            .hero-content {
+                max-width: 600px;
+            }
+
+            .hero-image {
+                max-width: 500px;
+                height: 300px;
+            }
+
+            .btn-primary {
+                width: auto;
+                padding: 20px 50px;
+            }
+
+            .features-container,
+            .how-container,
+            .cta-container {
+                max-width: 800px;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 32px;
             }
 
             .steps {
-                gap: 30px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 50px;
             }
 
             .step-image {
-                width: 160px;
-                height: 284px;
+                width: 180px;
+                height: 320px;
+            }
+
+            .cta-stats {
+                gap: 50px;
+            }
+
+            .footer-content {
+                max-width: 600px;
+            }
+        }
+
+        /* Micro-interactions */
+        .feature-card, .step, .btn-primary {
+            will-change: transform;
+        }
+
+        /* Smooth scroll for webkit */
+        @supports (scroll-behavior: smooth) {
+            html {
+                scroll-behavior: smooth;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            /* Already optimized for dark */
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -543,11 +730,10 @@
     <nav>
         <div class="nav-container">
             <div class="logo">NoWrong</div>
-            <ul class="nav-links">
-                <li><a href="#chat">Chat</a></li>
-                <li><a href="#download">Download</a></li>
-                <li><a href="#terms">Terms & Conditions</a></li>
-                <li><a href="#privacy">Privacy Policy</a></li>
+            <ul class="nav-menu">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how">How it Works</a></li>
+                <li><a href="#privacy">Privacy</a></li>
                 <li><a href="#support">Support</a></li>
             </ul>
         </div>
@@ -556,190 +742,151 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Find People With No Boundaries</h1>
-            <div class="hero-banner">
-                <img src="assets/images/16-9 Image 1.webp" alt="NoWrong Banner" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+            <div class="hero-badge">
+                Private & Secure Conversations
             </div>
-            <a href="#chat" class="btn-primary">Chat Now</a>
-        </div>
-    </section>
-
-    <!-- Safety Section -->
-    <section class="safety">
-        <div class="container">
-            <div class="safety-icons">
-                <div class="safety-item">
-                    <div class="safety-icon">🔒</div>
-                    <h3>End-to-End Encrypted</h3>
-                    <p>Your conversations remain private</p>
-                </div>
-                <div class="safety-item">
-                    <div class="safety-icon">👤</div>
-                    <h3>Anonymous Chat</h3>
-                    <p>No personal details required</p>
-                </div>
-                <div class="safety-item">
-                    <div class="safety-icon">✓</div>
-                    <h3>Verified Users</h3>
-                    <p>Safe and authentic connections</p>
-                </div>
-                <div class="safety-item">
-                    <div class="safety-icon">🛡️</div>
-                    <h3>24/7 Moderation</h3>
-                    <p>Safe environment guaranteed</p>
-                </div>
+            
+            <h1>Find People<br>With No Boundaries</h1>
+            
+            <p class="hero-subtitle">
+                Connect authentically with like-minded individuals in a safe, judgment-free space designed for intimate conversations.
+            </p>
+            
+            <!-- Hero Image -->
+            <div class="hero-image">
+                <img src="assets/images/16-9 Image 1.webp" alt="NoWrong - Connect with no boundaries" />
             </div>
-        </div>
-    </section>
-
-    <!-- Download Section -->
-    <section class="download" id="download">
-        <div class="container">
-            <h2>Download Our App</h2>
-            <div class="store-buttons">
-                <a href="#" class="store-btn">
-                    <div class="store-icon"></div>
-                    <div class="store-text">
-                        <span>Download on the</span>
-                        <strong>App Store</strong>
-                    </div>
+            
+            <div class="hero-cta">
+                <a href="#chat" class="btn-primary">
+                    Start Chatting
                 </a>
-                <a href="#" class="store-btn">
-                    <div class="store-icon"></div>
-                    <div class="store-text">
-                        <span>Get it on</span>
-                        <strong>Google Play</strong>
-                    </div>
-                </a>
+            </div>
+            
+            <div class="hero-trust">
+                <div class="trust-item">
+                    <div class="trust-icon">🔒</div>
+                    <div>End-to-End<br>Encrypted</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">👤</div>
+                    <div>100%<br>Anonymous</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">✓</div>
+                    <div>Verified<br>Users</div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features">
-        <div class="container">
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="features-header">
+                <h2 class="features-title">Built for Intimate Connections</h2>
+                <p class="features-subtitle">Every feature designed with your privacy and comfort in mind</p>
+            </div>
+            
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Instant Matching</h3>
-                    <p>Connect with like-minded people instantly based on your interests and desires</p>
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">Instant Matching</h3>
+                    <p class="feature-description">Connect with compatible people based on shared interests and desires</p>
                 </div>
+                
                 <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Private Rooms</h3>
-                    <p>Create intimate spaces for deeper, more personal conversations</p>
+                    <div class="feature-icon">🌙</div>
+                    <h3 class="feature-title">Private Rooms</h3>
+                    <p class="feature-description">Create intimate spaces for deeper, more meaningful conversations</p>
                 </div>
+                
                 <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Voice & Video</h3>
-                    <p>Take your connections beyond text with crystal-clear calls</p>
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Disappearing Messages</h3>
+                    <p class="feature-description">Messages auto-delete for ultimate privacy and peace of mind</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>No Judgement Zone</h3>
-                    <p>Express yourself freely in a safe, accepting environment</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Mood Settings</h3>
-                    <p>Set your mood and find others who match your vibe</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Disappearing Messages</h3>
-                    <p>Keep your conversations ephemeral and worry-free</p>
-                </div>
-            </div>
-            <div class="features-banner">
-                <img src="assets/images/16-9 Image 1.webp" alt="Features" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6; filter: hue-rotate(20deg);">
             </div>
         </div>
     </section>
 
-    <!-- How to Use Section -->
-    <section class="how-to-use">
-        <div class="container">
-            <h2>How It Works</h2>
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how">
+        <div class="how-container">
+            <h2 class="how-title">How It Works</h2>
+            <p class="how-subtitle">Three simple steps to meaningful connections</p>
+            
             <div class="steps">
                 <div class="step">
                     <div class="step-image">
-                        <img src="assets/images/9-16 Image 1.webp" alt="Step 1" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                        <img src="assets/images/9-16 Image 1.webp" alt="Create Profile" />
                     </div>
                     <div class="step-number">1</div>
-                    <h3>Sign Up Anonymously</h3>
-                    <p>Create your profile without revealing your identity</p>
+                    <h3 class="step-title">Create Profile</h3>
+                    <p class="step-description">Set up your anonymous profile and preferences in complete privacy</p>
                 </div>
+                
                 <div class="step">
                     <div class="step-image">
-                        <img src="assets/images/9-16 Image 2.webp" alt="Step 2" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                        <img src="assets/images/9-16 Image 2.webp" alt="Get Matched" />
                     </div>
                     <div class="step-number">2</div>
-                    <h3>Set Your Preferences</h3>
-                    <p>Choose your interests and what you're looking for</p>
+                    <h3 class="step-title">Get Matched</h3>
+                    <p class="step-description">Our smart algorithm connects you with like-minded individuals</p>
                 </div>
+                
                 <div class="step">
                     <div class="step-image">
-                        <img src="assets/images/9-16 Image 3.webp" alt="Step 3" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                        <img src="assets/images/9-16 Image 3.webp" alt="Start Talking" />
                     </div>
                     <div class="step-number">3</div>
-                    <h3>Start Connecting</h3>
-                    <p>Match and chat with people who share your desires</p>
+                    <h3 class="step-title">Start Talking</h3>
+                    <p class="step-description">Begin intimate conversations in a safe, judgment-free environment</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- Final CTA Section -->
     <section class="cta">
-        <div class="container">
-            <h2>Ready to Connect?</h2>
-            <p>Join thousands finding meaningful connections every day</p>
-            <a href="#chat" class="btn-primary">Start Chatting Now</a>
+        <div class="cta-container">
+            <h2 class="cta-title">Ready for Real Connections?</h2>
+            <p class="cta-subtitle">Join thousands discovering authentic intimacy every day</p>
+            
+            <a href="#chat" class="btn-primary">
+                Begin Your Journey
+            </a>
+            
+            <div class="cta-stats">
+                <div class="stat">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Conversations</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">99%</div>
+                    <div class="stat-label">Privacy Score</div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer id="privacy">
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>Company</h3>
-                <ul>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#careers">Careers</a></li>
-                    <li><a href="#press">Press</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                </ul>
+            <div class="footer-logo">NoWrong</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link" id="support">Support</a>
+                <a href="#" class="footer-link">Safety</a>
             </div>
-            <div class="footer-section">
-                <h3>Support</h3>
-                <ul>
-                    <li><a href="#help">Help Center</a></li>
-                    <li><a href="#safety">Safety Tips</a></li>
-                    <li><a href="#community">Community Guidelines</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
-                </ul>
+            <div class="footer-bottom">
+                © 2024 NoWrong. All rights reserved. | 18+ Only
             </div>
-            <div class="footer-section">
-                <h3>Legal</h3>
-                <ul>
-                    <li><a href="#privacy">Privacy Policy</a></li>
-                    <li><a href="#terms">Terms of Service</a></li>
-                    <li><a href="#cookies">Cookie Policy</a></li>
-                    <li><a href="#dmca">DMCA</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <ul>
-                    <li><a href="#twitter">Twitter</a></li>
-                    <li><a href="#instagram">Instagram</a></li>
-                    <li><a href="#facebook">Facebook</a></li>
-                    <li><a href="#discord">Discord</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 NoWrong. All rights reserved. | 18+ Only</p>
         </div>
     </footer>
 </body>
