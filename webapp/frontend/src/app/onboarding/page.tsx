@@ -1,0 +1,152 @@
+'use client'
+
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import GenderSelection from '../components/GenderSelection'
+import AgeSelection from '../components/AgeSelection'
+import UsernameSelection from '../components/UsernameSelection'
+import PreferencesSelection from '../components/PreferencesSelection'
+
+type Step = 'gender' | 'age' | 'username' | 'preferences'
+
+interface OnboardingFormData {
+  gender?: string
+  age?: number
+  username?: string
+  preferences?: string[]
+}
+
+export default function OnboardingPage() {
+  const [currentStep, setCurrentStep] = useState<Step>('gender')
+  const [formData, setFormData] = useState<OnboardingFormData>({})
+
+  const steps: Step[] = ['gender', 'age', 'username', 'preferences']
+  const currentStepIndex = steps.indexOf(currentStep)
+
+  const handleNext = (data: Partial<OnboardingFormData>) => {
+    const newFormData = { ...formData, ...data }
+    setFormData(newFormData)
+
+    const nextStepIndex = currentStepIndex + 1
+    if (nextStepIndex < steps.length) {
+      setCurrentStep(steps[nextStepIndex])
+    } else {
+      // Complete onboarding - redirect to chat
+      console.log('Onboarding complete:', newFormData)
+      // TODO: Redirect to chat interface
+    }
+  }
+
+  const handleBack = () => {
+    const prevStepIndex = currentStepIndex - 1
+    if (prevStepIndex >= 0) {
+      setCurrentStep(steps[prevStepIndex])
+    }
+  }
+
+  const canGoBack = currentStepIndex > 0
+
+  const stepComponents = {
+    gender: (
+      <GenderSelection
+        onNext={handleNext}
+        onBack={handleBack}
+        canGoBack={canGoBack}
+        formData={formData}
+      />
+    ),
+    age: (
+      <AgeSelection
+        onNext={handleNext}
+        onBack={handleBack}
+        canGoBack={canGoBack}
+        formData={formData}
+      />
+    ),
+    username: (
+      <UsernameSelection
+        onNext={handleNext}
+        onBack={handleBack}
+        canGoBack={canGoBack}
+        formData={formData}
+      />
+    ),
+    preferences: (
+      <PreferencesSelection
+        onNext={handleNext}
+        onBack={handleBack}
+        canGoBack={canGoBack}
+        formData={formData}
+      />
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      {/* Background Effects */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-transparent"></div>
+      <div className="fixed inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(190,24,93,0.05)_50%,transparent_75%)]"></div>
+      
+      {/* Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-black/50 z-50">
+        <motion.div
+          className="h-full bg-gradient-to-r from-pink-500 to-rose-600"
+          initial={{ width: '0%' }}
+          animate={{ width: `${((currentStepIndex + 1) / steps.length) * 100}%` }}
+          transition={{ duration: 0.5 }}
+        />
+      </div>
+
+      {/* Main Container */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-md">
+          {/* Logo */}
+          <div className="text-center mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center space-x-2 mb-6"
+            >
+              <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">N</span>
+              </div>
+              <span className="text-2xl font-light text-white">NoWrong</span>
+            </motion.div>
+          </div>
+
+          {/* Step Content with Smooth Transitions */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+            >
+              {stepComponents[currentStep]}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Step Indicator Dots */}
+      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="flex space-x-2">
+          {steps.map((step, index) => (
+            <motion.div
+              key={step}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index <= currentStepIndex
+                  ? 'bg-pink-500'
+                  : 'bg-gray-600'
+              }`}
+              animate={{
+                scale: index === currentStepIndex ? 1.2 : 1
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}

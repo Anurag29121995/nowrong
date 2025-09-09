@@ -786,6 +786,186 @@
         .hero-cta-overlay:hover::after {
             transform: translateX(4px) scale(1.1);
         }
+
+        /* Enhanced Start Chat Button Animations */
+        .hero-cta-overlay {
+            overflow: hidden;
+            animation: subtlePulse 3s ease-in-out infinite;
+        }
+        
+        /* Subtle pulsing animation */
+        @keyframes subtlePulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 25px rgba(190, 24, 93, 0.3),
+                    0 0 50px rgba(136, 19, 55, 0.2),
+                    0 12px 40px rgba(0, 0, 0, 0.6),
+                    inset 0 2px 0 rgba(255, 255, 255, 0.1),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 35px rgba(190, 24, 93, 0.5),
+                    0 0 60px rgba(136, 19, 55, 0.3),
+                    0 12px 40px rgba(0, 0, 0, 0.6),
+                    inset 0 2px 0 rgba(255, 255, 255, 0.1),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            }
+        }
+        
+        .btn-text {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Ripple effect */
+        .btn-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(244, 63, 94, 0.6) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .hero-cta-overlay:hover {
+            animation: none;
+        }
+        
+        .hero-cta-overlay.clicked {
+            transform: translateX(-50%) scale(1.2);
+            background: linear-gradient(145deg, 
+                rgba(244, 63, 94, 0.9) 0%,
+                rgba(190, 24, 93, 0.9) 50%,
+                rgba(136, 19, 55, 0.9) 100%
+            );
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .hero-cta-overlay.clicked .btn-ripple {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Image selection effect */
+        .hero-slide.selected {
+            transform: scale(1.05);
+            filter: brightness(1.1) contrast(1.1);
+        }
+        
+        .hero-slide.selected::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, 
+                rgba(244, 63, 94, 0.2) 0%,
+                rgba(190, 24, 93, 0.1) 50%,
+                rgba(136, 19, 55, 0.2) 100%
+            );
+            border-radius: 24px;
+            animation: selectedGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes selectedGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        /* Transition overlay */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, 
+                rgba(244, 63, 94, 0.9) 0%,
+                rgba(190, 24, 93, 0.95) 30%,
+                rgba(136, 19, 55, 0.98) 60%,
+                rgba(0, 0, 0, 1) 100%
+            );
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease;
+        }
+        
+        .transition-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .transition-text {
+            color: white;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+        
+        .transition-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #F43F5E;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Enhanced btn-primary animations */
+        .btn-primary {
+            overflow: hidden;
+            position: relative;
+            animation: subtlePulse 4s ease-in-out infinite;
+        }
+        
+        .btn-primary .btn-text {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn-primary .btn-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .btn-primary:hover {
+            animation: none;
+        }
+        
+        .btn-primary.clicked .btn-ripple {
+            width: 300px;
+            height: 300px;
+        }
         
         .hero-cta-overlay:active {
             transform: translateX(-50%) translateY(-2px) scale(1.04);
@@ -1322,7 +1502,10 @@
                 </div>
                 
                 <!-- Beautiful CTA that POPS -->
-                <a href="#chat" class="hero-cta-overlay">Start Chat</a>
+                <a href="http://localhost:3000/onboarding" class="hero-cta-overlay" id="startChatBtn" onclick="handleStartChat(event)">
+                    <span class="btn-text">Start Chat</span>
+                    <div class="btn-ripple"></div>
+                </a>
                 
                 <!-- Elegant slider dots -->
                 <div class="slider-dots">
@@ -1458,8 +1641,9 @@
             <h2 class="cta-title">Ready for Real Connections?</h2>
             <p class="cta-subtitle">Join thousands discovering authentic intimacy every day</p>
             
-            <a href="#chat" class="btn-primary">
-                Start Chatting
+            <a href="http://localhost:3000/onboarding" class="btn-primary" onclick="handleStartChat(event)">
+                <span class="btn-text">Start Chatting</span>
+                <div class="btn-ripple"></div>
             </a>
             
             <div class="cta-stats">
@@ -1565,6 +1749,88 @@
                 slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
                 slider.addEventListener('mouseleave', startSlideshow);
             }
+        });
+    </script>
+    <!-- Transition Overlay -->
+    <div class="transition-overlay" id="transitionOverlay">
+        <div class="transition-text">Starting your journey...</div>
+        <div class="transition-spinner"></div>
+    </div>
+
+    <script>
+        function handleStartChat(event) {
+            event.preventDefault();
+            
+            const button = event.currentTarget;
+            const currentSlide = document.querySelector('.hero-slide.active img');
+            const overlay = document.getElementById('transitionOverlay');
+            
+            // Add clicked state to button
+            button.classList.add('clicked');
+            
+            // Add selection effect to current image
+            if (currentSlide) {
+                currentSlide.parentElement.classList.add('selected');
+            }
+            
+            // Show transition overlay
+            setTimeout(() => {
+                overlay.classList.add('active');
+            }, 300);
+            
+            // Navigate to webapp after transition
+            setTimeout(() => {
+                window.location.href = button.href;
+            }, 2000);
+        }
+
+        // Enhanced slider functionality
+        let currentSlideIndex = 1;
+
+        function currentSlide(n) {
+            showSlides(currentSlideIndex = n);
+        }
+
+        function nextSlide() {
+            showSlides(currentSlideIndex += 1);
+        }
+
+        function prevSlide() {
+            showSlides(currentSlideIndex -= 1);
+        }
+
+        function showSlides(n) {
+            let slides = document.querySelectorAll('.hero-slide');
+            let dots = document.querySelectorAll('.dot');
+            
+            if (n > slides.length) { currentSlideIndex = 1; }
+            if (n < 1) { currentSlideIndex = slides.length; }
+            
+            // Remove active and selected classes
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'selected');
+            });
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            // Add active class to current slide and dot
+            if (slides[currentSlideIndex - 1]) {
+                slides[currentSlideIndex - 1].classList.add('active');
+            }
+            if (dots[currentSlideIndex - 1]) {
+                dots[currentSlideIndex - 1].classList.add('active');
+            }
+        }
+
+        // Auto-slide functionality
+        setInterval(() => {
+            nextSlide();
+        }, 5000);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlides(currentSlideIndex);
         });
     </script>
 </body>
