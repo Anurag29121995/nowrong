@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - NoWrong</title>
+    <link rel="icon" href="assets/images/nowrong icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors - Sophisticated Black */
+            --bg-primary: #000000;
+            --bg-secondary: #0A0A0A;
+            --bg-tertiary: #111111;
+            --bg-glass: rgba(15, 8, 12, 0.4);
+            --bg-glass-hover: rgba(20, 10, 15, 0.6);
+            
+            /* Accent Colors - Premium Rose & Burgundy */
+            --accent-primary: #BE185D;
+            --accent-secondary: #881337;
+            --accent-soft: #F43F5E;
+            --accent-blush: #FB7185;
+            --accent-gold: #D4AF37;
+            --accent-glow: rgba(190, 24, 93, 0.15);
+            
+            /* Text Colors - Refined Hierarchy */
+            --text-primary: #FFFFFF;
+            --text-secondary: #E8E8E8;
+            --text-muted: #B0B0B0;
+            --text-dim: #808080;
+            --text-accent: #F43F5E;
+            
+            /* Shadows & Effects */
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-medium: 0 10px 40px rgba(0, 0, 0, 0.4);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 50px rgba(190, 24, 93, 0.2);
+            --shadow-glow-strong: 0 0 80px rgba(190, 24, 93, 0.3);
+            
+            /* Gradients - Sophisticated */
+            --gradient-hero: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%);
+            --gradient-accent: linear-gradient(135deg, #BE185D 0%, #881337 100%);
+            --gradient-subtle: linear-gradient(180deg, rgba(190, 24, 93, 0.08) 0%, transparent 50%);
+            --gradient-mesh: 
+                radial-gradient(at 20% 30%, rgba(190, 24, 93, 0.15) 0px, transparent 45%),
+                radial-gradient(at 80% 70%, rgba(244, 63, 94, 0.1) 0px, transparent 50%),
+                radial-gradient(at 40% 90%, rgba(136, 19, 55, 0.12) 0px, transparent 40%);
+            
+            /* Border Colors */
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-soft: rgba(255, 255, 255, 0.1);
+            --border-accent: rgba(190, 24, 93, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-mesh);
+            opacity: 0.6;
+            z-index: 0;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-bottom: 1px solid rgba(190, 24, 93, 0.2);
+            z-index: 1000;
+            padding: 20px 24px;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+            opacity: 0.6;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-btn {
+            color: var(--accent-soft);
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 300;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-3px);
+            background: rgba(190, 24, 93, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo img {
+            height: 32px;
+            width: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(190, 24, 93, 0.3));
+        }
+
+        .logo-text {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: none;
+            background: linear-gradient(135deg, 
+                #FB7185 0%, 
+                #F43F5E 25%, 
+                #BE185D 60%, 
+                #881337 90%,
+                #F43F5E 100%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(244, 63, 94, 0.3);
+            position: relative;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo-text::after {
+            content: '✦';
+            font-size: 12px;
+            color: #F43F5E;
+            margin-left: 8px;
+            opacity: 0.9;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.6; 
+                transform: scale(1) rotate(0deg); 
+                color: #F43F5E;
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2) rotate(180deg); 
+                color: #FB7185;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #F43F5E 0%, #BE185D 60%, #881337 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            text-shadow: 0 4px 12px rgba(190, 24, 93, 0.15);
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .content {
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient-hero);
+            opacity: 0.8;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-soft);
+            margin-bottom: 12px;
+        }
+
+        .section h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            margin-top: 16px;
+        }
+
+        .section p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .section li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .contact-info {
+            background: rgba(190, 24, 93, 0.1);
+            border: 1px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .contact-info h3 {
+            color: var(--accent-soft);
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="back-btn">← Back</a>
+            <a href="index.html" class="logo">
+                <img src="assets/images/nowrong icon.png" alt="NoWrong" />
+                <span class="logo-text">NoWrong</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Terms & Conditions</h1>
+        <p class="page-subtitle">Last updated: August 26, 2024</p>
+
+        <div class="content">
+            <div class="section">
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing and using NoWrong, you accept and agree to be bound by the terms and provision of this agreement.</p>
+            </div>
+
+            <div class="section">
+                <h2>2. Eligibility</h2>
+                <p>Users must be 18+ years old with legal capacity to use the service. NoWrong is designed for adult users only.</p>
+            </div>
+
+            <div class="section">
+                <h2>3. Service Description</h2>
+                <p>NoWrong is an anonymous chat application that allows users to:</p>
+                <ul>
+                    <li>Create anonymous profiles</li>
+                    <li>Engage in private text conversations</li>
+                    <li>Share media content within platform guidelines</li>
+                    <li>Participate in community features</li>
+                    <li>Connect based on interests and fantasies</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>4. Prohibited Activities</h2>
+                <p>Users are strictly prohibited from:</p>
+                <ul>
+                    <li>Impersonating other individuals</li>
+                    <li>Harassment or abusive behavior</li>
+                    <li>Uploading illegal or offensive content</li>
+                    <li>Spam or unsolicited communications</li>
+                    <li>Commercial use without explicit consent</li>
+                    <li>Violating others' privacy or rights</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>5. Content Ownership</h2>
+                <h3>Your Content</h3>
+                <p>Users retain ownership of content they create but grant NoWrong a non-exclusive license to use content for service operations.</p>
+                
+                <h3>Platform Content</h3>
+                <p>All platform features, design, and functionality remain the property of NoWrong.</p>
+            </div>
+
+            <div class="section">
+                <h2>6. Privacy and Anonymity</h2>
+                <p>NoWrong is committed to protecting user privacy and maintaining anonymity. Please refer to our Privacy Policy for detailed information about data handling.</p>
+            </div>
+
+            <div class="section">
+                <h2>7. Account Termination</h2>
+                <p>Users can terminate their account at any time. NoWrong reserves the right to terminate accounts for violations of these terms.</p>
+            </div>
+
+            <div class="section">
+                <h2>8. Disclaimers</h2>
+                <p>NoWrong provides the service "as is" without warranties. Users acknowledge the inherent risks of online communication and use the service at their own discretion.</p>
+            </div>
+
+            <div class="section">
+                <h2>9. Limitation of Liability</h2>
+                <p>NoWrong shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of the service.</p>
+            </div>
+
+            <div class="section">
+                <h2>10. Governing Law</h2>
+                <p>These terms are governed by Indian law. Any disputes will be resolved in the courts of Bengaluru, Karnataka, India.</p>
+            </div>
+
+            <div class="section">
+                <h2>11. Changes to Terms</h2>
+                <p>NoWrong reserves the right to modify these terms at any time. Users will be notified of significant changes.</p>
+            </div>
+
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <p><strong>Company:</strong> Contentladder Marketing Private Limited</p>
+                <p><strong>Email:</strong> info@contentladder.in</p>
+                <p><strong>Address:</strong> Pagaria Plaza, Bengaluru 560011, Karnataka, India</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

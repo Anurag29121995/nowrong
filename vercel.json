@@ -1,0 +1,10 @@
+{
+  "name": "nowrong",
+  "version": 2,
+  "public": false,
+  "trailingSlash": false,
+  "cleanUrls": true,
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "framework": null
+}

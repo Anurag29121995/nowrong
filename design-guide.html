@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoWrong - Finalized Mobile Design System</title>
+    <title>NoWrong - Design Guide (Current Implementation)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,135 +15,195 @@
         }
 
         :root {
-            /* FINALIZED COLOR PALETTE - ROMANTIC BLACK & ROSE */
+            /* CURRENT NOWRONG COLOR SYSTEM */
             
-            /* Background Colors */
-            --bg-primary: #000000;        /* Pure black - main background */
-            --bg-secondary: #0A0A0A;      /* Deep black - sections */
-            --bg-tertiary: #111111;       /* Dark gray - cards */
-            --bg-card: rgba(18, 10, 12, 0.8);        /* Card background with red tint */
-            --bg-card-hover: rgba(25, 12, 15, 0.9);  /* Card hover state */
-            --bg-input: rgba(15, 8, 10, 0.9);        /* Input backgrounds */
+            /* Primary Colors - Sophisticated Black */
+            --bg-primary: #000000;
+            --bg-secondary: #0A0A0A;
+            --bg-tertiary: #111111;
+            --bg-glass: rgba(15, 8, 12, 0.4);
+            --bg-glass-hover: rgba(20, 10, 15, 0.6);
             
-            /* Accent Colors - Romantic Rose & Wine */
-            --accent-primary: #BE185D;    /* Rose wine - main accent */
-            --accent-secondary: #881337;  /* Deep burgundy - secondary */
-            --accent-soft: #F43F5E;       /* Soft rose - highlights */
-            --accent-blush: #FB7185;      /* Blush pink - subtle touches */
-            --accent-dark: #701A2E;       /* Dark wine - shadows */
+            /* Accent Colors - Premium Rose & Burgundy */
+            --accent-primary: #BE185D;
+            --accent-secondary: #881337;
+            --accent-soft: #F43F5E;
+            --accent-blush: #FB7185;
+            --accent-gold: #D4AF37;
+            --accent-glow: rgba(190, 24, 93, 0.15);
             
-            /* Text Colors */
-            --text-primary: #FFFFFF;      /* Pure white - headings */
-            --text-secondary: #E5E5E5;    /* Light gray - body text */
-            --text-muted: #A8A8A8;        /* Medium gray - captions */
-            --text-dim: #787878;          /* Dark gray - placeholders */
-            --text-accent: #F43F5E;       /* Rose - links/highlights */
+            /* Text Colors - Refined Hierarchy */
+            --text-primary: #FFFFFF;
+            --text-secondary: #E8E8E8;
+            --text-muted: #B0B0B0;
+            --text-dim: #808080;
+            --text-accent: #F43F5E;
             
-            /* Border & Effect Colors */
-            --border-color: rgba(255, 255, 255, 0.04);      /* Subtle borders */
-            --border-hover: rgba(190, 24, 93, 0.25);        /* Hover borders */
-            --border-focus: rgba(244, 63, 94, 0.4);         /* Focus states */
+            /* Shadows & Effects */
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-medium: 0 10px 40px rgba(0, 0, 0, 0.4);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 50px rgba(190, 24, 93, 0.2);
+            --shadow-glow-strong: 0 0 80px rgba(190, 24, 93, 0.3);
             
-            /* Shadow & Glow Effects */
-            --shadow-glow: 0 0 40px rgba(190, 24, 93, 0.12);       /* Accent glow */
-            --shadow-card: 0 15px 50px rgba(0, 0, 0, 0.6);         /* Card shadows */
-            --shadow-button: 0 4px 25px rgba(190, 24, 93, 0.25);   /* Button shadows */
-            --shadow-focus: 0 0 0 3px rgba(244, 63, 94, 0.15);     /* Focus outline */
-            
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, #111111 0%, #000000 100%);
+            /* Gradients - Sophisticated */
+            --gradient-hero: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%);
             --gradient-accent: linear-gradient(135deg, #BE185D 0%, #881337 100%);
-            --gradient-love: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%);
-            --gradient-subtle: linear-gradient(180deg, rgba(190, 24, 93, 0.06) 0%, transparent 100%);
-            --gradient-card: linear-gradient(135deg, rgba(190, 24, 93, 0.08), rgba(136, 19, 55, 0.08));
+            --gradient-subtle: linear-gradient(180deg, rgba(190, 24, 93, 0.08) 0%, transparent 50%);
+            --gradient-mesh: 
+                radial-gradient(at 20% 30%, rgba(190, 24, 93, 0.15) 0px, transparent 45%),
+                radial-gradient(at 80% 70%, rgba(244, 63, 94, 0.1) 0px, transparent 50%),
+                radial-gradient(at 40% 90%, rgba(136, 19, 55, 0.12) 0px, transparent 40%);
+            
+            /* Border Colors */
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-soft: rgba(255, 255, 255, 0.1);
+            --border-accent: rgba(190, 24, 93, 0.3);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Mobile-First Navigation */
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-mesh);
+            opacity: 0.6;
+            z-index: 0;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-bottom: 1px solid rgba(190, 24, 93, 0.2);
             z-index: 1000;
-            padding: 16px 0;
+            padding: 20px 24px;
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+            opacity: 0.6;
         }
 
         .nav-container {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 100%;
+            position: relative;
+        }
+
+        .nav-container .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .logo {
-            font-size: 20px;
-            font-weight: 600;
-            background: var(--gradient-love);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .logo img {
+            height: 36px;
+            width: 36px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(190, 24, 93, 0.3));
+            margin-right: 12px;
+        }
+
+        .logo-text {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, 
+                #FB7185 0%, 
+                #F43F5E 25%, 
+                #BE185D 60%, 
+                #881337 90%,
+                #F43F5E 100%
+            );
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(244, 63, 94, 0.3);
+            position: relative;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
-        .nav-links {
-            display: none;
+        .logo-text::after {
+            content: '✦';
+            font-size: 12px;
+            color: #F43F5E;
+            margin-left: 8px;
+            opacity: 0.9;
+            animation: sparkle 3s ease-in-out infinite;
         }
-
-        .nav-toggle {
-            display: block;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        @media (min-width: 768px) {
-            nav {
-                padding: 20px 0;
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.6; 
+                transform: scale(1) rotate(0deg); 
+                color: #F43F5E;
             }
-            .nav-container {
-                max-width: 1200px;
-                padding: 0 20px;
-            }
-            .logo {
-                font-size: 24px;
-            }
-            .nav-links {
-                display: flex;
-                gap: 32px;
-                list-style: none;
-            }
-            .nav-links a {
-                color: var(--text-secondary);
-                text-decoration: none;
-                font-size: 15px;
-                transition: all 0.3s ease;
-            }
-            .nav-links a:hover {
-                color: var(--text-accent);
-            }
-            .nav-toggle {
-                display: none;
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2) rotate(180deg); 
+                color: #FB7185;
             }
         }
 
-        /* Mobile-First Container */
+        /* Container */
         .container {
-            max-width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 16px 60px;
+            padding: 100px 24px 80px;
+            position: relative;
+            z-index: 1;
         }
 
         /* Section Headers */
@@ -149,451 +212,379 @@
         }
 
         .section-title {
-            font-size: 28px;
+            font-size: clamp(28px, 6vw, 42px);
             font-weight: 300;
-            margin-bottom: 12px;
-            background: var(--gradient-love);
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+            background: linear-gradient(135deg, #F43F5E 0%, #BE185D 60%, #881337 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(190, 24, 93, 0.15);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.2;
         }
 
-        @media (min-width: 768px) {
-            .section-title {
-                font-size: 36px;
-                margin-bottom: 15px;
-            }
-        }
-
         .section-subtitle {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-muted);
-            margin-bottom: 24px;
+            margin-bottom: 40px;
             font-weight: 300;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        @media (min-width: 768px) {
-            .section-subtitle {
-                font-size: 16px;
-                margin-bottom: 40px;
-            }
-        }
-
-        /* Mobile-First Grid Layouts */
+        /* Grid Layouts */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 24px;
         }
 
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
+            gap: 24px;
         }
 
         @media (min-width: 768px) {
             .grid-2 {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 30px;
+                gap: 40px;
             }
             .grid-3 {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 24px;
-            }
-            .grid-4 {
-                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
             }
         }
 
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 1200px;
-                padding: 100px 20px 80px;
-            }
-            .grid-4 {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        /* Mobile-First Color Palette */
+        /* Color Palette Display */
         .color-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        @media (min-width: 768px) {
-            .color-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-            }
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
         }
 
         .color-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .color-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-glow);
-            border-color: var(--border-hover);
-        }
-
-        .color-sample {
-            width: 100%;
-            height: 80px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .color-info h4 {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 5px;
-            color: var(--text-primary);
-        }
-
-        .color-info p {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-family: 'Courier New', monospace;
-        }
-
-        /* Typography Showcase */
-        .typography-showcase {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px;
-            backdrop-filter: blur(10px);
-        }
-
-        .typography-showcase h1 {
-            font-size: 48px;
-            font-weight: 300;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-            background: var(--gradient-love);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .typography-showcase h2 {
-            font-size: 36px;
-            font-weight: 300;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .typography-showcase h3 {
-            font-size: 28px;
-            font-weight: 400;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .typography-showcase h4 {
-            font-size: 22px;
-            font-weight: 500;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-
-        .typography-showcase h5 {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 15px;
-            color: var(--text-secondary);
-        }
-
-        .typography-showcase h6 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .typography-showcase .lead {
-            font-size: 20px;
-            font-weight: 300;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-
-        .typography-showcase p {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            line-height: 1.7;
-        }
-
-        .typography-showcase .small {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .typography-showcase .caption {
-            font-size: 12px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        /* Mobile-First Button Showcase */
-        .button-showcase {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        @media (min-width: 768px) {
-            .button-showcase {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 20px;
-                align-items: center;
-                margin-bottom: 30px;
-            }
-        }
-
-        .btn {
-            padding: 12px 32px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .btn::before {
+        .color-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+            height: 1px;
+            background: var(--gradient-hero);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
-        .btn:hover::before {
-            transform: translateX(100%);
+        .color-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--border-accent);
         }
 
+        .color-card:hover::before {
+            opacity: 0.8;
+        }
+
+        .color-sample {
+            width: 100%;
+            height: 100px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .color-info h4 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .color-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        /* Typography Showcase */
+        .typography-showcase {
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .typography-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient-hero);
+            opacity: 0.6;
+        }
+
+        /* NoWrong Brand Typography */
+        .nowrong-brand {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 400;
+            font-size: 32px;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, 
+                #FB7185 0%, 
+                #F43F5E 25%, 
+                #BE185D 60%, 
+                #881337 90%,
+                #F43F5E 100%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(244, 63, 94, 0.2);
+            animation: gradientShift 4s ease-in-out infinite;
+            position: relative;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .nowrong-brand::after {
+            content: '✦';
+            font-size: 14px;
+            color: #F43F5E;
+            margin-left: 8px;
+            opacity: 0.8;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        .typography-sample {
+            margin-bottom: 32px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .typography-sample:last-child {
+            border-bottom: none;
+        }
+
+        .typography-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .hero-text {
+            font-size: clamp(36px, 8vw, 56px);
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #F43F5E 0%, #BE185D 60%, #881337 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .section-text {
+            font-size: 32px;
+            font-weight: 300;
+            color: var(--text-primary);
+            letter-spacing: 0.2px;
+        }
+
+        .body-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .subtitle-text {
+            font-size: 20px;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+
+        .muted-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* Interactive Elements */
+        .button-showcase {
+            display: grid;
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        @media (min-width: 768px) {
+            .button-showcase {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+        }
+
+        .button-group {
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .button-group h4 {
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .button-samples {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Download Button Style */
+        .download-btn {
+            position: relative;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            overflow: visible;
+            padding: 0;
+            background: transparent;
+            border: 2px solid rgba(190, 24, 93, 0.4);
+            display: inline-block;
+        }
+
+        .download-btn img {
+            height: 88px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.3));
+            transition: all 0.2s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(190, 24, 93, 0.7);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Premium Start Chat Button */
         .btn-primary {
-            background: var(--gradient-accent);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(145deg, 
+                #F43F5E 0%,
+                #BE185D 50%,
+                #881337 100%
+            );
             color: white;
-            box-shadow: var(--shadow-button);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 20px 36px;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 0 30px rgba(244, 63, 94, 0.4),
+                0 0 60px rgba(190, 24, 93, 0.2),
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 35px rgba(190, 24, 93, 0.35);
+            background: linear-gradient(145deg, 
+                #FB7185 0%,
+                #F43F5E 50%,
+                #BE185D 100%
+            );
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 
+                0 0 40px rgba(244, 63, 94, 0.6),
+                0 0 80px rgba(190, 24, 93, 0.3),
+                0 16px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-card);
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--accent-primary);
-            border: 1px solid var(--accent-primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--accent-primary);
-            color: white;
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-secondary);
-            padding: 8px 16px;
-        }
-
-        .btn-ghost:hover {
-            color: var(--accent-primary);
-            background: rgba(190, 24, 93, 0.1);
-        }
-
-        .btn-large {
-            padding: 16px 48px;
+        .btn-primary::after {
+            content: '→';
             font-size: 18px;
+            transition: transform 0.3s ease;
         }
 
-        .btn-small {
-            padding: 8px 20px;
-            font-size: 14px;
+        .btn-primary:hover::after {
+            transform: translateX(4px);
         }
 
-        .btn-icon {
-            padding: 12px;
-            min-width: 44px;
-            justify-content: center;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        .btn-icon:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* Button State Variations */
-        .btn-disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            filter: grayscale(100%);
-            pointer-events: none;
-        }
-
-        .btn-active {
-            background: var(--gradient-love) !important;
-            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4) !important;
-            transform: scale(1.02);
-        }
-
-        /* Form Elements */
-        .form-showcase {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--border-focus);
-            box-shadow: var(--shadow-focus);
-        }
-
-        .form-input::placeholder {
-            color: var(--text-dim);
-        }
-
-        .form-textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 16px;
-            min-height: 120px;
-            resize: vertical;
-            transition: all 0.3s ease;
-        }
-
-        .form-textarea:focus {
-            outline: none;
-            border-color: var(--border-focus);
-            box-shadow: var(--shadow-focus);
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .form-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .form-checkbox input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--accent-primary);
-        }
-
-        /* Card Components */
+        /* Glass Morphism Cards */
         .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 32px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -605,603 +596,171 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: var(--gradient-love);
+            background: var(--gradient-hero);
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.4s;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-card);
-            border-color: var(--border-hover);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--border-accent);
         }
 
         .card:hover::before {
-            opacity: 1;
+            opacity: 0.8;
         }
 
         .card h3 {
             font-size: 20px;
             font-weight: 500;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             color: var(--text-primary);
         }
 
         .card p {
             color: var(--text-secondary);
             line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Feature Icons */
+        .feature-icon {
+            width: 48px;
+            height: 48px;
             margin-bottom: 20px;
-        }
-
-        .card-compact {
-            padding: 20px;
-        }
-
-        .card-featured {
-            border: 1px solid var(--accent-primary);
-            box-shadow: 0 0 30px rgba(190, 24, 93, 0.1);
-        }
-
-        /* Chat Message Samples */
-        .chat-showcase {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .message {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--gradient-love);
-            flex-shrink: 0;
-        }
-
-        .message-content {
-            flex: 1;
-        }
-
-        .message-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 5px;
-        }
-
-        .message-name {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .message-text {
-            background: var(--bg-secondary);
-            padding: 12px 16px;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .message.own {
-            flex-direction: row-reverse;
-        }
-
-        .message.own .message-text {
-            background: var(--gradient-accent);
-            color: white;
-        }
-
-        /* Status & Badges */
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-primary {
-            background: var(--accent-primary);
-            color: white;
-        }
-
-        .badge-secondary {
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-        }
-
-        .badge-success {
-            background: #059669;
-            color: white;
-        }
-
-        .badge-warning {
-            background: #D97706;
-            color: white;
-        }
-
-        .badge-danger {
-            background: #DC2626;
-            color: white;
-        }
-
-        /* Loading & Progress */
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--bg-tertiary);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--gradient-accent);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--bg-tertiary);
-            border-top: 2px solid var(--accent-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Modal & Popup Components */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
-            padding: 16px;
-        }
-
-        .modal {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            max-height: 90vh;
-            overflow-y: auto;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: relative;
-            animation: modalSlideUp 0.3s ease-out;
-        }
-
-        @keyframes modalSlideUp {
-            from {
-                transform: translateY(100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            padding: 20px 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            color: var(--accent-primary);
-            background: rgba(190, 24, 93, 0.1);
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .modal-footer {
-            padding: 0 20px 20px;
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-
-        /* Alert Components */
-        .alert {
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            border-left: 4px solid;
-            backdrop-filter: blur(10px);
-        }
-
-        .alert-icon {
-            font-size: 18px;
-            margin-top: 2px;
-        }
-
-        .alert-content {
-            flex: 1;
-        }
-
-        .alert-title {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-
-        .alert-message {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .alert-success {
-            background: rgba(5, 150, 105, 0.1);
-            border-left-color: #059669;
-            color: #10B981;
-        }
-
-        .alert-warning {
-            background: rgba(217, 119, 6, 0.1);
-            border-left-color: #D97706;
-            color: #F59E0B;
-        }
-
-        .alert-error {
-            background: rgba(220, 38, 38, 0.1);
-            border-left-color: #DC2626;
-            color: #EF4444;
-        }
-
-        .alert-info {
-            background: rgba(190, 24, 93, 0.1);
-            border-left-color: var(--accent-primary);
             color: var(--accent-soft);
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 80px;
-            right: 16px;
-            left: 16px;
-            z-index: 3000;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .toast {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-card);
-            animation: toastSlideIn 0.3s ease-out;
-        }
-
-        @keyframes toastSlideIn {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .toast-icon {
-            font-size: 20px;
-        }
-
-        .toast-content {
-            flex: 1;
-        }
-
-        .toast-title {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .toast-message {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        /* Chat Interface */
-        .chat-container {
-            height: 500px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .chat-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .chat-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--gradient-love);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .chat-user-info {
-            flex: 1;
-        }
-
-        .chat-user-name {
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .chat-user-status {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #10B981;
-        }
-
-        .chat-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .chat-action-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 18px;
-            padding: 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .chat-action-btn:hover {
-            color: var(--accent-primary);
             background: rgba(190, 24, 93, 0.1);
+            border-radius: 12px;
+            margin: 0 auto 20px;
         }
 
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .chat-message {
-            display: flex;
-            gap: 8px;
-            max-width: 85%;
-        }
-
-        .chat-message.own {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .chat-message-avatar {
+        .feature-icon svg {
             width: 28px;
             height: 28px;
-            border-radius: 50%;
-            background: var(--bg-tertiary);
-            flex-shrink: 0;
+            fill: currentColor;
         }
 
-        .chat-message.own .chat-message-avatar {
-            background: var(--gradient-love);
-        }
-
-        .chat-message-bubble {
-            background: var(--bg-secondary);
-            padding: 12px 16px;
-            border-radius: 18px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.4;
-            position: relative;
-        }
-
-        .chat-message.own .chat-message-bubble {
-            background: var(--gradient-accent);
-            color: white;
-        }
-
-        .chat-message-time {
-            font-size: 11px;
-            color: var(--text-dim);
-            margin-top: 4px;
+        /* Animation Examples */
+        .animation-demo {
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 40px;
             text-align: center;
+            margin: 40px 0;
         }
 
-        .chat-message.own .chat-message-time {
-            text-align: right;
-        }
-
-        .chat-input-container {
-            padding: 16px 20px;
-            border-top: 1px solid var(--border-color);
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        .chat-input-wrapper {
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-        }
-
-        .chat-input {
-            flex: 1;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            font-size: 14px;
-            resize: none;
-            min-height: 40px;
-            max-height: 120px;
-        }
-
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .chat-send-btn {
-            background: var(--gradient-accent);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .chat-send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(190, 24, 93, 0.3);
-        }
-
-        /* Popup/Dropdown Menus */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+        .gradient-demo {
+            width: 200px;
+            height: 60px;
+            margin: 20px auto;
             border-radius: 12px;
-            padding: 8px 0;
-            min-width: 200px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: var(--shadow-card);
-            z-index: 1000;
-            animation: dropdownFadeIn 0.2s ease-out;
+            background: var(--gradient-hero);
+            background-size: 200% 200%;
+            animation: gradientShift 4s ease-in-out infinite;
         }
 
-        @keyframes dropdownFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .sparkle-demo {
+            font-size: 32px;
+            color: #F43F5E;
+            animation: sparkle 3s ease-in-out infinite;
+            margin: 20px 0;
         }
 
-        .dropdown-item {
-            padding: 12px 16px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .breathe-demo {
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background: var(--gradient-mesh);
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        /* Layout Principles */
+        .layout-example {
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .layout-title {
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .layout-description {
+            color: var(--text-muted);
             font-size: 14px;
-            transition: all 0.3s ease;
+            line-height: 1.6;
         }
 
-        .dropdown-item:hover {
+        .spacing-example {
+            padding: 24px;
+            margin: 24px 0;
             background: rgba(190, 24, 93, 0.1);
-            color: var(--accent-primary);
+            border-radius: 12px;
+            border: 1px dashed var(--border-accent);
         }
 
-        .dropdown-divider {
-            height: 1px;
-            background: var(--border-color);
-            margin: 8px 0;
+        /* Mobile Responsive Notes */
+        .mobile-notes {
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .mobile-notes h4 {
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .mobile-notes ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-notes li {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .mobile-notes li::before {
+            content: '•';
+            color: var(--accent-soft);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 0;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 80px;
+        }
+
+        .footer p {
+            color: var(--text-dim);
+            font-size: 14px;
         }
     </style>
 </head>
@@ -1209,551 +768,402 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">NoWrong - Finalized Design System</div>
-            <button class="nav-toggle">☰</button>
-            <ul class="nav-links">
-                <li><a href="#colors">Colors</a></li>
-                <li><a href="#typography">Typography</a></li>
-                <li><a href="#buttons">Buttons</a></li>
-                <li><a href="#forms">Forms</a></li>
-                <li><a href="#components">Components</a></li>
-                <li><a href="#modals">Modals</a></li>
-                <li><a href="#alerts">Alerts</a></li>
-                <li><a href="#chat">Chat</a></li>
-            </ul>
+            <div></div>
+            <a href="#" class="logo">
+                <span class="logo-text">NoWrong Design Guide</span>
+            </a>
+            <div></div>
         </div>
     </nav>
 
     <!-- Main Container -->
     <div class="container">
         
-        <!-- Color Palette Section -->
-        <section class="section" id="colors">
-            <h2 class="section-title">Finalized Color Palette</h2>
-            <p class="section-subtitle">✨ APPROVED: Romantic black and rose theme for intimate, premium mobile experiences</p>
+        <!-- Introduction -->
+        <section class="section">
+            <h1 class="section-title">NoWrong Design System</h1>
+            <p class="section-subtitle">Current implementation guide for the premium intimate chat platform. This guide reflects the actual styling used in the live website.</p>
+            
+            <div class="nowrong-brand">NoWrong</div>
+            
+            <div class="card">
+                <h3>Design Philosophy</h3>
+                <p>NoWrong uses a sophisticated dark aesthetic with premium rose accents, elegant typography, and glass morphism effects. The design emphasizes intimacy, privacy, and premium quality through careful use of gradients, shadows, and animations.</p>
+            </div>
+        </section>
+
+        <!-- Color System -->
+        <section class="section">
+            <h2 class="section-title">Color System</h2>
+            <p class="section-subtitle">Exact CSS variables from the current implementation</p>
             
             <div class="color-grid">
                 <div class="color-card">
-                    <div class="color-sample" style="background: #000000; color: #666;">Primary BG</div>
+                    <div class="color-sample" style="background: #000000; color: #666;">Primary Background</div>
                     <div class="color-info">
                         <h4>Pure Black</h4>
-                        <p>#000000</p>
+                        <p>--bg-primary: #000000</p>
                     </div>
                 </div>
                 
                 <div class="color-card">
-                    <div class="color-sample" style="background: #0A0A0A; color: #666;">Secondary BG</div>
+                    <div class="color-sample" style="background: rgba(15, 8, 12, 0.4); color: white; backdrop-filter: blur(20px);">Glass Morphism</div>
                     <div class="color-info">
-                        <h4>Deep Black</h4>
-                        <p>#0A0A0A</p>
+                        <h4>Glass Background</h4>
+                        <p>--bg-glass: rgba(15, 8, 12, 0.4)</p>
                     </div>
                 </div>
                 
                 <div class="color-card">
-                    <div class="color-sample" style="background: linear-gradient(135deg, #BE185D, #881337); color: white;">Primary Accent</div>
+                    <div class="color-sample" style="background: #BE185D; color: white;">Primary Accent</div>
                     <div class="color-info">
                         <h4>Rose Wine</h4>
-                        <p>#BE185D</p>
+                        <p>--accent-primary: #BE185D</p>
                     </div>
                 </div>
                 
                 <div class="color-card">
-                    <div class="color-sample" style="background: linear-gradient(135deg, #F43F5E, #FB7185); color: white;">Romantic</div>
+                    <div class="color-sample" style="background: #F43F5E; color: white;">Soft Accent</div>
                     <div class="color-info">
                         <h4>Soft Rose</h4>
-                        <p>#F43F5E</p>
+                        <p>--accent-soft: #F43F5E</p>
                     </div>
                 </div>
                 
                 <div class="color-card">
-                    <div class="color-sample" style="background: #FFFFFF; color: #333;">Primary Text</div>
+                    <div class="color-sample" style="background: #881337; color: white;">Secondary Accent</div>
                     <div class="color-info">
-                        <h4>Pure White</h4>
-                        <p>#FFFFFF</p>
+                        <h4>Deep Burgundy</h4>
+                        <p>--accent-secondary: #881337</p>
                     </div>
                 </div>
                 
                 <div class="color-card">
-                    <div class="color-sample" style="background: #E5E5E5; color: #333;">Secondary Text</div>
+                    <div class="color-sample" style="background: linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%); color: white;">Hero Gradient</div>
                     <div class="color-info">
-                        <h4>Light Gray</h4>
-                        <p>#E5E5E5</p>
+                        <h4>Primary Gradient</h4>
+                        <p>--gradient-hero</p>
                     </div>
                 </div>
             </div>
+
+            <div class="card">
+                <h3>Gradient System</h3>
+                <p><strong>Hero Gradient:</strong> linear-gradient(135deg, #F43F5E 0%, #BE185D 50%, #881337 100%)</p>
+                <p><strong>Accent Gradient:</strong> linear-gradient(135deg, #BE185D 0%, #881337 100%)</p>
+                <p><strong>Mesh Background:</strong> Complex radial gradients creating breathing animation effect</p>
+            </div>
         </section>
 
-        <!-- Typography Section -->
-        <section class="section" id="typography">
+        <!-- Typography System -->
+        <section class="section">
             <h2 class="section-title">Typography System</h2>
-            <p class="section-subtitle">Elegant, readable hierarchy for romantic communication</p>
+            <p class="section-subtitle">Inter font family with elegant weight hierarchy</p>
             
             <div class="typography-showcase">
-                <div class="caption">Hero Heading</div>
-                <h1>Find People With No Boundaries</h1>
+                <div class="typography-sample">
+                    <div class="typography-label">NoWrong Brand (font-weight: 400)</div>
+                    <div class="nowrong-brand" style="font-size: 24px; margin-bottom: 0;">NoWrong</div>
+                </div>
                 
-                <div class="caption">Page Heading</div>
-                <h2>Welcome to Intimate Connections</h2>
+                <div class="typography-sample">
+                    <div class="typography-label">Hero Title (font-weight: 300)</div>
+                    <div class="hero-text">Find People With No Boundaries</div>
+                </div>
                 
-                <div class="caption">Section Heading</div>
-                <h3>Features That Matter</h3>
+                <div class="typography-sample">
+                    <div class="typography-label">Section Title (font-weight: 300)</div>
+                    <div class="section-text">Built for Intimate Connections</div>
+                </div>
                 
-                <div class="caption">Card Heading</div>
-                <h4>Private & Secure</h4>
+                <div class="typography-sample">
+                    <div class="typography-label">Subtitle (font-weight: 400, italic)</div>
+                    <div class="subtitle-text">Where desires meet, no boundaries exist</div>
+                </div>
                 
-                <div class="caption">List Heading</div>
-                <h5>Safety First</h5>
+                <div class="typography-sample">
+                    <div class="typography-label">Body Text (font-weight: 400)</div>
+                    <div class="body-text">Experience meaningful connections in a safe, premium environment designed for authentic interactions between like-minded individuals.</div>
+                </div>
                 
-                <div class="caption">Label Text</div>
-                <h6>Settings</h6>
-                
-                <div class="caption">Lead Paragraph</div>
-                <p class="lead">Experience meaningful connections in a safe, premium environment designed for authentic interactions between like-minded individuals.</p>
-                
-                <div class="caption">Body Text</div>
-                <p>Our platform brings together people seeking deeper, more personal conversations. We prioritize your privacy while creating an atmosphere of openness and acceptance.</p>
-                
-                <div class="caption">Small Text</div>
-                <p class="small">Terms and conditions apply. Must be 18+ to use this service. By continuing, you agree to our privacy policy.</p>
+                <div class="typography-sample">
+                    <div class="typography-label">Muted Text (font-weight: 300)</div>
+                    <div class="muted-text">Every feature designed with your privacy and comfort in mind</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Typography Notes</h3>
+                <p><strong>Font Family:</strong> 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif</p>
+                <p><strong>Weight Hierarchy:</strong> Primarily 300-400 for elegance, avoid 700+ weights</p>
+                <p><strong>Gradient Text:</strong> Used for brand and hero elements with animated shifting</p>
+                <p><strong>Sparkle Effect:</strong> ✦ symbol with rotation animation on brand elements</p>
             </div>
         </section>
 
-        <!-- Button Variations Section -->
-        <section class="section" id="buttons">
-            <h2 class="section-title">Button Components</h2>
-            <p class="section-subtitle">Interactive elements with romantic hover effects</p>
-            
-            <div class="grid-2">
-                <div>
-                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">Primary Actions</h4>
-                    <div class="button-showcase">
-                        <button class="btn btn-primary">Start Chatting</button>
-                        <button class="btn btn-primary btn-large">Begin Your Journey</button>
-                        <button class="btn btn-primary btn-small">Join Now</button>
-                    </div>
-                    
-                    <h4 style="color: var(--text-primary); margin: 30px 0 20px;">Secondary Actions</h4>
-                    <div class="button-showcase">
-                        <button class="btn btn-secondary">Learn More</button>
-                        <button class="btn btn-outline">View Profile</button>
-                        <button class="btn btn-ghost">Skip</button>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 style="color: var(--text-primary); margin-bottom: 20px;">Special Buttons</h4>
-                    <div class="button-showcase">
-                        <button class="btn btn-icon">❤</button>
-                        <button class="btn btn-icon">💬</button>
-                        <button class="btn btn-icon">🔒</button>
-                    </div>
-                    
-                    <h4 style="color: var(--text-primary); margin: 30px 0 20px;">States</h4>
-                    <div class="button-showcase">
-                        <button class="btn btn-primary">Normal</button>
-                        <button class="btn btn-primary btn-disabled">Disabled</button>
-                        <button class="btn btn-primary btn-active">Active</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Form Elements Section -->
-        <section class="section" id="forms">
-            <h2 class="section-title">Form Components</h2>
-            <p class="section-subtitle">Input elements with romantic focus states</p>
-            
-            <div class="grid-2">
-                <div class="form-showcase">
-                    <div class="form-group">
-                        <label class="form-label">Username</label>
-                        <input type="text" class="form-input" placeholder="Choose your identity...">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" placeholder="your@email.com">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Age Range</label>
-                        <select class="form-select">
-                            <option>18-25</option>
-                            <option>26-35</option>
-                            <option>36-45</option>
-                            <option>45+</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">About Yourself</label>
-                        <textarea class="form-textarea" placeholder="Tell us what makes you unique..."></textarea>
-                    </div>
-                </div>
-                
-                <div class="form-showcase">
-                    <div class="form-group">
-                        <label class="form-label">Preferences</label>
-                        <div class="form-checkbox">
-                            <input type="checkbox" id="private">
-                            <label for="private">Keep profile private</label>
-                        </div>
-                        <div class="form-checkbox">
-                            <input type="checkbox" id="notifications">
-                            <label for="notifications">Enable notifications</label>
-                        </div>
-                        <div class="form-checkbox">
-                            <input type="checkbox" id="matching">
-                            <label for="matching">Auto-matching</label>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary" style="width: 100%;">Create Profile</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Component Variations Section -->
-        <section class="section" id="components">
-            <h2 class="section-title">UI Components</h2>
-            <p class="section-subtitle">Cards, messages, badges and interactive elements</p>
-            
-            <!-- Card Examples -->
-            <h4 style="color: var(--text-primary); margin-bottom: 20px;">Card Variations</h4>
-            <div class="grid-3">
-                <div class="card">
-                    <h3>Standard Card</h3>
-                    <p>Regular content card with hover effects and romantic border animations.</p>
-                    <button class="btn btn-outline">Learn More</button>
-                </div>
-                
-                <div class="card card-featured">
-                    <h3>Featured Card</h3>
-                    <p>Premium card with accent border and enhanced glow effects for special content.</p>
-                    <button class="btn btn-primary">Get Started</button>
-                </div>
-                
-                <div class="card card-compact">
-                    <h3>Compact Card</h3>
-                    <p>Smaller card for lists and grids with less padding but same styling.</p>
-                    <button class="btn btn-ghost">View</button>
-                </div>
-            </div>
-            
-            <!-- Chat Message Examples -->
-            <h4 style="color: var(--text-primary); margin: 40px 0 20px;">Chat Interface</h4>
-            <div class="chat-showcase">
-                <div class="message">
-                    <div class="message-avatar"></div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <span class="message-name">Anonymous</span>
-                            <span class="message-time">2 minutes ago</span>
-                        </div>
-                        <div class="message-text">Hey there, I love your energy in the chat room. Would you like to have a more private conversation?</div>
-                    </div>
-                </div>
-                
-                <div class="message own">
-                    <div class="message-avatar"></div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <span class="message-name">You</span>
-                            <span class="message-time">Just now</span>
-                        </div>
-                        <div class="message-text">I'd love that. You seem really interesting and I'm curious to know more about you.</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Badges and Status -->
-            <h4 style="color: var(--text-primary); margin: 40px 0 20px;">Badges & Status</h4>
-            <div class="button-showcase">
-                <span class="badge badge-primary">Premium</span>
-                <span class="badge badge-success">Online</span>
-                <span class="badge badge-warning">Away</span>
-                <span class="badge badge-danger">Busy</span>
-                <span class="badge badge-secondary">Offline</span>
-            </div>
-            
-            <!-- Progress & Loading -->
-            <h4 style="color: var(--text-primary); margin: 40px 0 20px;">Loading States</h4>
-            <div class="grid-2">
-                <div>
-                    <p style="color: var(--text-secondary); margin-bottom: 10px;">Profile completion (75%)</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 75%;"></div>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div class="spinner"></div>
-                    <span style="color: var(--text-secondary);">Loading messages...</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Modal Examples Section -->
-        <section class="section" id="modals">
-            <h2 class="section-title">Modals & Popups</h2>
-            <p class="section-subtitle">Overlay dialogs optimized for mobile interaction</p>
-            
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Profile Modal Example</h3>
-                    <div class="modal" style="position: relative; max-width: none; animation: none;">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Edit Profile</h3>
-                            <button class="modal-close">×</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label class="form-label">Display Name</label>
-                                <input type="text" class="form-input" value="Anonymous">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Bio</label>
-                                <textarea class="form-textarea" placeholder="Tell us about yourself..."></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary btn-small">Cancel</button>
-                            <button class="btn btn-primary btn-small">Save</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Dropdown Menu</h3>
-                    <div class="dropdown" style="position: relative;">
-                        <div class="dropdown-menu" style="position: relative; animation: none;">
-                            <a href="#" class="dropdown-item">
-                                <span>👤</span> View Profile
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                <span>⚙️</span> Settings
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <span>🚪</span> Sign Out
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Alerts & Notifications Section -->
-        <section class="section" id="alerts">
-            <h2 class="section-title">Alerts & Notifications</h2>
-            <p class="section-subtitle">Status messages and toast notifications for mobile</p>
-            
-            <div class="grid-2">
-                <div>
-                    <h4 style="color: var(--text-primary); margin-bottom: 16px;">Alert Messages</h4>
-                    <div class="alert alert-success">
-                        <div class="alert-icon">✓</div>
-                        <div class="alert-content">
-                            <div class="alert-title">Profile Updated</div>
-                            <div class="alert-message">Your profile has been successfully updated.</div>
-                        </div>
-                    </div>
-                    
-                    <div class="alert alert-warning">
-                        <div class="alert-icon">⚠</div>
-                        <div class="alert-content">
-                            <div class="alert-title">Incomplete Profile</div>
-                            <div class="alert-message">Please complete your profile to start matching.</div>
-                        </div>
-                    </div>
-                    
-                    <div class="alert alert-error">
-                        <div class="alert-icon">✕</div>
-                        <div class="alert-content">
-                            <div class="alert-title">Connection Failed</div>
-                            <div class="alert-message">Unable to connect to chat. Please try again.</div>
-                        </div>
-                    </div>
-                    
-                    <div class="alert alert-info">
-                        <div class="alert-icon">💡</div>
-                        <div class="alert-content">
-                            <div class="alert-title">New Feature</div>
-                            <div class="alert-message">Voice messages are now available in private chats.</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 style="color: var(--text-primary); margin-bottom: 16px;">Toast Notifications</h4>
-                    <div class="toast-container" style="position: relative; top: auto; right: auto; left: auto;">
-                        <div class="toast" style="animation: none;">
-                            <div class="toast-icon">💬</div>
-                            <div class="toast-content">
-                                <div class="toast-title">New Message</div>
-                                <div class="toast-message">You have a new message from Anonymous</div>
-                            </div>
-                        </div>
-                        
-                        <div class="toast" style="animation: none;">
-                            <div class="toast-icon">❤️</div>
-                            <div class="toast-content">
-                                <div class="toast-title">Match Found</div>
-                                <div class="toast-message">You have a new match waiting</div>
-                            </div>
-                        </div>
-                        
-                        <div class="toast" style="animation: none;">
-                            <div class="toast-icon">🔒</div>
-                            <div class="toast-content">
-                                <div class="toast-title">Privacy Mode</div>
-                                <div class="toast-message">Your location is now hidden</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chat Interface Section -->
-        <section class="section" id="chat">
-            <h2 class="section-title">Chat Interface</h2>
-            <p class="section-subtitle">Mobile-optimized chat experience for intimate conversations</p>
-            
-            <div class="chat-container">
-                <div class="chat-header">
-                    <div class="chat-avatar">A</div>
-                    <div class="chat-user-info">
-                        <div class="chat-user-name">Anonymous</div>
-                        <div class="chat-user-status">
-                            <div class="status-dot"></div>
-                            Online now
-                        </div>
-                    </div>
-                    <div class="chat-actions">
-                        <button class="chat-action-btn">📞</button>
-                        <button class="chat-action-btn">📹</button>
-                        <button class="chat-action-btn">⚙️</button>
-                    </div>
-                </div>
-                
-                <div class="chat-messages">
-                    <div class="chat-message">
-                        <div class="chat-message-avatar"></div>
-                        <div>
-                            <div class="chat-message-bubble">
-                                Hey there! I noticed we have a lot in common. Would you like to have a more private conversation?
-                            </div>
-                            <div class="chat-message-time">2:34 PM</div>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-message own">
-                        <div class="chat-message-avatar"></div>
-                        <div>
-                            <div class="chat-message-bubble">
-                                I'd love that! You seem really interesting. What brings you to this platform?
-                            </div>
-                            <div class="chat-message-time">2:35 PM</div>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-message">
-                        <div class="chat-message-avatar"></div>
-                        <div>
-                            <div class="chat-message-bubble">
-                                I'm looking for genuine connections without all the judgment. It's refreshing to find someone who gets it.
-                            </div>
-                            <div class="chat-message-time">2:36 PM</div>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-message own">
-                        <div class="chat-message-avatar"></div>
-                        <div>
-                            <div class="chat-message-bubble">
-                                Absolutely! That's exactly what I was hoping to find here. Want to move to a private room?
-                            </div>
-                            <div class="chat-message-time">Just now</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="chat-input-container">
-                    <div class="chat-input-wrapper">
-                        <textarea class="chat-input" placeholder="Type your message..." rows="1"></textarea>
-                        <button class="chat-send-btn">→</button>
-                    </div>
-                </div>
-            </div>
-            
-            <h4 style="color: var(--text-primary); margin: 32px 0 16px;">Chat Features</h4>
-            <div class="grid-3">
-                <div class="card card-compact">
-                    <div class="feature-icon"></div>
-                    <h3>Voice Messages</h3>
-                    <p>Send intimate voice messages for deeper connection</p>
-                </div>
-                <div class="card card-compact">
-                    <div class="feature-icon"></div>
-                    <h3>Disappearing Messages</h3>
-                    <p>Messages auto-delete for privacy and discretion</p>
-                </div>
-                <div class="card card-compact">
-                    <div class="feature-icon"></div>
-                    <h3>Typing Indicators</h3>
-                    <p>See when your partner is typing a response</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Mobile Optimization Notes -->
+        <!-- Interactive Elements -->
         <section class="section">
-            <h2 class="section-title">Mobile-First Design Principles</h2>
-            <p class="section-subtitle">Key considerations for smartphone-optimized intimate chat experience</p>
+            <h2 class="section-title">Interactive Elements</h2>
+            <p class="section-subtitle">Buttons, CTAs, and interactive components</p>
+            
+            <div class="button-showcase">
+                <div class="button-group">
+                    <h4>Download Buttons</h4>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">2px solid borders with rgba(190, 24, 93, 0.4), no padding on container</p>
+                    <div class="download-btn" style="width: 200px; margin-bottom: 20px;">
+                        <div style="height: 88px; background: linear-gradient(135deg, #333, #555); display: flex; align-items: center; justify-content: center; color: white; border-radius: 6px;">Download Button</div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <h4>Premium Start Chat Button</h4>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Premium dark with accent gradients, dramatic hover effects</p>
+                    <a href="#" class="btn-primary" style="display: inline-flex;">Start Chat</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Button Specifications</h3>
+                <p><strong>Download Buttons:</strong></p>
+                <ul style="margin: 12px 0; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Border: 2px solid rgba(190, 24, 93, 0.4)</li>
+                    <li>Container padding: 0</li>
+                    <li>Border-radius: 8px</li>
+                    <li>Hover: translateY(-2px), enhanced border opacity</li>
+                </ul>
+                <p><strong>Start Chat Button:</strong></p>
+                <ul style="margin: 12px 0; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Background: Multi-stop gradient with premium dark tones</li>
+                    <li>Padding: 20px 36px</li>
+                    <li>Font-weight: 600, letter-spacing: 0.5px</li>
+                    <li>Box-shadow: Multiple layers with accent glows</li>
+                    <li>Hover: Scale(1.02), translateY(-4px), enhanced glow</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Glass Morphism -->
+        <section class="section">
+            <h2 class="section-title">Glass Morphism System</h2>
+            <p class="section-subtitle">Backdrop blur effects and translucent surfaces</p>
             
             <div class="grid-2">
                 <div class="card">
-                    <h3>Touch-First Interface</h3>
-                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
-                        <li>Minimum 44px touch targets</li>
-                        <li>Thumb-friendly navigation zones</li>
-                        <li>Swipe gestures for common actions</li>
-                        <li>Haptic feedback integration</li>
-                    </ul>
+                    <h3>Glass Card Properties</h3>
+                    <p><strong>Background:</strong> rgba(15, 8, 12, 0.4)</p>
+                    <p><strong>Backdrop Filter:</strong> blur(30px)</p>
+                    <p><strong>Border:</strong> 1px solid rgba(255, 255, 255, 0.05)</p>
+                    <p><strong>Border Radius:</strong> 24px</p>
+                    <p><strong>Top Gradient Line:</strong> Appears on hover with hero gradient</p>
                 </div>
                 
                 <div class="card">
-                    <h3>Performance Optimized</h3>
-                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
-                        <li>Lazy loading for images</li>
-                        <li>Optimized animations (60fps)</li>
-                        <li>Minimal bundle size</li>
-                        <li>Offline message caching</li>
+                    <h3>Navigation Blur</h3>
+                    <p><strong>Background:</strong> rgba(0, 0, 0, 0.95)</p>
+                    <p><strong>Backdrop Filter:</strong> blur(40px)</p>
+                    <p><strong>Border Bottom:</strong> rgba(190, 24, 93, 0.2)</p>
+                    <p><strong>Top Gradient:</strong> Linear accent line</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Animations -->
+        <section class="section">
+            <h2 class="section-title">Animation System</h2>
+            <p class="section-subtitle">Smooth transitions and ambient effects</p>
+            
+            <div class="animation-demo">
+                <h4 style="color: var(--text-primary); margin-bottom: 20px;">Live Animation Examples</h4>
+                
+                <div style="margin-bottom: 30px;">
+                    <p style="color: var(--text-muted); margin-bottom: 10px;">Gradient Shifting (4s ease-in-out infinite)</p>
+                    <div class="gradient-demo"></div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <p style="color: var(--text-muted); margin-bottom: 10px;">Sparkle Rotation (3s ease-in-out infinite)</p>
+                    <div class="sparkle-demo">✦</div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <p style="color: var(--text-muted); margin-bottom: 10px;">Background Breathing (8s ease-in-out infinite)</p>
+                    <div class="breathe-demo"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Animation Specifications</h3>
+                <p><strong>Gradient Shift:</strong> background-position animation on brand text</p>
+                <p><strong>Sparkle:</strong> Scale + rotation + color change on ✦ symbol</p>
+                <p><strong>Breathing:</strong> Opacity animation on background mesh</p>
+                <p><strong>Hover Effects:</strong> translateY(-8px) on cards, scale(1.02) on buttons</p>
+                <p><strong>Timing:</strong> cubic-bezier(0.4, 0, 0.2, 1) for premium feel</p>
+            </div>
+        </section>
+
+        <!-- Layout Principles -->
+        <section class="section">
+            <h2 class="section-title">Layout Principles</h2>
+            <p class="section-subtitle">Mobile-first responsive design with consistent spacing</p>
+            
+            <div class="grid-2">
+                <div class="layout-example">
+                    <div class="layout-title">Spacing System</div>
+                    <div class="layout-description">
+                        <strong>Base Unit:</strong> 24px padding<br>
+                        <strong>Card Padding:</strong> 32px<br>
+                        <strong>Section Margins:</strong> 80px<br>
+                        <strong>Grid Gaps:</strong> 24px mobile, 32px+ desktop
+                    </div>
+                </div>
+                
+                <div class="layout-example">
+                    <div class="layout-title">Border Radius</div>
+                    <div class="layout-description">
+                        <strong>Cards:</strong> 24px<br>
+                        <strong>Buttons:</strong> 16px (primary), 8px (downloads)<br>
+                        <strong>Feature Icons:</strong> 12px<br>
+                        <strong>Small Elements:</strong> 6-8px
+                    </div>
+                </div>
+            </div>
+
+            <div class="spacing-example">
+                <div class="layout-title">Example 24px Spacing</div>
+                <div class="layout-description">This box demonstrates the consistent 24px padding used throughout the design.</div>
+            </div>
+        </section>
+
+        <!-- Feature Icons -->
+        <section class="section">
+            <h2 class="section-title">Feature Icons</h2>
+            <p class="section-subtitle">Professional SVG icons in 48px containers</p>
+            
+            <div class="grid-3">
+                <div style="text-align: center;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2H4C2.9 2 2.01 2.9 2.01 4L2 22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM6 9H18V11H6V9ZM14 14H6V12H14V14ZM18 8H6V6H18V8Z"/>
+                        </svg>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Chat/Messaging</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 7C13.1 7 14 7.9 14 9S13.1 11 12 11 10 10.1 10 9 10.9 7 12 7ZM12 17C10.33 17 8.94 16.16 8.16 14.9C8.16 13.71 10.5 13.1 12 13.1S15.84 13.71 15.84 14.9C15.06 16.16 13.67 17 12 17Z"/>
+                        </svg>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Security/Privacy</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.59 8L12 10.59L9.41 8L8 9.41L10.59 12L8 14.59L9.41 16L12 13.41L14.59 16L16 14.59L13.41 12L16 9.41L14.59 8ZM12 2C6.47 2 2 6.47 2 12S6.47 22 12 22S22 17.53 22 12S17.53 2 12 2ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4S20 7.59 20 12S16.41 20 12 20Z"/>
+                        </svg>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Disappearing Messages</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Icon Specifications</h3>
+                <p><strong>Container:</strong> 48px × 48px</p>
+                <p><strong>SVG Size:</strong> 28px × 28px</p>
+                <p><strong>Background:</strong> rgba(190, 24, 93, 0.1)</p>
+                <p><strong>Border Radius:</strong> 12px</p>
+                <p><strong>Color:</strong> var(--accent-soft) #F43F5E</p>
+                <p><strong>Note:</strong> Use professional SVG icons, not emoji</p>
+            </div>
+        </section>
+
+        <!-- Mobile Responsive -->
+        <section class="section">
+            <h2 class="section-title">Mobile-First Design</h2>
+            <p class="section-subtitle">Responsive breakpoints and mobile optimization</p>
+            
+            <div class="grid-2">
+                <div class="mobile-notes">
+                    <h4>Mobile (< 768px)</h4>
+                    <ul>
+                        <li>24px padding throughout</li>
+                        <li>Single column layouts</li>
+                        <li>Full-width buttons</li>
+                        <li>Hamburger navigation</li>
+                        <li>Touch-optimized 44px targets</li>
                     </ul>
                 </div>
                 
+                <div class="mobile-notes">
+                    <h4>Desktop (≥ 768px)</h4>
+                    <ul>
+                        <li>Multi-column grids</li>
+                        <li>Hover effects enabled</li>
+                        <li>Navigation menu visible</li>
+                        <li>Larger text sizes</li>
+                        <li>Enhanced shadows/glows</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Key Breakpoint: 768px</h3>
+                <p>The design uses a single major breakpoint at 768px, transitioning from mobile-first single-column layouts to multi-column desktop layouts. All interactive elements are touch-optimized for mobile while maintaining desktop hover enhancements.</p>
+            </div>
+        </section>
+
+        <!-- Implementation Notes -->
+        <section class="section">
+            <h2 class="section-title">Implementation Notes</h2>
+            <p class="section-subtitle">Technical details and best practices</p>
+            
+            <div class="grid-2">
                 <div class="card">
-                    <h3>Privacy Features</h3>
-                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
-                        <li>Screen recording protection</li>
-                        <li>Screenshot notifications</li>
-                        <li>Biometric app lock</li>
-                        <li>Private browsing mode</li>
+                    <h3>Font Loading</h3>
+                    <p>Uses Google Fonts Inter with preconnect for performance:</p>
+                    <code style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; font-size: 12px; display: block; margin: 10px 0;">
+                        &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;<br>
+                        &lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"&gt;
+                    </code>
+                </div>
+                
+                <div class="card">
+                    <h3>Performance</h3>
+                    <ul style="color: var(--text-secondary); margin: 12px 0; padding-left: 20px;">
+                        <li>-webkit-font-smoothing: antialiased</li>
+                        <li>will-change: transform on animated elements</li>
+                        <li>GPU-accelerated transforms</li>
+                        <li>Efficient CSS custom properties</li>
                     </ul>
                 </div>
                 
                 <div class="card">
                     <h3>Accessibility</h3>
-                    <ul style="color: var(--text-secondary); margin: 16px 0; padding-left: 20px;">
-                        <li>Voice control support</li>
-                        <li>High contrast mode</li>
-                        <li>Screen reader compatibility</li>
-                        <li>Large text options</li>
+                    <ul style="color: var(--text-secondary); margin: 12px 0; padding-left: 20px;">
+                        <li>Reduced motion support</li>
+                        <li>High contrast ratios</li>
+                        <li>Semantic HTML structure</li>
+                        <li>Focus states on interactive elements</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Browser Support</h3>
+                    <ul style="color: var(--text-secondary); margin: 12px 0; padding-left: 20px;">
+                        <li>backdrop-filter with -webkit- prefix</li>
+                        <li>CSS custom properties</li>
+                        <li>CSS Grid and Flexbox</li>
+                        <li>Modern gradient syntax</li>
                     </ul>
                 </div>
             </div>
         </section>
+    </div>
 
+    <div class="footer">
+        <p>NoWrong Design Guide - Current Implementation (2024)</p>
     </div>
 </body>
 </html>

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoWrong - Find People With No Boundaries</title>
-    <meta name="description" content="Connect with like-minded people in a safe, private environment. Start intimate conversations without boundaries.">
-    <meta name="keywords" content="intimate chat, private conversations, anonymous chat, adult chat">
-    <meta property="og:title" content="NoWrong - Find People With No Boundaries">
-    <meta property="og:description" content="Connect with like-minded people in a safe, private environment.">
+    <title>NoWrong - Anonymous Intimate Conversations</title>
+    <meta name="description" content="100% Anonymous intimate chat platform. Connect instantly based on desires and fantasies. No judgment, complete privacy.">
+    <meta name="keywords" content="anonymous chat, intimate conversations, private chat, fantasy matching">
+    <meta property="og:title" content="NoWrong - Anonymous Intimate Conversations">
+    <meta property="og:description" content="100% Anonymous intimate chat platform. Connect instantly based on desires and fantasies.">
     <meta property="og:type" content="website">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💫</text></svg>">
+    <link rel="icon" href="assets/images/nowrong icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -77,6 +77,19 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
         }
 
         /* Animated Background */
@@ -98,53 +111,226 @@
             50% { opacity: 0.7; }
         }
 
-        /* Navigation - Mobile First */
+        /* Premium Navigation with Sensual Animations */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-bottom: 1px solid rgba(190, 24, 93, 0.2);
             z-index: 1000;
-            padding: 16px 0;
-            transition: all 0.3s ease;
+            padding: 20px 24px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+            opacity: 0.6;
         }
 
         .nav-container {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            max-width: 100%;
             position: relative;
+        }
+
+        .nav-container .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 8px;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--accent-soft);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
         }
 
         .logo {
-            font-size: 28px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            background: var(--gradient-hero);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
         }
 
-        .logo::after {
-            content: '✨';
-            position: absolute;
-            top: -8px;
-            right: -20px;
-            font-size: 14px;
-            opacity: 0.7;
-            animation: sparkle 2s ease-in-out infinite;
+        .logo::before {
+            display: none;
+        }
+
+        .logo:hover::before {
+            display: none;
+        }
+
+        .logo img {
+            height: 36px;
+            width: 36px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(190, 24, 93, 0.3));
+            margin-right: 12px;
+        }
+
+        .logo-text {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: none;
+            background: linear-gradient(135deg, 
+                #FB7185 0%, 
+                #F43F5E 25%, 
+                #BE185D 60%, 
+                #881337 90%,
+                #F43F5E 100%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(244, 63, 94, 0.3);
+            position: relative;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo-text::after {
+            content: '✦';
+            font-size: 12px;
+            color: #F43F5E;
+            margin-left: 8px;
+            opacity: 0.9;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.6; 
+                transform: scale(1) rotate(0deg); 
+                color: #F43F5E;
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2) rotate(180deg); 
+                color: #FB7185;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .logo:hover {
+            transform: translateY(-1px) scale(1.01);
+            background: transparent;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+            filter: drop-shadow(0 4px 12px rgba(190, 24, 93, 0.4));
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-right: 1px solid var(--border-accent);
+            padding: 80px 30px 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 998;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-item {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 16px 0;
+            font-size: 18px;
+            font-weight: 400;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-item:hover {
+            color: var(--accent-soft);
+            padding-left: 10px;
         }
 
         @keyframes sparkle {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
+            0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
         }
 
         .nav-menu {
@@ -195,26 +381,126 @@
         .hero h1 {
             font-size: clamp(36px, 8vw, 56px);
             font-weight: 300;
-            line-height: 1.1;
+            line-height: 1.2;
             margin-bottom: 24px;
-            letter-spacing: -1.5px;
-            background: var(--gradient-hero);
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #F43F5E 0%, #BE185D 60%, #881337 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            text-shadow: 0 4px 12px rgba(190, 24, 93, 0.15);
         }
 
         .hero-subtitle {
-            font-size: 18px;
-            font-weight: 300;
+            font-size: 20px;
+            font-weight: 400;
+            font-style: italic;
             color: var(--text-secondary);
             margin-bottom: 40px;
             line-height: 1.6;
-            opacity: 0.9;
+            opacity: 0.95;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            font-family: 'Inter', Georgia, serif;
+        }
+
+        /* Premium Typography System - Sensual & Elegant */
+        .section-title {
+            background: linear-gradient(135deg, #F43F5E 0%, #BE185D 60%, #881337 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(190, 24, 93, 0.15);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .nowrong-brand {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 400;
+            font-size: 20px;
+            letter-spacing: 1.5px;
+            text-transform: none;
+            background: linear-gradient(135deg, 
+                #FB7185 0%, 
+                #F43F5E 25%, 
+                #BE185D 60%, 
+                #881337 90%,
+                #F43F5E 100%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 25px rgba(244, 63, 94, 0.2);
+            animation: gradientShift 4s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .nowrong-brand::after {
+            content: '✦';
+            font-size: 10px;
+            color: #F43F5E;
+            margin-left: 6px;
+            opacity: 0.8;
+            animation: sparkle 3s ease-in-out infinite;
         }
 
         .hero-cta {
             margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .download-btn {
+            position: relative;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+            overflow: visible;
+            padding: 0;
+            background: transparent;
+            border: 2px solid rgba(190, 24, 93, 0.4);
+            width: 156px;
+            height: 88px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .download-btn img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            border-radius: 10px;
+            filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.3));
+            transition: all 0.2s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(190, 24, 93, 0.7);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-btn:hover img {
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+        }
+
+        .download-btn:active {
+            transform: translateY(0px);
         }
 
         .btn-primary {
@@ -222,21 +508,33 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background: var(--gradient-accent);
+            background: linear-gradient(145deg, 
+                #F43F5E 0%,
+                #BE185D 50%,
+                #881337 100%
+            );
             color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 18px 40px;
-            font-size: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 20px 36px;
+            font-size: 17px;
             font-weight: 600;
+            letter-spacing: 0.5px;
             text-decoration: none;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-medium), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 0 30px rgba(244, 63, 94, 0.4),
+                0 0 60px rgba(190, 24, 93, 0.2),
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
             width: 100%;
             max-width: 280px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
         .btn-primary::before {
@@ -255,8 +553,18 @@
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: var(--shadow-glow-strong), var(--shadow-strong);
+            background: linear-gradient(145deg, 
+                #FB7185 0%,
+                #F43F5E 50%,
+                #BE185D 100%
+            );
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 
+                0 0 40px rgba(244, 63, 94, 0.6),
+                0 0 80px rgba(190, 24, 93, 0.3),
+                0 16px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .btn-primary::after {
@@ -269,31 +577,227 @@
             transform: translateX(4px);
         }
 
-        /* Hero Image */
-        .hero-image {
-            width: 100%;
-            max-width: 400px;
-            height: 250px;
-            border-radius: 20px;
+        /* Perfectly Centered Hero Image Slider */
+        .hero-image-slider {
+            width: 100vw;
+            height: 300px;
+            border-radius: 0;
             overflow: hidden;
-            margin: 40px auto;
+            margin: 40px 0;
             position: relative;
-            box-shadow: var(--shadow-medium);
-            border: 1px solid var(--border-soft);
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            box-shadow: none;
+            cursor: pointer;
         }
 
-        .hero-image img {
+        @media (min-width: 768px) {
+            .hero-image-slider {
+                width: 520px;
+                height: 320px;
+                margin: 40px auto;
+                left: auto;
+                right: auto;
+                margin-left: auto;
+                margin-right: auto;
+                position: relative;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(190, 24, 93, 0.35) 50%,
+                rgba(0, 0, 0, 0.6) 100%
+            );
+            z-index: 1;
+        }
+
+        .slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
             filter: brightness(0.8) saturate(1.1);
+            transition: none;
         }
 
-        .hero-image:hover img {
-            transform: scale(1.05);
-            filter: brightness(0.9) saturate(1.2);
+        /* Slider dots */
+        .slider-dots {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 2;
         }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .dot.active {
+            background: var(--accent-soft);
+            box-shadow: 0 0 12px rgba(190, 24, 93, 0.5);
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.2);
+        }
+
+        /* Beautiful Overlay */
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg, 
+                rgba(0, 0, 0, 0.4) 0%, 
+                rgba(190, 24, 93, 0.3) 40%, 
+                rgba(136, 19, 55, 0.5) 100%
+            );
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .hero-image:hover::before {
+            background: linear-gradient(
+                135deg, 
+                rgba(0, 0, 0, 0.3) 0%, 
+                rgba(190, 24, 93, 0.4) 40%, 
+                rgba(136, 19, 55, 0.6) 100%
+            );
+        }
+
+        /* Premium Dark Start Chat Button with Elegant Typography */
+        .hero-cta-overlay {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            
+            /* Premium dark gradient with subtle accent */
+            background: linear-gradient(145deg, 
+                rgba(15, 15, 15, 0.95) 0%,
+                rgba(25, 25, 25, 0.95) 20%,
+                rgba(45, 20, 30, 0.95) 60%,
+                rgba(30, 15, 20, 0.95) 100%
+            );
+            border: 2px solid rgba(190, 24, 93, 0.4);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            
+            /* Elegant premium typography */
+            color: #FFFFFF;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: 1.2px;
+            text-decoration: none;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
+            text-transform: uppercase;
+            
+            /* Refined proportions */
+            padding: 16px 32px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 180px;
+            justify-content: center;
+            
+            /* Sophisticated dark shadows */
+            box-shadow: 
+                0 0 25px rgba(190, 24, 93, 0.3),
+                0 0 50px rgba(136, 19, 55, 0.2),
+                0 12px 40px rgba(0, 0, 0, 0.6),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .hero-cta-overlay::after {
+            content: '→';
+            font-size: 16px;
+            opacity: 0.9;
+            transition: transform 0.2s ease;
+        }
+
+        .hero-cta-overlay:hover {
+            background: linear-gradient(145deg, 
+                rgba(35, 35, 35, 0.98) 0%,
+                rgba(55, 35, 45, 0.98) 30%,
+                rgba(75, 40, 55, 0.98) 70%,
+                rgba(60, 30, 40, 0.98) 100%
+            );
+            border-color: rgba(244, 63, 94, 0.7);
+            transform: translateX(-50%) translateY(-6px) scale(1.08);
+            box-shadow: 
+                0 0 40px rgba(244, 63, 94, 0.5),
+                0 0 80px rgba(190, 24, 93, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.7),
+                inset 0 3px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-cta-overlay:hover::after {
+            transform: translateX(4px) scale(1.1);
+        }
+        
+        .hero-cta-overlay:active {
+            transform: translateX(-50%) translateY(-2px) scale(1.04);
+        }
+        
+        /* Mobile responsive enhancements */
+        @media (max-width: 767px) {
+            .hero-cta-overlay:hover {
+                transform: translateX(-50%) translateY(-4px) scale(1.05);
+            }
+        }
+
 
         .hero-trust {
             display: flex;
@@ -314,8 +818,20 @@
         }
 
         .trust-icon {
-            font-size: 24px;
-            opacity: 0.8;
+            font-size: 20px;
+            opacity: 0.9;
+            color: var(--accent-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+        }
+
+        .trust-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
         /* Features Section */
@@ -340,10 +856,11 @@
             font-size: 32px;
             font-weight: 300;
             margin-bottom: 16px;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            letter-spacing: 0.2px;
+            background: linear-gradient(135deg, #F43F5E 0%, #BE185D 60%, #881337 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 8px rgba(190, 24, 93, 0.15);
         }
 
         .features-subtitle {
@@ -394,9 +911,22 @@
         }
 
         .feature-icon {
-            font-size: 32px;
+            width: 48px;
+            height: 48px;
             margin-bottom: 20px;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-soft);
+            background: rgba(190, 24, 93, 0.1);
+            border-radius: 12px;
+            margin: 0 auto 20px;
+        }
+
+        .feature-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
         }
 
         .feature-title {
@@ -522,10 +1052,11 @@
             font-size: 36px;
             font-weight: 300;
             margin-bottom: 16px;
-            letter-spacing: -1px;
-            background: var(--gradient-hero);
+            letter-spacing: 0.3px;
+            background: linear-gradient(135deg, #F43F5E 0%, #BE185D 60%, #881337 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 8px rgba(190, 24, 93, 0.15);
         }
 
         .cta-subtitle {
@@ -580,12 +1111,17 @@
         }
 
         .footer-logo {
-            font-size: 24px;
-            font-weight: 600;
-            background: var(--gradient-hero);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 20px;
+            gap: 12px;
+        }
+
+        .footer-logo img {
+            height: 36px;
+            width: 36px;
+            object-fit: contain;
         }
 
         .footer-links {
@@ -729,15 +1265,28 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">NoWrong</div>
-            <ul class="nav-menu">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how">How it Works</a></li>
-                <li><a href="#privacy">Privacy</a></li>
-                <li><a href="#support">Support</a></li>
-            </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <a href="index.html" class="logo">
+                <img src="assets/images/nowrong icon.png" alt="NoWrong" />
+                <span class="logo-text">NoWrong</span>
+            </a>
+            <div></div> <!-- Placeholder for symmetry -->
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" onclick="toggleMenu()"></div>
+    <div class="mobile-menu">
+        <a href="terms.html" class="mobile-menu-item">Terms & Conditions</a>
+        <a href="privacy.html" class="mobile-menu-item">Privacy Policy</a>
+        <a href="refund.html" class="mobile-menu-item">Refund Policy</a>
+        <a href="download.html" class="mobile-menu-item">Download</a>
+        <a href="support.html" class="mobile-menu-item">Support</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -749,31 +1298,75 @@
             <h1>Find People<br>With No Boundaries</h1>
             
             <p class="hero-subtitle">
-                Connect authentically with like-minded individuals in a safe, judgment-free space designed for intimate conversations.
+                <em>Where desires meet, no boundaries exist</em>
             </p>
             
-            <!-- Hero Image -->
-            <div class="hero-image">
-                <img src="assets/images/16-9 Image 1.webp" alt="NoWrong - Connect with no boundaries" />
+            <!-- Premium Hero Image Slider -->
+            <div class="hero-image-slider">
+                <div class="slider-container">
+                    <div class="slide active">
+                        <img src="assets/images/16-9 Image 1.webp" alt="NoWrong - Intimate Connections" />
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/16-9 image 2.jpg" alt="NoWrong - Passionate Encounters" />
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/16-9 image 3.webp" alt="NoWrong - Sensual Conversations" />
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/16-9 image 4.webp" alt="NoWrong - Romantic Connections" />
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/16-9 image 5.webp" alt="NoWrong - Authentic Intimacy" />
+                    </div>
+                </div>
+                
+                <!-- Beautiful CTA that POPS -->
+                <a href="#chat" class="hero-cta-overlay">Start Chat</a>
+                
+                <!-- Elegant slider dots -->
+                <div class="slider-dots">
+                    <div class="dot active" onclick="currentSlide(1)"></div>
+                    <div class="dot" onclick="currentSlide(2)"></div>
+                    <div class="dot" onclick="currentSlide(3)"></div>
+                    <div class="dot" onclick="currentSlide(4)"></div>
+                    <div class="dot" onclick="currentSlide(5)"></div>
+                </div>
             </div>
             
-            <div class="hero-cta">
-                <a href="#chat" class="btn-primary">
-                    Start Chatting
+            <!-- Premium Download Buttons -->
+            <div class="download-buttons">
+                <a href="download.html" class="download-btn" onclick="window.open('https://play.google.com/store/apps', '_blank')">
+                    <img src="assets/images/playstore transparent bg icon.png" alt="Get it on Google Play" />
+                </a>
+                <a href="download.html" class="download-btn" onclick="window.open('https://apps.apple.com/app-store', '_blank')">
+                    <img src="assets/images/app store transparent bg icon.png" alt="Download on App Store" />
                 </a>
             </div>
             
             <div class="hero-trust">
                 <div class="trust-item">
-                    <div class="trust-icon">🔒</div>
+                    <div class="trust-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 7C13.1 7 14 7.9 14 9S13.1 11 12 11 10 10.1 10 9 10.9 7 12 7ZM12 17C10.33 17 8.94 16.16 8.16 14.9C8.16 13.71 10.5 13.1 12 13.1S15.84 13.71 15.84 14.9C15.06 16.16 13.67 17 12 17Z"/>
+                        </svg>
+                    </div>
                     <div>End-to-End<br>Encrypted</div>
                 </div>
                 <div class="trust-item">
-                    <div class="trust-icon">👤</div>
+                    <div class="trust-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4C13.93 4 15.5 5.57 15.5 7.5C15.5 9.43 13.93 11 12 11C10.07 11 8.5 9.43 8.5 7.5C8.5 5.57 10.07 4 12 4ZM5 20V18C5 15.34 10.33 14 12 14C13.67 14 19 15.34 19 18V20H5Z"/>
+                        </svg>
+                    </div>
                     <div>100%<br>Anonymous</div>
                 </div>
                 <div class="trust-item">
-                    <div class="trust-icon">✓</div>
+                    <div class="trust-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"/>
+                        </svg>
+                    </div>
                     <div>Verified<br>Users</div>
                 </div>
             </div>
@@ -790,19 +1383,31 @@
             
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">💬</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2H4C2.9 2 2.01 2.9 2.01 4L2 22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM6 9H18V11H6V9ZM14 14H6V12H14V14ZM18 8H6V6H18V8Z"/>
+                        </svg>
+                    </div>
                     <h3 class="feature-title">Instant Matching</h3>
                     <p class="feature-description">Connect with compatible people based on shared interests and desires</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">🌙</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3C8.13 3 5 6.13 5 10C5 14.17 9.42 18.92 11.24 20.11C11.64 20.41 12.37 20.41 12.77 20.11C14.58 18.92 19 14.17 19 10C19 6.13 15.87 3 12 3ZM12 12.5C10.62 12.5 9.5 11.38 9.5 10S10.62 7.5 12 7.5S14.5 8.62 14.5 10S13.38 12.5 12 12.5Z"/>
+                        </svg>
+                    </div>
                     <h3 class="feature-title">Private Rooms</h3>
                     <p class="feature-description">Create intimate spaces for deeper, more meaningful conversations</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.59 8L12 10.59L9.41 8L8 9.41L10.59 12L8 14.59L9.41 16L12 13.41L14.59 16L16 14.59L13.41 12L16 9.41L14.59 8ZM12 2C6.47 2 2 6.47 2 12S6.47 22 12 22S22 17.53 22 12S17.53 2 12 2ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4S20 7.59 20 12S16.41 20 12 20Z"/>
+                        </svg>
+                    </div>
                     <h3 class="feature-title">Disappearing Messages</h3>
                     <p class="feature-description">Messages auto-delete for ultimate privacy and peace of mind</p>
                 </div>
@@ -854,7 +1459,7 @@
             <p class="cta-subtitle">Join thousands discovering authentic intimacy every day</p>
             
             <a href="#chat" class="btn-primary">
-                Begin Your Journey
+                Start Chatting
             </a>
             
             <div class="cta-stats">
@@ -867,7 +1472,7 @@
                     <div class="stat-label">Conversations</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-number">99%</div>
+                    <div class="stat-number">100%</div>
                     <div class="stat-label">Privacy Score</div>
                 </div>
             </div>
@@ -877,17 +1482,90 @@
     <!-- Footer -->
     <footer id="privacy">
         <div class="footer-content">
-            <div class="footer-logo">NoWrong</div>
+            <div class="footer-logo">
+                <img src="assets/images/nowrong icon.png" alt="NoWrong" />
+                <span class="nowrong-brand">NoWrong</span>
+            </div>
             <div class="footer-links">
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <a href="#" class="footer-link">Terms of Service</a>
-                <a href="#" class="footer-link" id="support">Support</a>
-                <a href="#" class="footer-link">Safety</a>
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms of Service</a>
+                <a href="support.html" class="footer-link">Support</a>
+                <a href="refund.html" class="footer-link">Refund Policy</a>
+                <a href="download.html" class="footer-link">Download</a>
             </div>
             <div class="footer-bottom">
                 © 2024 NoWrong. All rights reserved. | 18+ Only
             </div>
         </div>
     </footer>
+    <script>
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        // Close menu when clicking on menu items
+        document.querySelectorAll('.mobile-menu-item').forEach(item => {
+            item.addEventListener('click', toggleMenu);
+        });
+
+        // Clean Image Slider
+        let currentSlideIndex = 1;
+        let slideInterval;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (n > slides.length) currentSlideIndex = 1;
+            if (n < 1) currentSlideIndex = slides.length;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            if (slides[currentSlideIndex - 1]) {
+                slides[currentSlideIndex - 1].classList.add('active');
+            }
+            if (dots[currentSlideIndex - 1]) {
+                dots[currentSlideIndex - 1].classList.add('active');
+            }
+        }
+
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            currentSlideIndex = n;
+            showSlide(currentSlideIndex);
+            startSlideshow();
+        }
+
+        function nextSlide() {
+            currentSlideIndex++;
+            showSlide(currentSlideIndex);
+        }
+
+        function startSlideshow() {
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        // Initialize slider
+        document.addEventListener('DOMContentLoaded', function() {
+            showSlide(currentSlideIndex);
+            startSlideshow();
+            
+            const slider = document.querySelector('.hero-image-slider');
+            if (slider) {
+                slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+                slider.addEventListener('mouseleave', startSlideshow);
+            }
+        });
+    </script>
 </body>
 </html>
