@@ -19,7 +19,11 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Rough Sex', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM12 13c-1.38 0-2.5-1.12-2.5-2.5S10.62 8 12 8s2.5 1.12 2.5 2.5S13.38 13 12 13zM16 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          <path d="M12 4c-1.5 0-3 1-3 2.5v3c0 1.5 1.5 2.5 3 2.5s3-1 3-2.5v-3c0-1.5-1.5-2.5-3-2.5z"/>
+          <path d="M8 8l-2 2v6l2 2h8l2-2v-6l-2-2"/>
+          <path d="M6 12h12M6 14h12M6 16h12"/>
+          <circle cx="8" cy="6" r="1"/>
+          <circle cx="16" cy="6" r="1"/>
         </svg>
       ), 
       description: 'Pound me rough' 
@@ -29,8 +33,12 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'BDSM', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-          <circle cx="12" cy="12" r="3"/>
+          <path d="M8 6c-1 0-2 1-2 2v8c0 1 1 2 2 2h8c1 0 2-1 2-2V8c0-1-1-2-2-2"/>
+          <path d="M6 8h12v8H6z" fillOpacity="0.3"/>
+          <circle cx="10" cy="10" r="1.5"/>
+          <circle cx="14" cy="14" r="1.5"/>
+          <path d="M8 12c0-2 2-2 4 0s4 2 4 0"/>
+          <path d="M7 7l10 10M17 7l-10 10" strokeWidth="1.5" stroke="currentColor" fill="none"/>
         </svg>
       ), 
       description: 'Tie me up' 
@@ -40,8 +48,10 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Anal Sex', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="6"/>
+          <ellipse cx="12" cy="12" rx="8" ry="10"/>
+          <ellipse cx="12" cy="12" rx="4" ry="5" fill="none" stroke="currentColor" strokeWidth="2"/>
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M12 7v10M8 9v6M16 9v6" stroke="currentColor" strokeWidth="1" fill="none"/>
         </svg>
       ), 
       description: 'Fuck my ass' 
@@ -51,8 +61,11 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Oral Sex', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-          <circle cx="12" cy="9" r="3"/>
+          <ellipse cx="12" cy="10" rx="6" ry="3"/>
+          <path d="M12 13c-3 0-6 1-6 3v2c0 1 1 2 2 2h8c1 0 2-1 2-2v-2c0-2-3-3-6-3z"/>
+          <circle cx="10" cy="10" r="1"/>
+          <circle cx="14" cy="10" r="1"/>
+          <path d="M12 12v4M9 15h6" stroke="currentColor" strokeWidth="1" fill="none"/>
         </svg>
       ), 
       description: 'Suck it deep' 
@@ -62,9 +75,13 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Threesome', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="9" cy="12" r="4"/>
-          <circle cx="15" cy="12" r="4"/>
-          <circle cx="12" cy="8" r="3"/>
+          <ellipse cx="8" cy="12" rx="3" ry="4"/>
+          <ellipse cx="16" cy="12" rx="3" ry="4"/>
+          <ellipse cx="12" cy="8" rx="2" ry="3"/>
+          <path d="M12 11c-2 0-4 1-4 2s2 2 4 2 4-1 4-2-2-2-4-2z"/>
+          <circle cx="8" cy="10" r="0.5"/>
+          <circle cx="16" cy="10" r="0.5"/>
+          <circle cx="12" cy="6" r="0.5"/>
         </svg>
       ), 
       description: 'Three way wild' 
@@ -74,11 +91,12 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Gangbang', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="6" cy="12" r="3"/>
-          <circle cx="12" cy="12" r="3"/>
-          <circle cx="18" cy="12" r="3"/>
-          <circle cx="12" cy="6" r="2"/>
-          <circle cx="12" cy="18" r="2"/>
+          <ellipse cx="6" cy="12" rx="2" ry="3"/>
+          <ellipse cx="12" cy="12" rx="2" ry="3"/>
+          <ellipse cx="18" cy="12" rx="2" ry="3"/>
+          <ellipse cx="12" cy="8" rx="1.5" ry="2"/>
+          <ellipse cx="12" cy="16" rx="1.5" ry="2"/>
+          <path d="M12 10c-4 0-8 1-8 3s4 3 8 3 8-1 8-3-4-3-8-3z" fillOpacity="0.6"/>
         </svg>
       ), 
       description: 'Group fuck me' 
@@ -88,8 +106,11 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'MILF', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          <circle cx="18" cy="8" r="2"/>
+          <path d="M12 8c0-2 2-4 4-4s4 2 4 4c0 3-4 6-4 6s-4-3-4-6z"/>
+          <ellipse cx="12" cy="14" rx="6" ry="4"/>
+          <ellipse cx="12" cy="14" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="1"/>
+          <circle cx="16" cy="6" r="1"/>
+          <path d="M8 12c0 2 2 4 4 4s4-2 4-4"/>
         </svg>
       ), 
       description: 'Horny mommy sluts' 
@@ -99,8 +120,12 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Teen', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          <path d="M16 4h2v2h-2z"/>
+          <ellipse cx="12" cy="8" rx="3" ry="4"/>
+          <ellipse cx="12" cy="16" rx="4" ry="3"/>
+          <circle cx="10" cy="7" r="0.5"/>
+          <circle cx="14" cy="7" r="0.5"/>
+          <path d="M12 10c-2 0-3 1-3 2s1 2 3 2 3-1 3-2-1-2-3-2z"/>
+          <path d="M18 4c0 1-1 2-2 2s-2-1-2-2 1-2 2-2 2 1 2 2z" fillOpacity="0.8"/>
         </svg>
       ), 
       description: 'Young tight sluts' 
@@ -120,8 +145,11 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Creampie', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="12" r="8"/>
-          <path d="M8 12h8v4c0 2.21-1.79 4-4 4s-4-1.79-4-4v-4z"/>
+          <ellipse cx="12" cy="12" rx="6" ry="8"/>
+          <ellipse cx="12" cy="12" rx="3" ry="4" fill="none" stroke="currentColor" strokeWidth="2"/>
+          <path d="M9 14c0 2 1 4 3 4s3-2 3-4" fill="white" fillOpacity="0.8"/>
+          <circle cx="12" cy="16" r="1" fill="white"/>
+          <path d="M8 10l8 0M8 12l8 0" stroke="currentColor" strokeWidth="1" fill="none"/>
         </svg>
       ), 
       description: 'Cum inside me' 
@@ -131,9 +159,10 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Squirting', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          <path d="M12 8v8"/>
-          <path d="M8 12h8"/>
+          <ellipse cx="12" cy="10" rx="4" ry="6"/>
+          <path d="M12 16c-2 2-4 4-6 6M12 16c2 2 4 4 6 6M12 16c0 2 0 4 0 6" stroke="currentColor" strokeWidth="2" fill="none"/>
+          <path d="M12 16c-1 1-3 2-5 3M12 16c1 1 3 2 5 3" stroke="currentColor" strokeWidth="1" fill="none"/>
+          <circle cx="12" cy="8" r="1"/>
         </svg>
       ), 
       description: 'Make me gush' 
@@ -143,10 +172,12 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Facials', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="8.5" cy="10.5" r="1.5"/>
-          <circle cx="15.5" cy="10.5" r="1.5"/>
-          <path d="M8 15c1.5 1.5 3.5 2 4 2s2.5-.5 4-2"/>
+          <ellipse cx="12" cy="12" rx="8" ry="10"/>
+          <circle cx="8" cy="10" r="1"/>
+          <circle cx="16" cy="10" r="1"/>
+          <ellipse cx="12" cy="14" rx="4" ry="2" fill="white" fillOpacity="0.9"/>
+          <path d="M12 8c-3 3-6 6-8 8M12 8c3 3 6 6 8 8" stroke="white" strokeWidth="2" fill="none" opacity="0.7"/>
+          <path d="M9 13h6" stroke="currentColor" strokeWidth="1" fill="none"/>
         </svg>
       ), 
       description: 'Cum on face' 
@@ -156,7 +187,12 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       name: 'Deepthroat', 
       icon: (
         <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-1.48.41-2.86 1.12-4.06l10.94 10.94C14.86 19.59 13.48 20 12 20zM19.88 15.06L8.94 4.12C10.14 3.41 11.52 3 13 3c4.41 0 8 3.59 8 8 0 1.48-.41 2.86-1.12 4.06z"/>
+          <ellipse cx="6" cy="12" rx="4" ry="8"/>
+          <path d="M10 12h10c1 0 2-1 2-2s-1-2-2-2H10"/>
+          <path d="M10 8c0-1 1-2 2-2h8c1 0 2 1 2 2"/>
+          <circle cx="6" cy="10" r="1"/>
+          <path d="M18 10c1 0 2 1 2 2s-1 2-2 2"/>
+          <path d="M12 14v4M16 14v4M20 14v4" stroke="currentColor" strokeWidth="1" fill="none"/>
         </svg>
       ), 
       description: 'Gag me hard' 
@@ -271,13 +307,13 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full px-4 md:px-0">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-light mb-4 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">
+      <div className="text-center mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-4xl font-light mb-3 md:mb-4 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">
           Your Preferences
         </h1>
-        <p className="text-secondary-300 text-sm md:text-base mb-2">
+        <p className="text-gray-300 text-sm md:text-base mb-2 px-2">
           Select what interests you most (max 5)
         </p>
         <div className="text-xs text-gray-400">
@@ -286,7 +322,7 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       </div>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8 max-h-[500px] overflow-y-auto">
+      <div className="grid grid-cols-3 md:grid-cols-4 gap-2 md:gap-3 mb-6 md:mb-8 max-h-[360px] overflow-y-auto">
         {categories.map((category, index) => {
           const isSelected = selectedPreferences.includes(category.id)
           const isDisabled = !isSelected && selectedPreferences.length >= 5
@@ -296,7 +332,7 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
               key={category.id}
               onClick={() => handleToggle(category.id)}
               disabled={isDisabled}
-              className={`p-4 rounded-2xl border-2 transition-all duration-300 relative overflow-hidden group ${
+              className={`p-2 md:p-3 rounded-xl md:rounded-2xl border-2 transition-all duration-300 relative overflow-hidden group ${
                 isSelected
                   ? 'border-primary-500 bg-glass-medium shadow-glow'
                   : isDisabled
@@ -315,8 +351,8 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
               )}
               
               <div className="text-center relative z-10">
-                <div className="flex justify-center mb-2 text-primary-400">{category.icon}</div>
-                <div className={`font-medium mb-1 text-sm transition-colors duration-300 ${
+                <div className="flex justify-center mb-1 text-primary-400 [&>svg]:w-4 [&>svg]:h-4 md:[&>svg]:w-5 md:[&>svg]:h-5">{category.icon}</div>
+                <div className={`font-medium text-xs md:text-sm transition-colors duration-300 ${
                   isSelected 
                     ? 'text-primary-300' 
                     : isDisabled
@@ -336,18 +372,6 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
                 </div>
               </div>
 
-              {/* Selection indicator */}
-              {isSelected && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute top-3 right-3 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center"
-                >
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </motion.div>
-              )}
 
               {/* Selection counter */}
               {isSelected && (
@@ -394,7 +418,7 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-6">
         {canGoBack ? (
           <button
             onClick={onBack}
@@ -417,7 +441,7 @@ export default function PreferencesSelection({ onNext, onBack, canGoBack, formDa
           whileHover={selectedPreferences.length > 0 ? { scale: 1.05 } : {}}
           whileTap={selectedPreferences.length > 0 ? { scale: 0.95 } : {}}
         >
-          Continue
+          Let's chat
         </motion.button>
       </div>
     </div>

@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { USERNAME_SUGGESTIONS } from '../config/brand'
 
 interface UsernameSelectionProps {
   onNext: (data: { username: string }) => void
   onBack: () => void
   canGoBack: boolean
-  formData: { username?: string }
+  formData: { username?: string; gender?: string }
 }
 
 export default function UsernameSelection({ onNext, onBack, canGoBack, formData }: UsernameSelectionProps) {
@@ -16,11 +17,13 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
   const [isChecking, setIsChecking] = useState(false)
   const [suggestions, setSuggestions] = useState<string[]>([])
 
-  const prefixes = ['Bad', 'Hot', 'Wild', 'Dark', 'Red', 'Pink', 'Cool', 'Sexy']
-  const suffixes = ['Boy', 'Girl', 'Cat', 'Fox', 'Wolf', 'Fire', 'Star', 'Moon', 'Sun', 'Ice']
-  const adjectives = ['Cute', 'Sweet', 'Spicy', 'Bold', 'Soft', 'Warm', 'Deep', 'Pure']
+  const getGenderSuggestions = () => {
+    const gender = formData.gender?.toLowerCase() as 'male' | 'female' | 'other'
+    return USERNAME_SUGGESTIONS[gender] || USERNAME_SUGGESTIONS.other
+  }
 
   const generateSuggestions = (baseWord = '') => {
+    const { prefixes, suffixes, adjectives } = getGenderSuggestions()
     const suggestions = []
     const maxLength = 12 // Keep usernames under 12 characters
     
@@ -148,13 +151,13 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full px-4 md:px-0">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-light mb-4 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">
+      <div className="text-center mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-4xl font-light mb-3 md:mb-4 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">
           Choose Your Username
         </h1>
-        <p className="text-secondary-300 text-sm md:text-base">
+        <p className="text-gray-300 text-sm md:text-base px-2">
           Your anonymous identity for intimate conversations
         </p>
       </div>

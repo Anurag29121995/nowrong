@@ -6,12 +6,14 @@ import GenderSelection from '../components/GenderSelection'
 import AgeSelection from '../components/AgeSelection'
 import UsernameSelection from '../components/UsernameSelection'
 import PreferencesSelection from '../components/PreferencesSelection'
+import ChatLobby from '../components/ChatLobby'
 
 type Step = 'gender' | 'age' | 'username' | 'preferences'
 
 interface OnboardingFormData {
   gender?: string
   age?: number
+  interest?: string
   username?: string
   preferences?: string[]
 }
@@ -19,6 +21,7 @@ interface OnboardingFormData {
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState<Step>('gender')
   const [formData, setFormData] = useState<OnboardingFormData>({})
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
 
   const steps: Step[] = ['gender', 'age', 'username', 'preferences']
   const currentStepIndex = steps.indexOf(currentStep)
@@ -31,9 +34,9 @@ export default function OnboardingPage() {
     if (nextStepIndex < steps.length) {
       setCurrentStep(steps[nextStepIndex])
     } else {
-      // Complete onboarding - redirect to chat
+      // Complete onboarding - show chat lobby
       console.log('Onboarding complete:', newFormData)
-      // TODO: Redirect to chat interface
+      setIsOnboardingComplete(true)
     }
   }
 
@@ -42,6 +45,11 @@ export default function OnboardingPage() {
     if (prevStepIndex >= 0) {
       setCurrentStep(steps[prevStepIndex])
     }
+  }
+
+  const handleBackFromChat = () => {
+    setIsOnboardingComplete(false)
+    setCurrentStep('preferences') // Go back to the last step
   }
 
   const canGoBack = currentStepIndex > 0
@@ -81,6 +89,12 @@ export default function OnboardingPage() {
     )
   }
 
+  // Show ChatLobby when onboarding is complete
+  if (isOnboardingComplete) {
+    return <ChatLobby formData={formData} onBack={handleBackFromChat} />
+  }
+
+  // Show onboarding steps
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       {/* Background Effects */}
@@ -105,12 +119,14 @@ export default function OnboardingPage() {
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center space-x-2 mb-6"
+              className="inline-flex items-center space-x-3 mb-6"
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">N</span>
-              </div>
-              <span className="text-2xl font-light text-white">NoWrong</span>
+              <img 
+                src="/nowrong icon.png" 
+                alt="NoWrong" 
+                className="w-8 h-8 md:w-10 md:h-10"
+              />
+              <span className="text-2xl md:text-3xl font-light text-white">NoWrong</span>
             </motion.div>
           </div>
 
