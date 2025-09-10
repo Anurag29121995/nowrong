@@ -15,6 +15,7 @@ interface ChatInterfaceProps {
   }
   onBack: () => void
   onToggleFavorite: (userId: string) => void
+  onViewProfile: (user: any) => void
   isFavorite: boolean
   formData: {
     username?: string
@@ -31,7 +32,7 @@ interface Message {
   type: 'text' | 'image' | 'audio'
 }
 
-export default function ChatInterface({ user, onBack, onToggleFavorite, isFavorite, formData }: ChatInterfaceProps) {
+export default function ChatInterface({ user, onBack, onToggleFavorite, onViewProfile, isFavorite, formData }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState('')
   const [isRecording, setIsRecording] = useState(false)
@@ -161,7 +162,12 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, isFavori
             {/* User Info */}
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-lg font-semibold text-white">{user.username}</h1>
+                <button 
+                  onClick={() => onViewProfile(user)}
+                  className="text-lg font-semibold text-white hover:text-pink-400 transition-colors cursor-pointer"
+                >
+                  {user.username}
+                </button>
                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                   user.gender === 'female'
                     ? 'bg-pink-500/20 text-pink-300'
@@ -180,18 +186,27 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, isFavori
             </div>
           </div>
 
-          {/* Prominent Heart Button */}
+          {/* Prominent Heart Button with + Icon */}
           <button 
             onClick={() => handleToggleFavoriteWithPopup(user.id)}
-            className={`p-3 rounded-full transition-all duration-300 ${
+            className={`relative p-3 rounded-full transition-all duration-300 group ${
               isFavorite 
                 ? 'bg-pink-500 text-white shadow-glow scale-110' 
-                : 'bg-glass-medium border border-pink-500/30 text-pink-400 hover:bg-pink-500/20 hover:scale-105'
+                : 'bg-glass-medium border border-pink-500/30 text-pink-400 hover:bg-pink-500/20 hover:scale-105 focus:bg-pink-500/20 focus:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-500/50'
             }`}
           >
             <svg className="w-6 h-6" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
+            
+            {/* + Icon Overlay for non-favorite state */}
+            {!isFavorite && (
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center shadow-md group-hover:bg-pink-400 group-focus:bg-pink-400 transition-all duration-300 group-hover:scale-110 group-focus:scale-110">
+                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+            )}
           </button>
         </div>
       </div>
