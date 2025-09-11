@@ -51,12 +51,20 @@ interface User {
 export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [showChatWith, setShowChatWith] = useState<string | null>(null)
-  const [showUnlockModal, setShowUnlockModal] = useState<{ postId: string, username: string } | null>(null)
+  const [showUnlockModal, setShowUnlockModal] = useState<{ postId: string, username: string, amount: number } | null>(null)
+  const [showPaymentModal, setShowPaymentModal] = useState<{ postId: string, username: string, amount: number } | null>(null)
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState<{ username: string, amount: number } | null>(null)
+  const [showPaymentRejected, setShowPaymentRejected] = useState<{ username: string, amount: number } | null>(null)
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set())
   const [showCommentsFor, setShowCommentsFor] = useState<string | null>(null)
   const [showCreatePost, setShowCreatePost] = useState(false)
   const [newPost, setNewPost] = useState({ text: '', images: [] as File[] })
   const [showPremiumDetails, setShowPremiumDetails] = useState(false)
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null)
+  const [comments, setComments] = useState<{[postId: string]: any[]}>({}) 
+  const [commentText, setCommentText] = useState('')
+  const [replyTo, setReplyTo] = useState<{postId: string, commentId: number} | null>(null)
+  const [replyText, setReplyText] = useState('')
 
   // Mock posts data
   const mockPosts: Post[] = [
@@ -183,13 +191,40 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
     setShowChatWith(username)
   }
 
-  const handleDollarClick = (postId: string, username: string) => {
-    setShowUnlockModal({ postId, username })
+  const handleDollarClick = (postId: string, username: string, amount: number) => {
+    setShowUnlockModal({ postId, username, amount })
   }
 
   const handleImageClick = (imageIndex: number, post: Post) => {
     if (imageIndex >= 2) {
-      handleDollarClick(post.id, post.username)
+      handleDollarClick(post.id, post.username, post.dollarAmount)
+    }
+  }
+
+  const handleProceedToPayment = () => {
+    if (showUnlockModal) {
+      setShowPaymentModal(showUnlockModal)
+      setShowUnlockModal(null)
+    }
+  }
+
+  const handlePaymentComplete = () => {
+    if (showPaymentModal) {
+      setShowPaymentSuccess({
+        username: showPaymentModal.username,
+        amount: showPaymentModal.amount
+      })
+      setShowPaymentModal(null)
+    }
+  }
+
+  const handlePaymentReject = () => {
+    if (showPaymentModal) {
+      setShowPaymentRejected({
+        username: showPaymentModal.username,
+        amount: showPaymentModal.amount
+      })
+      setShowPaymentModal(null)
     }
   }
 
@@ -221,10 +256,70 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
 
   const handleCreatePost = () => {
     // Here you would normally send the post to your backend
-    console.log('Creating post:', newPost)
     // Reset form
     setNewPost({ text: '', images: [] })
     setShowCreatePost(false)
+  }
+
+  const handleAddComment = (postId: string) => {
+    if (!commentText.trim()) return
+    
+    const newComment = {
+      id: Date.now(),
+      username: formData.username || 'You',
+      comment: commentText.trim(),
+      timeAgo: 'now',
+      isOwn: true,
+      replies: []
+    }
+    
+    setComments(prev => ({
+      ...prev,
+      [postId]: [...(prev[postId] || []), newComment]
+    }))
+    
+    setCommentText('')
+  }
+
+  // Store static comments with replies in a separate state
+  const [staticCommentReplies, setStaticCommentReplies] = useState<{[key: string]: {[commentIndex: number]: any[]}}>({})
+
+  const handleAddReply = (postId: string, commentIndex: number, replyText: string) => {
+    if (!replyText.trim()) return
+    
+    const newReply = {
+      id: Date.now(),
+      username: formData.username || 'You',
+      comment: replyText.trim(),
+      timeAgo: 'now',
+      isOwn: true
+    }
+    
+    // If it's one of the first 3 static comments (index 0, 1, 2)
+    if (commentIndex <= 2) {
+      setStaticCommentReplies(prev => ({
+        ...prev,
+        [postId]: {
+          ...prev[postId],
+          [commentIndex]: [...(prev[postId]?.[commentIndex] || []), newReply]
+        }
+      }))
+    } else {
+      // It's a dynamic comment, handle normally
+      const dynamicIndex = commentIndex - 3
+      setComments(prev => ({
+        ...prev,
+        [postId]: (prev[postId] || []).map((comment, idx) => {
+          if (idx === dynamicIndex) {
+            return {
+              ...comment,
+              replies: [...(comment.replies || []), newReply]
+            }
+          }
+          return comment
+        })
+      }))
+    }
   }
 
   // Show ProfileViewer
@@ -382,7 +477,8 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                           <img
                             src={post.images[0]}
                             alt=""
-                            className="w-full h-80 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                            onClick={() => setFullScreenImage(post.images[0])}
+                            className="w-full aspect-square object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                       )}
@@ -394,7 +490,8 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                               <img
                                 src={image}
                                 alt=""
-                                className="w-full h-60 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                                onClick={() => setFullScreenImage(image)}
+                                className="w-full aspect-square object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
                               />
                             </div>
                           ))}
@@ -406,13 +503,15 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                           <img
                             src={post.images[0]}
                             alt=""
-                            className="w-full h-60 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                            onClick={() => setFullScreenImage(post.images[0])}
+                            className="w-full aspect-square object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
                           />
                           <div className="relative">
                             <img
                               src={post.images[1]}
                               alt=""
-                              className="w-full h-60 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                              onClick={() => setFullScreenImage(post.images[1])}
+                              className="w-full aspect-square object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
                             />
                             {post.images.length > 2 && (
                               <button
@@ -481,7 +580,7 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
 
                     {/* Dollar Button */}
                     <button
-                      onClick={() => handleDollarClick(post.id, post.username)}
+                      onClick={() => handleDollarClick(post.id, post.username, post.dollarAmount)}
                       className="flex items-center space-x-2 bg-gradient-to-r from-yellow-500/20 to-amber-600/20 hover:from-yellow-500/30 hover:to-amber-600/30 border border-yellow-500/40 hover:border-yellow-400 rounded-lg px-3 py-1.5 transition-all duration-300 group"
                     >
                       <svg className="w-4 h-4 text-yellow-400 group-hover:text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
@@ -505,31 +604,178 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                       className="border-t border-gray-700/30 p-4"
                     >
                       <div className="space-y-3">
-                        {/* Sample Comments */}
+                        {/* Close Comments Button */}
+                        <div className="flex justify-between items-center mb-3">
+                          <h3 className="text-white font-medium">Comments</h3>
+                          <button
+                            onClick={() => setShowCommentsFor(null)}
+                            className="p-1 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-full transition-all duration-200"
+                          >
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        {/* Sample Comments + User Comments */}
                         {[
-                          { username: 'SexyCat69', comment: 'OMG you look so hot! 🔥💦', timeAgo: '2h' },
-                          { username: 'WildBoy23', comment: 'Would love to join you for some fun 😈', timeAgo: '1h' },
-                          { username: 'NaughtyGirl', comment: 'Goals! You\'re amazing 💕', timeAgo: '30m' }
+                          { id: 0, username: 'SexyCat69', comment: 'OMG you look so hot! 🔥💦', timeAgo: '2h', isOwn: false, replies: staticCommentReplies[post.id]?.[0] || [] },
+                          { id: 1, username: 'WildBoy23', comment: 'Would love to join you for some fun 😈', timeAgo: '1h', isOwn: false, replies: staticCommentReplies[post.id]?.[1] || [] },
+                          { id: 2, username: 'NaughtyGirl', comment: 'Goals! You\'re amazing 💕', timeAgo: '30m', isOwn: false, replies: staticCommentReplies[post.id]?.[2] || [] },
+                          ...(comments[post.id] || [])
                         ].map((comment, idx) => (
-                          <div key={idx} className="flex space-x-3">
-                            <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-white text-xs font-semibold">
-                                {comment.username.charAt(0)}
-                              </span>
-                            </div>
-                            <div className="flex-1">
-                              <div className="bg-gray-800/50 rounded-xl px-3 py-2">
-                                <p className="text-pink-400 text-sm font-medium">{comment.username}</p>
-                                <p className="text-white text-sm">{comment.comment}</p>
+                          <div key={comment.id || idx} className="space-y-2">
+                            <div className="flex space-x-3">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                comment.isOwn 
+                                  ? 'bg-gradient-to-br from-blue-500 to-indigo-600'
+                                  : 'bg-gradient-to-br from-pink-500 to-rose-600'
+                              }`}>
+                                <span className="text-white text-xs font-semibold">
+                                  {comment.username.charAt(0)}
+                                </span>
                               </div>
-                              <p className="text-gray-500 text-xs mt-1">{comment.timeAgo} ago</p>
+                              <div className="flex-1">
+                                <div className="bg-gray-800/50 rounded-xl px-3 py-2">
+                                  <button 
+                                    onClick={() => {
+                                      // Create a proper user object using same format as handleUsernameClick
+                                      const user = {
+                                        id: comment.username,
+                                        username: comment.username,
+                                        age: Math.floor(Math.random() * 30) + 18,
+                                        gender: comment.username.includes('Cat') || comment.username.includes('Girl') ? 'female' : 'male',
+                                        location: 'Mumbai, Maharashtra',
+                                        isOnline: true,
+                                        lastSeen: 'Now',
+                                        preferences: ['Passionate', 'Wild', 'Kinky'],
+                                        bodyType: comment.username.includes('Cat') || comment.username.includes('Girl') ? 'curvy' : 'athletic',
+                                        secretMessage: "I love exploring new fantasies",
+                                        bodyCount: Math.floor(Math.random() * 20) + 5,
+                                        turnOns: ['Confidence', 'Humor', 'Adventure']
+                                      }
+                                      setSelectedUser(user as any)
+                                    }}
+                                    className={`text-sm font-medium hover:underline cursor-pointer ${
+                                      comment.isOwn ? 'text-blue-400 hover:text-blue-300' : 'text-pink-400 hover:text-pink-300'
+                                    }`}
+                                  >
+                                    {comment.username}
+                                  </button>
+                                  <p className="text-white text-sm">{comment.comment}</p>
+                                </div>
+                                <div className="flex items-center space-x-3 mt-1">
+                                  <p className="text-gray-500 text-xs">{comment.timeAgo} ago</p>
+                                  <button 
+                                    onClick={() => setReplyTo({postId: post.id, commentId: idx})}
+                                    className="text-gray-400 text-xs hover:text-pink-400 transition-colors"
+                                  >
+                                    Reply
+                                  </button>
+                                  {comment.replies && comment.replies.length > 0 && (
+                                    <span className="text-gray-500 text-xs">
+                                      {comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
                             </div>
+                            
+                            {/* Replies */}
+                            {comment.replies && comment.replies.length > 0 && (
+                              <div className="ml-11 space-y-2">
+                                {comment.replies.map((reply: any, replyIdx: number) => (
+                                  <div key={reply.id || replyIdx} className="flex space-x-2">
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                      reply.isOwn 
+                                        ? 'bg-gradient-to-br from-blue-500 to-indigo-600'
+                                        : 'bg-gradient-to-br from-pink-500 to-rose-600'
+                                    }`}>
+                                      <span className="text-white text-xs font-semibold">
+                                        {reply.username.charAt(0)}
+                                      </span>
+                                    </div>
+                                    <div className="flex-1">
+                                      <div className="bg-gray-700/50 rounded-lg px-2 py-1.5">
+                                        <button 
+                                          onClick={() => {
+                                            // Create a proper user object using same format as handleUsernameClick
+                                            const user = {
+                                              id: reply.username,
+                                              username: reply.username,
+                                              age: Math.floor(Math.random() * 30) + 18,
+                                              gender: reply.username.includes('Cat') || reply.username.includes('Girl') ? 'female' : 'male',
+                                              location: 'Delhi, Delhi',
+                                              isOnline: true,
+                                              lastSeen: 'Now',
+                                              preferences: ['Passionate', 'Wild', 'Kinky'],
+                                              bodyType: reply.username.includes('Cat') || reply.username.includes('Girl') ? 'curvy' : 'athletic',
+                                              secretMessage: "I love exploring new fantasies",
+                                              bodyCount: Math.floor(Math.random() * 20) + 5,
+                                              turnOns: ['Confidence', 'Humor', 'Adventure']
+                                            }
+                                            setSelectedUser(user as any)
+                                          }}
+                                          className={`text-xs font-medium hover:underline cursor-pointer ${
+                                            reply.isOwn ? 'text-blue-400 hover:text-blue-300' : 'text-pink-400 hover:text-pink-300'
+                                          }`}
+                                        >
+                                          {reply.username}
+                                        </button>
+                                        <p className="text-white text-xs">{reply.comment}</p>
+                                      </div>
+                                      <p className="text-gray-500 text-xs mt-0.5">{reply.timeAgo} ago</p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            
+                            {/* Reply Input */}
+                            {replyTo?.postId === post.id && replyTo?.commentId === idx && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                className="ml-11 flex space-x-2"
+                              >
+                                <input
+                                  type="text"
+                                  value={replyText}
+                                  placeholder={`Reply to ${comment.username}...`}
+                                  className="flex-1 bg-gray-800/50 border border-gray-600 rounded-full px-3 py-1.5 text-white placeholder-gray-400 text-xs focus:outline-none focus:ring-0"
+                                  onChange={(e) => setReplyText(e.target.value)}
+                                  onKeyPress={(e) => {
+                                    if (e.key === 'Enter' && replyText.trim()) {
+                                      handleAddReply(post.id, idx, replyText.trim())
+                                      setReplyText('')
+                                      setReplyTo(null)
+                                    }
+                                  }}
+                                  autoFocus
+                                />
+                                <button
+                                  onClick={() => {
+                                    if (replyText.trim()) {
+                                      handleAddReply(post.id, idx, replyText.trim())
+                                      setReplyText('')
+                                      setReplyTo(null)
+                                    }
+                                  }}
+                                  disabled={!replyText.trim()}
+                                  className="p-1 bg-pink-500/20 hover:bg-pink-500/30 disabled:bg-gray-700/50 disabled:text-gray-500 text-pink-400 hover:text-pink-300 rounded-full transition-all duration-200 disabled:cursor-not-allowed"
+                                >
+                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                                  </svg>
+                                </button>
+                              </motion.div>
+                            )}
                           </div>
                         ))}
                         
                         {/* Comment Input */}
                         <div className="flex space-x-3 pt-3 border-t border-gray-700/30">
-                          <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0">
                             <span className="text-white text-xs font-semibold">
                               {formData.username?.charAt(0)?.toUpperCase() || 'U'}
                             </span>
@@ -537,11 +783,24 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                           <div className="flex-1 flex space-x-2">
                             <input
                               type="text"
-                              placeholder="Add a comment..."
-                              className="flex-1 bg-gray-800/50 border border-gray-600 rounded-xl px-3 py-2 text-white placeholder-gray-400 text-sm focus:outline-none focus:border-pink-500"
+                              value={commentText}
+                              onChange={(e) => setCommentText(e.target.value)}
+                              placeholder="Write a comment..."
+                              className="flex-1 bg-gray-800/50 border border-gray-600 rounded-full px-3 py-2 text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-0"
+                              onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                  handleAddComment(post.id)
+                                }
+                              }}
                             />
-                            <button className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300">
-                              Post
+                            <button 
+                              onClick={() => handleAddComment(post.id)}
+                              disabled={!commentText.trim()}
+                              className="p-2 bg-pink-500/20 hover:bg-pink-500/30 disabled:bg-gray-700/50 disabled:text-gray-500 text-pink-400 hover:text-pink-300 rounded-full transition-all duration-200 disabled:cursor-not-allowed"
+                            >
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                              </svg>
                             </button>
                           </div>
                         </div>
@@ -572,24 +831,144 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">Unlock Private Content</h3>
-                <p className="text-gray-300 mb-6">
+                <p className="text-gray-300 mb-2">
                   This will unlock all private assets and exclusive content from <span className="text-pink-400 font-semibold">{showUnlockModal.username}</span>
                 </p>
+                <div className="flex items-center justify-center space-x-1 mb-6">
+                  <span className="text-2xl font-bold text-yellow-400">${showUnlockModal.amount}</span>
+                  <span className="text-gray-400">one-time</span>
+                </div>
                 
                 <div className="flex space-x-3">
                   <button
                     onClick={() => setShowUnlockModal(null)}
-                    className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                    className="flex-1 px-4 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-medium"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={() => setShowUnlockModal(null)}
-                    className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-white rounded-lg transition-all duration-300 font-semibold"
+                    onClick={handleProceedToPayment}
+                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-white rounded-lg transition-all duration-300 font-semibold"
                   >
-                    Unlock Now
+                    Proceed to Pay
                   </button>
                 </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Payment Modal */}
+      <AnimatePresence>
+        {showPaymentModal && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-glass-dark backdrop-blur-xl border border-pink-500/30 rounded-2xl p-6 max-w-sm w-full"
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">Complete Payment</h3>
+                <p className="text-gray-300 mb-4">
+                  Payment to <span className="text-pink-400 font-semibold">{showPaymentModal.username}</span>
+                </p>
+                <div className="flex items-center justify-center space-x-1 mb-6">
+                  <span className="text-3xl font-bold text-yellow-400">${showPaymentModal.amount}</span>
+                </div>
+                
+                <div className="flex space-x-3">
+                  <button
+                    onClick={handlePaymentReject}
+                    className="flex-1 px-4 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300 font-medium"
+                  >
+                    Reject
+                  </button>
+                  <button
+                    onClick={handlePaymentComplete}
+                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white rounded-lg transition-all duration-300 font-semibold"
+                  >
+                    Complete
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Payment Success Modal */}
+      <AnimatePresence>
+        {showPaymentSuccess && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-glass-dark backdrop-blur-xl border border-pink-500/30 rounded-2xl p-6 max-w-sm w-full"
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">Payment Successful!</h3>
+                <p className="text-gray-300 mb-4">
+                  Your payment of <span className="text-yellow-400 font-semibold">${showPaymentSuccess.amount}</span> to <span className="text-pink-400 font-semibold">{showPaymentSuccess.username}</span> was successful.
+                </p>
+                <p className="text-sm text-gray-400 mb-6">
+                  You now have access to all exclusive content!
+                </p>
+                
+                <button
+                  onClick={() => setShowPaymentSuccess(null)}
+                  className="w-full px-4 py-2.5 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white rounded-lg transition-all duration-300 font-semibold"
+                >
+                  Continue
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Payment Rejected Modal */}
+      <AnimatePresence>
+        {showPaymentRejected && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-glass-dark backdrop-blur-xl border border-gray-500/30 rounded-2xl p-6 max-w-sm w-full"
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">Payment Cancelled</h3>
+                <p className="text-gray-300 mb-4">
+                  Your payment of <span className="text-yellow-400 font-semibold">${showPaymentRejected.amount}</span> to <span className="text-pink-400 font-semibold">{showPaymentRejected.username}</span> was cancelled.
+                </p>
+                <p className="text-sm text-gray-400 mb-6">
+                  You can try again anytime to unlock the exclusive content.
+                </p>
+                
+                <button
+                  onClick={() => setShowPaymentRejected(null)}
+                  className="w-full px-4 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300 font-medium"
+                >
+                  Continue
+                </button>
               </div>
             </motion.div>
           </div>
@@ -722,7 +1101,7 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                     <p className="text-gray-300 text-sm">Subscribe to premium and upload upto 100 pictures and start earning</p>
                   </div>
                   <button className="px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-lg text-sm font-medium hover:from-pink-400 hover:to-rose-500 transition-all whitespace-nowrap">
-                    Upgrade - $10/mo
+                    Upgrade - $10
                   </button>
                 </div>
               </div>
@@ -743,6 +1122,41 @@ export default function PostsFeed({ onBack, formData }: PostsFeedProps) {
                   Post
                 </button>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Full Screen Image Modal */}
+      <AnimatePresence>
+        {fullScreenImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setFullScreenImage(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-full max-h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img 
+                src={fullScreenImage}
+                alt="Full size image"
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
+              <button
+                onClick={() => setFullScreenImage(null)}
+                className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                </svg>
+              </button>
             </motion.div>
           </motion.div>
         )}
