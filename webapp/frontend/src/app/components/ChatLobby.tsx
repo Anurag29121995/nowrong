@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BRAND_CONFIG, formatOnlineCount, ANIMATIONS } from '../config/brand'
 import ChatRoom from './ChatRoom'
+import PostsFeed from './PostsFeed'
 
 interface ChatLobbyProps {
   onBack?: () => void
@@ -19,8 +20,9 @@ interface ChatLobbyProps {
 export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
   const [showAllCategories, setShowAllCategories] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState<{ id: string; name: string; icon: React.ReactNode; onlineCount: number } | null>(null)
+  const [showPostsFeed, setShowPostsFeed] = useState(false)
 
-  // All available categories (same as in PreferencesSelection)
+  // All available categories (complete list from PreferencesSelection - 21 total)
   const allCategories = [
     { 
       id: 'rough', 
@@ -302,6 +304,18 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
       ), 
       description: 'Watch me play',
       onlineCount: Math.floor(Math.random() * 34) + 13
+    },
+    { 
+      id: 'voyeurism', 
+      name: 'Voyeurism', 
+      icon: (
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      ), 
+      description: 'Love to watch',
+      onlineCount: Math.floor(Math.random() * 27) + 7
     }
   ]
 
@@ -331,6 +345,20 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
     setSelectedRoom(null)
   }
 
+  const handleBackFromPostsFeed = () => {
+    setShowPostsFeed(false)
+  }
+
+  // Show PostsFeed if selected
+  if (showPostsFeed) {
+    return (
+      <PostsFeed
+        onBack={handleBackFromPostsFeed}
+        formData={formData}
+      />
+    )
+  }
+
   // Show ChatRoom if a room is selected
   if (selectedRoom) {
     return (
@@ -351,12 +379,13 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-transparent"></div>
       <div className="fixed inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(190,24,93,0.05)_50%,transparent_75%)]"></div>
       
-      <div className="relative z-10 min-h-screen p-4 pt-8">
+      <div className="relative z-10 min-h-screen">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="sticky top-0 bg-black/50 backdrop-blur-lg border-b border-pink-500/20 p-4 pt-6">
+          <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div className="flex items-center space-x-3">
             <img 
-              src="/nowrong icon.png" 
+              src="/nowrong-icon.png" 
               alt="NoWrong" 
               className="w-9 h-9"
             />
@@ -368,14 +397,26 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
             </div>
           </div>
           
-          <div className="flex items-center space-x-2 bg-glass-medium border border-pink-500/30 rounded-xl px-3 py-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-green-400 text-sm font-medium">Online</span>
+          <button
+            onClick={() => setShowPostsFeed(true)}
+            className="group relative flex items-center space-x-2 bg-gradient-to-r from-pink-500/20 to-rose-600/20 hover:from-pink-500/30 hover:to-rose-600/30 border border-pink-500/40 hover:border-pink-400 rounded-xl px-4 py-2.5 transition-all duration-300 shadow-lg hover:shadow-pink-500/25"
+          >
+            <div className="flex items-center justify-center">
+              <svg className="w-4 h-4 text-pink-400 group-hover:text-pink-300 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </div>
+            <span className="text-pink-400 group-hover:text-pink-300 text-sm font-medium transition-colors">
+              Private Space
+            </span>
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full animate-pulse shadow-lg"></div>
+          </button>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto space-y-10">
+        <div className="p-4 pb-20">
+          <div className="max-w-4xl mx-auto space-y-10">
           
           {/* We bet you will get wet Section */}
           {selectedCategories.length > 0 && (
@@ -496,8 +537,51 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
 
             {/* First row: 3 items */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <AnimatePresence>
-                {moreForYouCategories.slice(0, 3).map((category, index) => (
+              {moreForYouCategories.slice(0, 3).map((category, index) => (
+                <motion.button
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id, category.name)}
+                  className="relative group p-5 bg-glass-light backdrop-blur-lg border border-gray-600 rounded-2xl hover:border-pink-400 hover:bg-glass-medium transition-all duration-300 text-left overflow-hidden"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-rose-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="p-2.5 bg-gray-600/30 rounded-lg text-gray-400 group-hover:text-pink-400 group-hover:bg-pink-500/20 transition-all">
+                        {category.icon}
+                      </div>
+                      <div className="flex items-center space-x-1 bg-green-500/20 rounded-full px-2 py-1">
+                        <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                        <span className="text-green-400 text-xs font-medium">{formatOnlineCount(category.onlineCount)}</span>
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-pink-300 transition-colors">
+                      {category.name}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-3">{category.description}</p>
+                    
+                    <div className="flex items-center text-gray-400 group-hover:text-pink-400 text-sm font-medium transition-colors">
+                      <span>Explore</span>
+                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Second row: 3 items */}
+            {moreForYouCategories.length > 3 && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {moreForYouCategories.slice(3, 6).map((category, index) => (
                   <motion.button
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id, category.name)}
@@ -506,9 +590,7 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
                     whileTap={{ scale: 0.98 }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ delay: index * 0.05 }}
-                    layout
+                    transition={{ delay: (index + 3) * 0.05 }}
                   >
                     {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-rose-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -524,69 +606,75 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
                         </div>
                       </div>
                       
-                      <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-pink-300 transition-colors">
-                        {category.name}
-                      </h3>
-                      <p className="text-gray-400 text-sm mb-3">{category.description}</p>
-                      
-                      <div className="flex items-center text-gray-400 group-hover:text-pink-400 text-sm font-medium transition-colors">
-                        <span>Explore</span>
-                        <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
+                      <div>
+                        <h3 className="text-white font-semibold mb-2 group-hover:text-pink-100 transition-colors">{category.name}</h3>
+                        <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors line-clamp-2">{category.description}</p>
                       </div>
+                    </div>
+                    
+                    {/* Arrow indicator */}
+                    <div className="absolute bottom-4 right-4 text-gray-500 group-hover:text-pink-400 transition-colors">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                      </svg>
                     </div>
                   </motion.button>
                 ))}
-              </AnimatePresence>
-            </div>
+              </div>
+            )}
 
-            {/* Second row: 3 items */}
-            {moreForYouCategories.length > 3 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <AnimatePresence>
-                  {moreForYouCategories.slice(3, 6).map((category, index) => (
-                    <motion.button
-                      key={category.id}
-                      onClick={() => handleCategoryClick(category.id, category.name)}
-                      className="relative group p-5 bg-glass-light backdrop-blur-lg border border-gray-600 rounded-2xl hover:border-pink-400 hover:bg-glass-medium transition-all duration-300 text-left overflow-hidden"
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ delay: (index + 3) * 0.05 }}
-                      layout
-                    >
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-rose-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      
-                      <div className="relative z-10">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="p-2.5 bg-gray-600/30 rounded-lg text-gray-400 group-hover:text-pink-400 group-hover:bg-pink-500/20 transition-all">
-                            {category.icon}
+            {/* Additional rows for all categories when expanded */}
+            {showAllCategories && moreForYouCategories.length > 6 && (
+              <div>
+                {Array.from({ length: Math.ceil((moreForYouCategories.length - 6) / 3) }, (_, rowIndex) => (
+                  <motion.div 
+                    key={`additional-row-${rowIndex}`}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + rowIndex * 0.1 }}
+                  >
+                    {moreForYouCategories.slice(6 + rowIndex * 3, 6 + (rowIndex + 1) * 3).map((category, index) => (
+                      <motion.button
+                        key={category.id}
+                        onClick={() => handleCategoryClick(category.id, category.name)}
+                        className="relative group p-5 bg-glass-light backdrop-blur-lg border border-gray-600 rounded-2xl hover:border-pink-400 hover:bg-glass-medium transition-all duration-300 text-left overflow-hidden"
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: (6 + rowIndex * 3 + index) * 0.05 }}
+                      >
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-rose-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <div className="relative z-10">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="p-2.5 bg-gray-600/30 rounded-lg text-gray-400 group-hover:text-pink-400 group-hover:bg-pink-500/20 transition-all">
+                              {category.icon}
+                            </div>
+                            <div className="flex items-center space-x-1 bg-green-500/20 rounded-full px-2 py-1">
+                              <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                              <span className="text-green-400 text-xs font-medium">{formatOnlineCount(category.onlineCount)}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center space-x-1 bg-green-500/20 rounded-full px-2 py-1">
-                            <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
-                            <span className="text-green-400 text-xs font-medium">{formatOnlineCount(category.onlineCount)}</span>
+                          
+                          <div>
+                            <h3 className="text-white font-semibold mb-2 group-hover:text-pink-100 transition-colors">{category.name}</h3>
+                            <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors line-clamp-2">{category.description}</p>
                           </div>
                         </div>
                         
-                        <div>
-                          <h3 className="text-white font-semibold mb-2 group-hover:text-pink-100 transition-colors">{category.name}</h3>
-                          <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors line-clamp-2">{category.description}</p>
+                        {/* Arrow indicator */}
+                        <div className="absolute bottom-4 right-4 text-gray-500 group-hover:text-pink-400 transition-colors">
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
                         </div>
-                      </div>
-                      
-                      {/* Arrow indicator */}
-                      <div className="absolute bottom-4 right-4 text-gray-500 group-hover:text-pink-400 transition-colors">
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                    </motion.button>
-                  ))}
-                </AnimatePresence>
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                ))}
               </div>
             )}
 
@@ -616,6 +704,7 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
               </motion.div>
             )}
           </motion.section>
+          </div>
         </div>
       </div>
     </div>

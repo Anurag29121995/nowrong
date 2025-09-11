@@ -6,6 +6,7 @@ import { formatOnlineCount } from '../config/brand'
 import ChatInterface from './ChatInterface'
 import ProfileCreation from './ProfileCreation'
 import ProfileViewer from './ProfileViewer'
+import PostsFeed from './PostsFeed'
 
 interface ChatRoomProps {
   roomName: string
@@ -122,6 +123,7 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
   const [favorites, setFavorites] = useState<string[]>([])
   const [showProfileCreation, setShowProfileCreation] = useState(false)
   const [viewingProfile, setViewingProfile] = useState<any>(null)
+  const [showPostsFeed, setShowPostsFeed] = useState(false)
 
   const handleUserClick = (user: any) => {
     setSelectedUser(user)
@@ -180,6 +182,20 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
     setViewingProfile(null)
   }
 
+  const handleBackFromPostsFeed = () => {
+    setShowPostsFeed(false)
+  }
+
+  // Show PostsFeed if selected
+  if (showPostsFeed) {
+    return (
+      <PostsFeed
+        onBack={handleBackFromPostsFeed}
+        formData={formData}
+      />
+    )
+  }
+
   // Show ProfileViewer if viewing a profile
   if (viewingProfile) {
     return (
@@ -204,14 +220,24 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
   // Show ChatInterface if a user is selected
   if (selectedUser) {
     return (
-      <ChatInterface
-        user={selectedUser}
-        onBack={handleBackFromChat}
-        onToggleFavorite={handleToggleFavorite}
-        onViewProfile={handleViewProfile}
-        isFavorite={favorites.includes(selectedUser.id)}
-        formData={formData}
-      />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="chat-interface"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <ChatInterface
+            user={selectedUser}
+            onBack={handleBackFromChat}
+            onToggleFavorite={handleToggleFavorite}
+            onViewProfile={handleViewProfile}
+            isFavorite={favorites.includes(selectedUser.id)}
+            formData={formData}
+          />
+        </motion.div>
+      </AnimatePresence>
     )
   }
 
@@ -227,7 +253,7 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
       
       <div className="relative z-10 min-h-screen">
         {/* Header */}
-        <div className="sticky top-0 bg-black/50 backdrop-blur-lg border-b border-pink-500/20 p-4">
+        <div className="sticky top-0 bg-black/50 backdrop-blur-lg border-b border-pink-500/20 p-4 pt-6">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             <div className="flex items-center space-x-4">
               <button
@@ -250,10 +276,20 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 bg-glass-medium border border-pink-500/30 rounded-xl px-3 py-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-green-400 text-sm font-medium">Live</span>
-            </div>
+            <button
+              onClick={() => setShowPostsFeed(true)}
+              className="group relative flex items-center space-x-2 bg-gradient-to-r from-pink-500/20 to-rose-600/20 hover:from-pink-500/30 hover:to-rose-600/30 border border-pink-500/40 hover:border-pink-400 rounded-xl px-4 py-2.5 transition-all duration-300 shadow-lg hover:shadow-pink-500/25"
+            >
+              <div className="flex items-center justify-center">
+                <svg className="w-4 h-4 text-pink-400 group-hover:text-pink-300 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </div>
+              <span className="text-pink-400 group-hover:text-pink-300 text-sm font-medium transition-colors">
+                Private Space
+              </span>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full animate-pulse shadow-lg"></div>
+            </button>
           </div>
         </div>
 
@@ -321,10 +357,10 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                   <AnimatePresence>
                     {favoriteUsers.map((user, index) => (
-                      <motion.button
+                      <motion.div
                         key={user.id}
                         onClick={() => handleUserClick(user)}
-                        className="group relative p-4 bg-gradient-to-br from-pink-500/10 to-rose-600/5 border-2 border-pink-500/30 rounded-2xl hover:border-pink-400 hover:from-pink-500/20 hover:to-rose-600/10 transition-all duration-300 text-left"
+                        className="group relative p-4 bg-gradient-to-br from-pink-500/10 to-rose-600/5 border-2 border-pink-500/30 rounded-2xl hover:border-pink-400 hover:from-pink-500/20 hover:to-rose-600/10 transition-all duration-300 text-left cursor-pointer"
                         whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
                         initial={{ opacity: 0, y: 20 }}
@@ -397,7 +433,7 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
                             </div>
                           </div>
                         </div>
-                      </motion.button>
+                      </motion.div>
                     ))}
                   </AnimatePresence>
                 </div>
@@ -413,10 +449,10 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <AnimatePresence>
                 {otherUsers.map((user, index) => (
-                  <motion.button
+                  <motion.div
                     key={user.id}
                     onClick={() => handleUserClick(user)}
-                    className="group relative p-4 bg-glass-light backdrop-blur-lg border border-gray-600 rounded-2xl hover:border-pink-400 hover:bg-glass-medium transition-all duration-300 text-left"
+                    className="group relative p-4 bg-glass-light backdrop-blur-lg border border-gray-600 rounded-2xl hover:border-pink-400 hover:bg-glass-medium transition-all duration-300 text-left cursor-pointer"
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     initial={{ opacity: 0, y: 20 }}
@@ -485,7 +521,7 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
                         </div>
                       </div>
                     </div>
-                  </motion.button>
+                  </motion.div>
                 ))}
               </AnimatePresence>
             </div>
