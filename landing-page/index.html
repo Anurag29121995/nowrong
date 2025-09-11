@@ -448,11 +448,58 @@
         }
 
         .hero-cta {
-            margin-bottom: 50px;
+            margin: 60px 0 80px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 24px;
+            position: relative;
+            padding: 80px 0;
+        }
+
+        /* Kiss Background Image - Bigger and More Visible */
+        .kiss-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            height: 450px;
+            background-image: url('assets/images/kiss-png-17490.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.35;
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(0.2px) brightness(1.4) contrast(1.1);
+            animation: subtleGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes subtleGlow {
+            0% { 
+                opacity: 0.3; 
+                transform: translate(-50%, -50%) scale(0.97);
+                filter: blur(0.2px) brightness(1.3) contrast(1.1);
+            }
+            100% { 
+                opacity: 0.4; 
+                transform: translate(-50%, -50%) scale(1.03);
+                filter: blur(0.1px) brightness(1.5) contrast(1.2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-cta {
+                padding: 60px 0;
+                margin: 40px 0 60px 0;
+            }
+            
+            .kiss-background {
+                width: 320px;
+                height: 320px;
+                opacity: 0.28;
+            }
         }
 
         .download-buttons {
@@ -509,12 +556,12 @@
             justify-content: center;
             gap: 12px;
             background: linear-gradient(145deg, 
-                #F43F5E 0%,
-                #BE185D 50%,
-                #881337 100%
+                #BE185D 0%,
+                #881337 50%,
+                #5F1A37 100%
             );
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 20px 36px;
             font-size: 17px;
@@ -525,16 +572,18 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 
-                0 0 30px rgba(244, 63, 94, 0.4),
-                0 0 60px rgba(190, 24, 93, 0.2),
+                0 0 15px rgba(190, 24, 93, 0.25),
+                0 0 30px rgba(136, 19, 55, 0.1),
                 0 12px 40px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
             width: 100%;
             max-width: 280px;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            z-index: 2;
+            transform: translateY(55px);
         }
 
         .btn-primary::before {
@@ -554,17 +603,17 @@
 
         .btn-primary:hover {
             background: linear-gradient(145deg, 
-                #FB7185 0%,
-                #F43F5E 50%,
-                #BE185D 100%
+                #E11D48 0%,
+                #BE185D 50%,
+                #881337 100%
             );
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(51px) scale(1.02);
             box-shadow: 
-                0 0 40px rgba(244, 63, 94, 0.6),
-                0 0 80px rgba(190, 24, 93, 0.3),
+                0 0 25px rgba(225, 29, 72, 0.3),
+                0 0 50px rgba(190, 24, 93, 0.15),
                 0 16px 50px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         .btn-primary::after {
@@ -577,303 +626,8 @@
             transform: translateX(4px);
         }
 
-        /* Perfectly Centered Hero Image Slider */
-        .hero-image-slider {
-            width: 100vw;
-            height: 300px;
-            border-radius: 0;
-            overflow: hidden;
-            margin: 40px 0;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            box-shadow: none;
-            cursor: pointer;
-        }
 
-        @media (min-width: 768px) {
-            .hero-image-slider {
-                width: 520px;
-                height: 320px;
-                margin: 40px auto;
-                left: auto;
-                right: auto;
-                margin-left: auto;
-                margin-right: auto;
-                position: relative;
-                border-radius: 20px;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            }
-        }
 
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        .slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                135deg,
-                rgba(0, 0, 0, 0.5) 0%,
-                rgba(190, 24, 93, 0.35) 50%,
-                rgba(0, 0, 0, 0.6) 100%
-            );
-            z-index: 1;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.8) saturate(1.1);
-            transition: none;
-        }
-
-        /* Slider dots */
-        .slider-dots {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            display: flex;
-            gap: 8px;
-            z-index: 2;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .dot.active {
-            background: var(--accent-soft);
-            box-shadow: 0 0 12px rgba(190, 24, 93, 0.5);
-        }
-
-        .dot:hover {
-            background: rgba(255, 255, 255, 0.7);
-            transform: scale(1.2);
-        }
-
-        /* Beautiful Overlay */
-        .hero-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                135deg, 
-                rgba(0, 0, 0, 0.4) 0%, 
-                rgba(190, 24, 93, 0.3) 40%, 
-                rgba(136, 19, 55, 0.5) 100%
-            );
-            z-index: 1;
-            transition: all 0.3s ease;
-        }
-
-        .hero-image:hover::before {
-            background: linear-gradient(
-                135deg, 
-                rgba(0, 0, 0, 0.3) 0%, 
-                rgba(190, 24, 93, 0.4) 40%, 
-                rgba(136, 19, 55, 0.6) 100%
-            );
-        }
-
-        /* Premium Dark Start Chat Button with Elegant Typography */
-        .hero-cta-overlay {
-            position: absolute;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-            
-            /* Premium dark gradient with subtle accent */
-            background: linear-gradient(145deg, 
-                rgba(15, 15, 15, 0.95) 0%,
-                rgba(25, 25, 25, 0.95) 20%,
-                rgba(45, 20, 30, 0.95) 60%,
-                rgba(30, 15, 20, 0.95) 100%
-            );
-            border: 2px solid rgba(190, 24, 93, 0.4);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            
-            /* Elegant premium typography */
-            color: #FFFFFF;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-weight: 500;
-            font-size: 16px;
-            letter-spacing: 1.2px;
-            text-decoration: none;
-            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
-            text-transform: uppercase;
-            
-            /* Refined proportions */
-            padding: 16px 32px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 180px;
-            justify-content: center;
-            
-            /* Sophisticated dark shadows */
-            box-shadow: 
-                0 0 25px rgba(190, 24, 93, 0.3),
-                0 0 50px rgba(136, 19, 55, 0.2),
-                0 12px 40px rgba(0, 0, 0, 0.6),
-                inset 0 2px 0 rgba(255, 255, 255, 0.1),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-            
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .hero-cta-overlay::after {
-            content: '→';
-            font-size: 16px;
-            opacity: 0.9;
-            transition: transform 0.2s ease;
-        }
-
-        .hero-cta-overlay:hover {
-            background: linear-gradient(145deg, 
-                rgba(35, 35, 35, 0.98) 0%,
-                rgba(55, 35, 45, 0.98) 30%,
-                rgba(75, 40, 55, 0.98) 70%,
-                rgba(60, 30, 40, 0.98) 100%
-            );
-            border-color: rgba(244, 63, 94, 0.7);
-            transform: translateX(-50%) translateY(-6px) scale(1.08);
-            box-shadow: 
-                0 0 40px rgba(244, 63, 94, 0.5),
-                0 0 80px rgba(190, 24, 93, 0.3),
-                0 20px 60px rgba(0, 0, 0, 0.7),
-                inset 0 3px 0 rgba(255, 255, 255, 0.2),
-                inset 0 -2px 0 rgba(0, 0, 0, 0.4);
-        }
-
-        .hero-cta-overlay:hover::after {
-            transform: translateX(4px) scale(1.1);
-        }
-
-        /* Enhanced Start Chat Button Animations */
-        .hero-cta-overlay {
-            overflow: hidden;
-            animation: subtlePulse 3s ease-in-out infinite;
-        }
-        
-        /* Subtle pulsing animation */
-        @keyframes subtlePulse {
-            0%, 100% { 
-                box-shadow: 
-                    0 0 25px rgba(190, 24, 93, 0.3),
-                    0 0 50px rgba(136, 19, 55, 0.2),
-                    0 12px 40px rgba(0, 0, 0, 0.6),
-                    inset 0 2px 0 rgba(255, 255, 255, 0.1),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-            }
-            50% { 
-                box-shadow: 
-                    0 0 35px rgba(190, 24, 93, 0.5),
-                    0 0 60px rgba(136, 19, 55, 0.3),
-                    0 12px 40px rgba(0, 0, 0, 0.6),
-                    inset 0 2px 0 rgba(255, 255, 255, 0.1),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-            }
-        }
-        
-        .btn-text {
-            position: relative;
-            z-index: 2;
-        }
-        
-        /* Ripple effect */
-        .btn-ripple {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(244, 63, 94, 0.6) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            transition: all 0.6s ease;
-            pointer-events: none;
-        }
-        
-        .hero-cta-overlay:hover {
-            animation: none;
-        }
-        
-        .hero-cta-overlay.clicked {
-            transform: translateX(-50%) scale(1.2);
-            background: linear-gradient(145deg, 
-                rgba(244, 63, 94, 0.9) 0%,
-                rgba(190, 24, 93, 0.9) 50%,
-                rgba(136, 19, 55, 0.9) 100%
-            );
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .hero-cta-overlay.clicked .btn-ripple {
-            width: 300px;
-            height: 300px;
-        }
-        
-        /* Image selection effect */
-        .hero-slide.selected {
-            transform: scale(1.05);
-            filter: brightness(1.1) contrast(1.1);
-        }
-        
-        .hero-slide.selected::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, 
-                rgba(244, 63, 94, 0.2) 0%,
-                rgba(190, 24, 93, 0.1) 50%,
-                rgba(136, 19, 55, 0.2) 100%
-            );
-            border-radius: 24px;
-            animation: selectedGlow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes selectedGlow {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.7; }
-        }
         
         /* Transition overlay */
         .transition-overlay {
@@ -967,16 +721,6 @@
             height: 300px;
         }
         
-        .hero-cta-overlay:active {
-            transform: translateX(-50%) translateY(-2px) scale(1.04);
-        }
-        
-        /* Mobile responsive enhancements */
-        @media (max-width: 767px) {
-            .hero-cta-overlay:hover {
-                transform: translateX(-50%) translateY(-4px) scale(1.05);
-            }
-        }
 
 
         .hero-trust {
@@ -1374,10 +1118,6 @@
                 max-width: 600px;
             }
 
-            .hero-image {
-                max-width: 500px;
-                height: 300px;
-            }
 
             .btn-primary {
                 width: auto;
@@ -1481,40 +1221,13 @@
                 <em>Where desires meet, no boundaries exist</em>
             </p>
             
-            <!-- Premium Hero Image Slider -->
-            <div class="hero-image-slider">
-                <div class="slider-container">
-                    <div class="slide active">
-                        <img src="assets/images/16-9 Image 1.webp" alt="NoWrong - Intimate Connections" />
-                    </div>
-                    <div class="slide">
-                        <img src="assets/images/16-9 image 2.jpg" alt="NoWrong - Passionate Encounters" />
-                    </div>
-                    <div class="slide">
-                        <img src="assets/images/16-9 image 3.webp" alt="NoWrong - Sensual Conversations" />
-                    </div>
-                    <div class="slide">
-                        <img src="assets/images/16-9 image 4.webp" alt="NoWrong - Romantic Connections" />
-                    </div>
-                    <div class="slide">
-                        <img src="assets/images/16-9 image 5.webp" alt="NoWrong - Authentic Intimacy" />
-                    </div>
-                </div>
-                
-                <!-- Beautiful CTA that POPS -->
-                <a href="http://localhost:3000/onboarding" class="hero-cta-overlay" id="startChatBtn" onclick="handleStartChat(event)">
+            <!-- Start Chat Button with Kiss Background -->
+            <div class="hero-cta">
+                <div class="kiss-background"></div>
+                <a href="http://localhost:3000/onboarding" class="btn-primary" id="startChatBtn" onclick="handleStartChat(event)">
                     <span class="btn-text">Start Chat</span>
                     <div class="btn-ripple"></div>
                 </a>
-                
-                <!-- Elegant slider dots -->
-                <div class="slider-dots">
-                    <div class="dot active" onclick="currentSlide(1)"></div>
-                    <div class="dot" onclick="currentSlide(2)"></div>
-                    <div class="dot" onclick="currentSlide(3)"></div>
-                    <div class="dot" onclick="currentSlide(4)"></div>
-                    <div class="dot" onclick="currentSlide(5)"></div>
-                </div>
             </div>
             
             <!-- Premium Download Buttons -->
@@ -1701,55 +1414,6 @@
             item.addEventListener('click', toggleMenu);
         });
 
-        // Clean Image Slider
-        let currentSlideIndex = 1;
-        let slideInterval;
-
-        function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.dot');
-            
-            if (n > slides.length) currentSlideIndex = 1;
-            if (n < 1) currentSlideIndex = slides.length;
-            
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            if (slides[currentSlideIndex - 1]) {
-                slides[currentSlideIndex - 1].classList.add('active');
-            }
-            if (dots[currentSlideIndex - 1]) {
-                dots[currentSlideIndex - 1].classList.add('active');
-            }
-        }
-
-        function currentSlide(n) {
-            clearInterval(slideInterval);
-            currentSlideIndex = n;
-            showSlide(currentSlideIndex);
-            startSlideshow();
-        }
-
-        function nextSlide() {
-            currentSlideIndex++;
-            showSlide(currentSlideIndex);
-        }
-
-        function startSlideshow() {
-            slideInterval = setInterval(nextSlide, 5000);
-        }
-
-        // Initialize slider
-        document.addEventListener('DOMContentLoaded', function() {
-            showSlide(currentSlideIndex);
-            startSlideshow();
-            
-            const slider = document.querySelector('.hero-image-slider');
-            if (slider) {
-                slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
-                slider.addEventListener('mouseleave', startSlideshow);
-            }
-        });
     </script>
     <!-- Transition Overlay -->
     <div class="transition-overlay" id="transitionOverlay">
@@ -1762,16 +1426,10 @@
             event.preventDefault();
             
             const button = event.currentTarget;
-            const currentSlide = document.querySelector('.hero-slide.active img');
             const overlay = document.getElementById('transitionOverlay');
             
             // Add clicked state to button
             button.classList.add('clicked');
-            
-            // Add selection effect to current image
-            if (currentSlide) {
-                currentSlide.parentElement.classList.add('selected');
-            }
             
             // Show transition overlay
             setTimeout(() => {
@@ -1783,55 +1441,6 @@
                 window.location.href = button.href;
             }, 2000);
         }
-
-        // Enhanced slider functionality
-        let currentSlideIndex = 1;
-
-        function currentSlide(n) {
-            showSlides(currentSlideIndex = n);
-        }
-
-        function nextSlide() {
-            showSlides(currentSlideIndex += 1);
-        }
-
-        function prevSlide() {
-            showSlides(currentSlideIndex -= 1);
-        }
-
-        function showSlides(n) {
-            let slides = document.querySelectorAll('.hero-slide');
-            let dots = document.querySelectorAll('.dot');
-            
-            if (n > slides.length) { currentSlideIndex = 1; }
-            if (n < 1) { currentSlideIndex = slides.length; }
-            
-            // Remove active and selected classes
-            slides.forEach(slide => {
-                slide.classList.remove('active', 'selected');
-            });
-            dots.forEach(dot => {
-                dot.classList.remove('active');
-            });
-            
-            // Add active class to current slide and dot
-            if (slides[currentSlideIndex - 1]) {
-                slides[currentSlideIndex - 1].classList.add('active');
-            }
-            if (dots[currentSlideIndex - 1]) {
-                dots[currentSlideIndex - 1].classList.add('active');
-            }
-        }
-
-        // Auto-slide functionality
-        setInterval(() => {
-            nextSlide();
-        }, 5000);
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            showSlides(currentSlideIndex);
-        });
     </script>
 </body>
 </html>
