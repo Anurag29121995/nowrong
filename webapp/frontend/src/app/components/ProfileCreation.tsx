@@ -26,6 +26,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
     bodyCount: null as number | null,
     secret: '',
     showSecret: false,
+    avatar: '',
     bodyTypePreference: '' as string, // Single selection for body type
     location: '',
     moments: [] as File[]
@@ -35,6 +36,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
     'Basic Info',
     'Body Count',
     'Secret',
+    'Avatar',
     'Body Type',
     'Location',
     'Moments'
@@ -294,9 +296,10 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
       case 0: return profileData.username && profileData.age && profileData.gender && profileData.interest
       case 1: return profileData.bodyCount !== null
       case 2: return true // Secret is optional
-      case 3: return profileData.bodyTypePreference.length > 0
-      case 4: return true // Location is optional
-      case 5: return true // Moments are optional
+      case 3: return profileData.avatar !== '' // Avatar is required
+      case 4: return profileData.bodyTypePreference.length > 0
+      case 5: return true // Location is optional
+      case 6: return true // Moments are optional
       default: return false
     }
   }
@@ -305,6 +308,16 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
   const handleBodyCountSelect = (count: number) => {
     setProfileData({...profileData, bodyCount: count})
     // Auto-proceed after selecting body count
+    setTimeout(() => {
+      if (currentStep < steps.length - 1) {
+        setCurrentStep(currentStep + 1)
+      }
+    }, 300)
+  }
+
+  const handleAvatarSelect = (avatarId: string) => {
+    setProfileData({...profileData, avatar: avatarId})
+    // Auto-proceed to next step after selection
     setTimeout(() => {
       if (currentStep < steps.length - 1) {
         setCurrentStep(currentStep + 1)
@@ -504,6 +517,47 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
 
       case 3:
         return (
+          <div className="space-y-6">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-light mb-3 bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
+                Choose Your Avatar
+              </h2>
+              <p className="text-gray-400">Pick an avatar that represents you</p>
+            </div>
+
+            <div className="flex justify-center">
+              <div className="grid grid-cols-5 gap-6 justify-items-center">
+                {(profileData.gender === 'male' ? ['M1', 'M2', 'M3', 'M4', 'M5'] : ['W1', 'W2', 'W3', 'W4', 'W5']).map((avatarId, index) => (
+                  <motion.button
+                    key={avatarId}
+                    onClick={() => handleAvatarSelect(avatarId)}
+                    className={`w-16 h-16 rounded-full border-3 flex items-center justify-center font-bold text-lg transition-all duration-200 ${
+                      profileData.avatar === avatarId 
+                        ? 'border-pink-400 bg-gradient-to-br from-pink-500/30 to-rose-500/30 text-pink-300 scale-110 shadow-lg shadow-pink-500/25' 
+                        : 'border-gray-600 bg-gradient-to-br from-gray-800/50 to-gray-900/50 text-gray-400 hover:border-pink-500/50 hover:scale-105 hover:bg-gradient-to-br hover:from-gray-700/50 hover:to-gray-800/50'
+                    }`}
+                    whileHover={{ scale: profileData.avatar === avatarId ? 1.1 : 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
+                  >
+                    {avatarId}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-gray-500">
+                Tap an avatar to select it • Auto-advances to next step
+              </p>
+            </div>
+          </div>
+        )
+
+      case 4:
+        return (
           <div className="px-6 space-y-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-light bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
@@ -568,7 +622,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )
 
-      case 4:
+      case 5:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -599,7 +653,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )
 
-      case 5:
+      case 6:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -696,8 +750,8 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </AnimatePresence>
         </div>
 
-        {/* Navigation - Hide continue button on body count page (step 1) */}
-        {currentStep !== 1 && (
+        {/* Navigation - Hide continue button on body count page (step 1) and avatar page (step 3) */}
+        {currentStep !== 1 && currentStep !== 3 && (
           <div className="max-w-2xl mx-auto mt-12">
             <div className="flex items-center justify-between">
               <button
@@ -722,8 +776,8 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )}
         
-        {/* Show only back button on body count page */}
-        {currentStep === 1 && (
+        {/* Show only back button on body count page and avatar page */}
+        {(currentStep === 1 || currentStep === 3) && (
           <div className="max-w-2xl mx-auto mt-12">
             <div className="flex items-center justify-center">
               <button

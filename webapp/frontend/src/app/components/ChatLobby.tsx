@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { BRAND_CONFIG, formatOnlineCount, ANIMATIONS } from '../config/brand'
 import ChatRoom from './ChatRoom'
 import PostsFeed from './PostsFeed'
+import ProfileScreen from './ProfileScreen'
 
 interface ChatLobbyProps {
   onBack?: () => void
@@ -14,13 +15,16 @@ interface ChatLobbyProps {
     interest?: string
     username?: string
     preferences?: string[]
+    avatar?: string
   }
+  onUpdateFormData?: (updatedData: any) => void
 }
 
-export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
+export default function ChatLobby({ onBack, formData, onUpdateFormData }: ChatLobbyProps) {
   const [showAllCategories, setShowAllCategories] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState<{ id: string; name: string; icon: React.ReactNode; onlineCount: number } | null>(null)
   const [showPostsFeed, setShowPostsFeed] = useState(false)
+  const [showProfile, setShowProfile] = useState(false)
 
   // All available categories (complete list from PreferencesSelection - 21 total)
   const allCategories = [
@@ -349,6 +353,28 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
     setShowPostsFeed(false)
   }
 
+  const handleBackFromProfile = () => {
+    setShowProfile(false)
+  }
+
+  const handleProfileSave = (updatedData: any) => {
+    if (onUpdateFormData) {
+      onUpdateFormData(updatedData)
+    }
+    // Don't redirect - stay on profile screen after save
+  }
+
+  // Show ProfileScreen if selected
+  if (showProfile) {
+    return (
+      <ProfileScreen
+        onBack={handleBackFromProfile}
+        formData={formData}
+        onSave={handleProfileSave}
+      />
+    )
+  }
+
   // Show PostsFeed if selected
   if (showPostsFeed) {
     return (
@@ -368,6 +394,7 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
         onlineCount={selectedRoom.onlineCount}
         onBack={handleBackFromRoom}
         formData={formData}
+        onUpdateFormData={onUpdateFormData}
       />
     )
   }
@@ -383,19 +410,22 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
         {/* Header */}
         <div className="sticky top-0 bg-black/50 backdrop-blur-lg border-b border-pink-500/20 p-4 pt-6">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
-          <div className="flex items-center space-x-3">
+          <button 
+            onClick={() => window.location.href = 'http://localhost:8080/'}
+            className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer"
+          >
             <img 
               src="/nowrong-icon.png" 
               alt="NoWrong" 
               className="w-9 h-9"
             />
             <div>
-              <h1 className={`${BRAND_CONFIG.typography.brand.fontSize.md} ${BRAND_CONFIG.typography.brand.fontWeight} ${BRAND_CONFIG.typography.brand.color}`}>
+              <h1 className={`${BRAND_CONFIG.typography.brand.fontSize.md} ${BRAND_CONFIG.typography.brand.fontWeight} ${BRAND_CONFIG.typography.brand.background} ${BRAND_CONFIG.typography.brand.backgroundClip}`}>
                 {BRAND_CONFIG.name}
               </h1>
               <p className="text-gray-400 text-sm">Welcome, {formData.username}</p>
             </div>
-          </div>
+          </button>
           
           <button
             onClick={() => setShowPostsFeed(true)}
@@ -429,7 +459,24 @@ export default function ChatLobby({ onBack, formData }: ChatLobbyProps) {
                 <h2 className="text-2xl md:text-3xl font-light mb-2 bg-gradient-to-r from-pink-400 to-rose-500 bg-clip-text text-transparent">
                   We bet you will get wet 💦
                 </h2>
-                <p className="text-gray-400">Your selected desires await</p>
+                <p className="text-gray-400 mb-4">Your selected desires await</p>
+                
+                {/* Profile Button */}
+                <motion.button
+                  onClick={() => setShowProfile(true)}
+                  className="inline-flex items-center space-x-2 bg-gradient-to-r from-pink-500/20 to-rose-600/20 hover:from-pink-500/30 hover:to-rose-600/30 border border-pink-500/40 hover:border-pink-400 rounded-xl px-6 py-3 transition-all duration-300 shadow-lg hover:shadow-pink-500/25 group"
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-center justify-center w-5 h-5">
+                    <svg className="w-5 h-5 text-pink-400 group-hover:text-pink-300 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                      <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="text-pink-400 group-hover:text-pink-300 text-sm font-medium transition-colors">
+                    Profile
+                  </span>
+                </motion.button>
               </div>
 
               {/* First row: 2 items */}

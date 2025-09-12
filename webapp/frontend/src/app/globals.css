@@ -145,3 +145,31 @@ body::before {
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out;
 }
+
+/* Homepage-matching gradient shift animation for NoWrong branding */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-shift {
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+/* Sparkle animation for decorative symbol */
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1) rotate(0deg); 
+    color: #F43F5E;
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2) rotate(180deg); 
+    color: #FB7185;
+  }
+}
+
+.animate-sparkle {
+  animation: sparkle 3s ease-in-out infinite;
+}

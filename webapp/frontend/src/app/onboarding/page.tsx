@@ -16,6 +16,7 @@ interface OnboardingFormData {
   interest?: string
   username?: string
   preferences?: string[]
+  avatar?: string
 }
 
 export default function OnboardingPage() {
@@ -35,7 +36,6 @@ export default function OnboardingPage() {
       setCurrentStep(steps[nextStepIndex])
     } else {
       // Complete onboarding - show chat lobby
-      console.log('Onboarding complete:', newFormData)
       setIsOnboardingComplete(true)
     }
   }
@@ -97,9 +97,24 @@ export default function OnboardingPage() {
   // Show onboarding steps
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-transparent"></div>
-      <div className="fixed inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(190,24,93,0.05)_50%,transparent_75%)]"></div>
+      {/* Auth Screen Background Image - Only for gender selection */}
+      {currentStep === 'gender' && (
+        <div 
+          className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url("/Auth Screen Image.png")' }}
+        >
+          {/* Translucent overlay to reduce transparency */}
+          <div className="absolute inset-0 bg-black/70"></div>
+        </div>
+      )}
+      
+      {/* Background Effects for other steps */}
+      {currentStep !== 'gender' && (
+        <>
+          <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-transparent"></div>
+          <div className="fixed inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(190,24,93,0.05)_50%,transparent_75%)]"></div>
+        </>
+      )}
       
       {/* Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-black/50 z-50">
@@ -116,27 +131,31 @@ export default function OnboardingPage() {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-            <motion.div
+            <motion.button
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center space-x-3 mb-6"
+              onClick={() => window.location.href = 'http://localhost:8080/'}
+              className="inline-flex items-center space-x-3 mb-6 hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none"
             >
               <img 
-                src="/nowrong icon.png" 
+                src="/nowrong-icon.png" 
                 alt="NoWrong" 
                 className="w-8 h-8 md:w-10 md:h-10"
               />
-              <span className="text-2xl md:text-3xl font-light text-white">NoWrong</span>
-            </motion.div>
+              <span className="text-2xl md:text-3xl font-normal text-white bg-gradient-to-r from-pink-300 via-pink-500 to-pink-700 bg-[length:200%_200%] bg-clip-text text-transparent tracking-wider animate-gradient-shift">
+                NoWrong
+                <span className="ml-2 text-sm animate-sparkle">✦</span>
+              </span>
+            </motion.button>
           </div>
 
           {/* Step Content with Smooth Transitions */}
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
+              exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
               {stepComponents[currentStep]}

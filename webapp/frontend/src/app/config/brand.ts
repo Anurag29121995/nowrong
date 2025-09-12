@@ -19,18 +19,21 @@ export const BRAND_CONFIG = {
     textColor: 'text-white'
   },
   
-  // Typography
+  // Typography - Updated to match homepage exactly
   typography: {
     brand: {
       fontFamily: 'font-sans', // Inter
-      fontWeight: 'font-light',
+      fontWeight: 'font-normal', // 400 weight like homepage
       fontSize: {
-        sm: 'text-xl',
-        md: 'text-2xl', 
-        lg: 'text-3xl'
+        sm: 'text-xl',     // 20px
+        md: 'text-2xl',    // 24px (close to homepage's 22px)
+        lg: 'text-3xl'     // 30px
       },
-      color: 'text-white',
-      symbol: '✦' // Optional decorative symbol
+      letterSpacing: 'tracking-wider', // 2px spacing like homepage
+      background: 'bg-gradient-to-r from-pink-300 via-pink-500 to-pink-700 bg-[length:200%_200%]',
+      backgroundClip: 'bg-clip-text text-transparent',
+      animation: 'animate-gradient-shift', // Matching homepage animation
+      symbol: '✦' // Decorative symbol matching homepage
     }
   },
   

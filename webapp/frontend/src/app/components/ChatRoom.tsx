@@ -6,6 +6,7 @@ import { formatOnlineCount } from '../config/brand'
 import ChatInterface from './ChatInterface'
 import ProfileCreation from './ProfileCreation'
 import ProfileViewer from './ProfileViewer'
+import ProfileScreen from './ProfileScreen'
 import PostsFeed from './PostsFeed'
 
 interface ChatRoomProps {
@@ -19,7 +20,9 @@ interface ChatRoomProps {
     interest?: string
     username?: string
     preferences?: string[]
+    avatar?: string
   }
+  onUpdateFormData?: (updatedData: any) => void
 }
 
 // Generate realistic placeholder users
@@ -117,13 +120,15 @@ const generateUsers = (count: number, interest?: string) => {
   return users
 }
 
-export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, formData }: ChatRoomProps) {
+export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, formData, onUpdateFormData }: ChatRoomProps) {
+  const [currentFormData, setCurrentFormData] = useState(formData)
   const [users] = useState(() => generateUsers(onlineCount, formData.interest))
   const [selectedUser, setSelectedUser] = useState<any>(null)
   const [favorites, setFavorites] = useState<string[]>([])
   const [showProfileCreation, setShowProfileCreation] = useState(false)
   const [viewingProfile, setViewingProfile] = useState<any>(null)
   const [showPostsFeed, setShowPostsFeed] = useState(false)
+  const [showProfile, setShowProfile] = useState(false)
 
   const handleUserClick = (user: any) => {
     setSelectedUser(user)
@@ -146,8 +151,7 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
   }
 
   const handleProfileComplete = (profileData: any) => {
-    console.log('Profile completed:', profileData)
-    // TODO: Save profile data and handle authentication
+    // Save profile data and handle authentication
     setShowProfileCreation(false)
   }
 
@@ -276,20 +280,6 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
               </div>
             </div>
 
-            <button
-              onClick={() => setShowPostsFeed(true)}
-              className="group relative flex items-center space-x-2 bg-gradient-to-r from-pink-500/20 to-rose-600/20 hover:from-pink-500/30 hover:to-rose-600/30 border border-pink-500/40 hover:border-pink-400 rounded-xl px-4 py-2.5 transition-all duration-300 shadow-lg hover:shadow-pink-500/25"
-            >
-              <div className="flex items-center justify-center">
-                <svg className="w-4 h-4 text-pink-400 group-hover:text-pink-300 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-              </div>
-              <span className="text-pink-400 group-hover:text-pink-300 text-sm font-medium transition-colors">
-                Private Space
-              </span>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full animate-pulse shadow-lg"></div>
-            </button>
           </div>
         </div>
 
@@ -540,6 +530,25 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
           </div>
         </div>
       </div>
+
+      {/* Profile Screen */}
+      <AnimatePresence>
+        {showProfile && (
+          <ProfileScreen 
+            formData={currentFormData} 
+            onBack={() => setShowProfile(false)} 
+            onSave={(updatedData) => {
+              // Update local state
+              setCurrentFormData(updatedData)
+              // Update the parent component's form data
+              if (onUpdateFormData) {
+                onUpdateFormData(updatedData)
+              }
+              setShowProfile(false)
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

@@ -14,12 +14,43 @@ interface ProfileData {
   moments?: string[] // URLs to uploaded images
 }
 
-interface ProfileViewerProps {
-  profile: ProfileData
-  onBack: () => void
+interface User {
+  id: string
+  username: string
+  age: number
+  gender: 'male' | 'female'
+  location: string
+  isOnline: boolean
+  lastSeen: string
+  preferences: string[]
+  bodyType: string
+  secretMessage: string
+  bodyCount: number
+  turnOns: string[]
 }
 
-export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
+interface ProfileViewerProps {
+  user?: User
+  profile?: ProfileData
+  onBack: () => void
+  onStartChat?: () => void
+  showBackButton?: boolean
+}
+
+export default function ProfileViewer({ user, profile, onBack, onStartChat, showBackButton }: ProfileViewerProps) {
+  // Convert user to profile format if needed
+  const profileData = profile || (user ? {
+    username: user.username,
+    age: user.age,
+    gender: user.gender,
+    location: user.location,
+    bodyCount: user.bodyCount,
+    secret: user.secretMessage,
+    bodyTypePreference: user.bodyType,
+    moments: []
+  } : null)
+  
+  if (!profileData) return null
   const getBodyTypeDisplay = (preference: string) => {
     const bodyTypeMap: { [key: string]: { name: string, description: string } } = {
       // Female body types (for male viewers)
@@ -48,25 +79,45 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
     const femaleTypes = ['petite', 'curvy', 'bbw', 'athletic', 'milf', 'busty']
     const maleTypes = ['muscular', 'tall_lean', 'dad_bod', 'bearded', 'young_fit', 'big_package']
     
-    if (profile.bodyTypePreference && femaleTypes.includes(profile.bodyTypePreference)) {
+    if (profileData.bodyTypePreference && femaleTypes.includes(profileData.bodyTypePreference)) {
       return 'female'
-    } else if (profile.bodyTypePreference && maleTypes.includes(profile.bodyTypePreference)) {
+    } else if (profileData.bodyTypePreference && maleTypes.includes(profileData.bodyTypePreference)) {
       return 'male'
     }
     // Default fallback
-    return profile.gender === 'female' ? 'male' : 'female'
+    return profileData.gender === 'female' ? 'male' : 'female'
   }
 
-  // Generate body count figures
+  // Generate body count figures based on user's actual interest
   const generateBodyCountFigures = () => {
-    if (!profile.bodyCount) return []
-    const count = profile.bodyCount > 12 ? 12 : profile.bodyCount
-    const preferredGender = getPreferredGender()
+    if (!profileData.bodyCount) return []
+    const count = profileData.bodyCount > 12 ? 12 : profileData.bodyCount
     
-    return Array.from({ length: count }, (_, i) => ({
-      id: i,
-      gender: preferredGender
-    }))
+    // Determine figures based on user's actual interest from user preferences
+    let interest = 'both' // default
+    if (user?.preferences && user.preferences.includes('men')) {
+      interest = 'men'
+    } else if (user?.preferences && user.preferences.includes('women')) {
+      interest = 'women'
+    }
+    
+    return Array.from({ length: count }, (_, i) => {
+      let gender: 'male' | 'female'
+      
+      if (interest === 'men') {
+        gender = 'male'
+      } else if (interest === 'women') {
+        gender = 'female'
+      } else {
+        // For 'both' - alternate between male and female
+        gender = i % 2 === 0 ? 'female' : 'male'
+      }
+      
+      return {
+        id: i,
+        gender: gender
+      }
+    })
   }
 
   const bodyCountFigures = generateBodyCountFigures()
@@ -77,7 +128,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-transparent"></div>
       <div className="fixed inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(190,24,93,0.05)_50%,transparent_75%)]"></div>
       
-      <div className="relative z-10 min-h-screen p-4">
+      <div className="relative z-10 min-h-screen p-4 pt-6 pb-20">
         {/* Header - Compact */}
         <div className="mb-4">
           <div className="flex items-center justify-between">
@@ -114,11 +165,11 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
               {/* Avatar - Smaller */}
               <div className="relative">
                 <div className={`w-16 h-16 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg border-2 ${
-                  profile.gender === 'female' 
+                  profileData.gender === 'female' 
                     ? 'bg-gradient-to-br from-pink-500 to-rose-600 border-pink-400/50' 
                     : 'bg-gradient-to-br from-blue-500 to-indigo-600 border-blue-400/50'
                 }`}>
-                  {profile.username.charAt(0).toUpperCase()}
+                  {profileData.username.charAt(0).toUpperCase()}
                 </div>
                 {/* Online indicator - smaller */}
                 <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-400 border-2 border-gray-900 rounded-full"></div>
@@ -126,24 +177,24 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
               
               {/* Basic Info - Compact */}
               <div className="flex-1">
-                <h1 className="text-xl font-bold text-white mb-1">{profile.username}</h1>
+                <h1 className="text-xl font-bold text-white mb-1">{profileData.username}</h1>
                 
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   <div className={`flex items-center space-x-1 px-2 py-1 rounded-lg border text-xs ${
-                    profile.gender === 'female'
+                    profileData.gender === 'female'
                       ? 'bg-pink-500/20 text-pink-300 border-pink-500/30'
                       : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
                   }`}>
-                    <span>{profile.gender === 'female' ? '♀' : '♂'} {profile.age}y</span>
+                    <span>{profileData.gender === 'female' ? '♀' : '♂'} {profileData.age}y</span>
                   </div>
                 </div>
 
-                {profile.location && (
+                {profileData.location && (
                   <div className="flex items-center text-gray-400">
                     <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-xs">{profile.location}</span>
+                    <span className="text-xs">{profileData.location}</span>
                   </div>
                 )}
               </div>
@@ -155,7 +206,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
             <div className="space-y-5">
               
               {/* Body Count - Proper Structure */}
-              {profile.bodyCount !== undefined && (
+              {profileData.bodyCount !== undefined && (
                 <motion.div 
                   className="bg-glass-light border border-pink-500/30 rounded-xl p-5"
                   whileHover={{ scale: 1.01 }}
@@ -168,13 +219,13 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold text-base">Body Count</h3>
-                      <p className="text-gray-400 text-sm">Sexual partners experienced</p>
+                      <p className="text-gray-400 text-sm">No. of pax slept with</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center justify-between">
                     <div className="text-3xl font-bold text-pink-400">
-                      {profile.bodyCount === 20 ? '20+' : profile.bodyCount}
+                      {profileData.bodyCount === 20 ? '20+' : profileData.bodyCount}
                     </div>
                     
                     {/* Large Figure display */}
@@ -194,8 +245,8 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                           )}
                         </div>
                       ))}
-                      {profile.bodyCount > 12 && (
-                        <div className="text-pink-400 font-bold text-sm ml-2">+{profile.bodyCount - 12}</div>
+                      {profileData.bodyCount > 12 && (
+                        <div className="text-pink-400 font-bold text-sm ml-2">+{profileData.bodyCount - 12}</div>
                       )}
                     </div>
                   </div>
@@ -203,7 +254,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
               )}
               
               {/* Drooling Over - Proper Structure */}
-              {profile.bodyTypePreference && (
+              {profileData.bodyTypePreference && (
                 <motion.div 
                   className="bg-glass-light border border-pink-500/30 rounded-xl p-5"
                   whileHover={{ scale: 1.01 }}
@@ -215,7 +266,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-white font-semibold text-base">Drooling Over</h3>
+                      <h3 className="text-white font-semibold text-base">Turn On</h3>
                       <p className="text-gray-400 text-sm">What turns them on most</p>
                     </div>
                   </div>
@@ -231,7 +282,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                               <stop offset="100%" stopColor="#be185d"/>
                             </linearGradient>
                           </defs>
-                          {profile.bodyTypePreference === 'curvy' && (
+                          {profileData.bodyTypePreference === 'curvy' && (
                             <>
                               <ellipse cx="50" cy="18" rx="7" ry="9" fill="url(#bodyTypeGrad)"/>
                               <ellipse cx="50" cy="38" rx="14" ry="16" fill="url(#bodyTypeGrad)"/>
@@ -241,7 +292,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                               <ellipse cx="50" cy="75" rx="16" ry="18" fill="url(#bodyTypeGrad)"/>
                             </>
                           )}
-                          {profile.bodyTypePreference === 'petite' && (
+                          {profileData.bodyTypePreference === 'petite' && (
                             <>
                               <ellipse cx="50" cy="18" rx="6" ry="8" fill="url(#bodyTypeGrad)"/>
                               <ellipse cx="50" cy="35" rx="8" ry="12" fill="url(#bodyTypeGrad)"/>
@@ -251,7 +302,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                               <ellipse cx="50" cy="68" rx="9" ry="15" fill="url(#bodyTypeGrad)"/>
                             </>
                           )}
-                          {profile.bodyTypePreference === 'muscular' && (
+                          {profileData.bodyTypePreference === 'muscular' && (
                             <>
                               <ellipse cx="50" cy="18" rx="7" ry="9" fill="url(#bodyTypeGrad)"/>
                               <rect x="40" y="28" width="20" height="18" rx="3" fill="url(#bodyTypeGrad)"/>
@@ -261,7 +312,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                               <rect x="40" y="70" width="20" height="20" rx="3" fill="url(#bodyTypeGrad)"/>
                             </>
                           )}
-                          {(!['curvy', 'petite', 'muscular'].includes(profile.bodyTypePreference)) && (
+                          {(!['curvy', 'petite', 'muscular'].includes(profileData.bodyTypePreference)) && (
                             <>
                               <ellipse cx="50" cy="18" rx="7" ry="9" fill="url(#bodyTypeGrad)"/>
                               <ellipse cx="50" cy="40" rx="12" ry="15" fill="url(#bodyTypeGrad)"/>
@@ -273,10 +324,10 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                       </div>
                       <div>
                         <div className="text-white font-medium text-lg">
-                          {getBodyTypeDisplay(profile.bodyTypePreference).name}
+                          {getBodyTypeDisplay(profileData.bodyTypePreference).name}
                         </div>
                         <div className="text-gray-400 text-sm">
-                          {getBodyTypeDisplay(profile.bodyTypePreference).description}
+                          {getBodyTypeDisplay(profileData.bodyTypePreference).description}
                         </div>
                       </div>
                     </div>
@@ -302,17 +353,17 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                   <div>
                     <h3 className="text-white font-semibold text-base">Sneak Peek</h3>
                     <p className="text-gray-400 text-sm">
-                      {profile.moments && profile.moments.length > 0 
-                        ? `${profile.moments.length} intimate photo${profile.moments.length > 1 ? 's' : ''}`
+                      {profileData.moments && profileData.moments.length > 0 
+                        ? `${profileData.moments.length} intimate photo${profileData.moments.length > 1 ? 's' : ''}`
                         : 'No photos shared yet'
                       }
                     </p>
                   </div>
                 </div>
                 
-                {profile.moments && profile.moments.length > 0 ? (
+                {profileData.moments && profileData.moments.length > 0 ? (
                   <div className="grid grid-cols-3 gap-3">
-                    {profile.moments.slice(0, 3).map((moment, index) => (
+                    {profileData.moments.slice(0, 3).map((moment, index) => (
                       <motion.div
                         key={index}
                         className="aspect-square rounded-xl overflow-hidden border border-pink-500/30 bg-gradient-to-br from-pink-500/10 to-rose-500/10"
@@ -325,7 +376,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                         />
                       </motion.div>
                     ))}
-                    {Array.from({ length: 3 - (profile.moments?.length || 0) }).map((_, index) => (
+                    {Array.from({ length: 3 - (profileData.moments?.length || 0) }).map((_, index) => (
                       <div 
                         key={`empty-${index}`}
                         className="aspect-square rounded-xl border-2 border-dashed border-pink-500/30 bg-pink-500/5 flex items-center justify-center"
@@ -354,7 +405,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
             </div>
             
             {/* Secret Section - Compact Full Width */}
-            {profile.secret && profile.showSecret && (
+            {profileData.secret && (
               <motion.div 
                 className="bg-gradient-to-br from-rose-500/10 to-pink-600/5 border border-rose-500/30 rounded-xl p-4"
                 whileHover={{ scale: 1.01 }}
@@ -371,7 +422,7 @@ export default function ProfileViewer({ profile, onBack }: ProfileViewerProps) {
                   </span>
                 </div>
                 <p className="text-gray-300 text-center italic leading-relaxed text-sm">
-                  "{profile.secret}"
+                  "{profileData.secret}"
                 </p>
               </motion.div>
             )}

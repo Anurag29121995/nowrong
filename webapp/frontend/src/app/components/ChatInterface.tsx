@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Avatar from './Avatar'
 
 interface ChatInterfaceProps {
   user: {
@@ -19,6 +20,8 @@ interface ChatInterfaceProps {
   isFavorite: boolean
   formData: {
     username?: string
+    avatar?: string
+    gender?: string
   }
 }
 
@@ -46,6 +49,7 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, onViewPr
   const [isRecording, setIsRecording] = useState(false)
   const [showMediaDrawer, setShowMediaDrawer] = useState(false)
   const [showFavPopup, setShowFavPopup] = useState(false)
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -154,18 +158,13 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, onViewPr
             </button>
             
             {/* User Avatar */}
-            <div className="relative">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-lg ${
-                user.gender === 'female' 
-                  ? 'bg-gradient-to-br from-pink-500 to-rose-600' 
-                  : 'bg-gradient-to-br from-blue-500 to-indigo-600'
-              }`}>
-                {user.username.charAt(0).toUpperCase()}
-              </div>
-              {user.isOnline && (
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-400 border-2 border-black rounded-full animate-pulse"></div>
-              )}
-            </div>
+            <Avatar
+              gender={user.gender}
+              username={user.username}
+              size="md"
+              showOnlineIndicator={true}
+              isOnline={user.isOnline}
+            />
 
             {/* User Info */}
             <div>
@@ -224,14 +223,12 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, onViewPr
         <div className="max-w-4xl mx-auto">
           {messages.length === 0 ? (
             <div className="text-center py-20">
-              <div className="mb-4">
-                <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto ${
-                  user.gender === 'female' 
-                    ? 'bg-gradient-to-br from-pink-500 to-rose-600' 
-                    : 'bg-gradient-to-br from-blue-500 to-indigo-600'
-                }`}>
-                  {user.username.charAt(0).toUpperCase()}
-                </div>
+              <div className="mb-4 flex justify-center">
+                <Avatar
+                  gender={user.gender}
+                  username={user.username}
+                  size="xl"
+                />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Start your conversation with {user.username}</h3>
               <p className="text-gray-400 mb-4">Say hello and break the ice! 🔥</p>
@@ -278,7 +275,8 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, onViewPr
                           <img 
                             src={message.image} 
                             alt="Shared image" 
-                            className="rounded-2xl max-w-full h-auto"
+                            onClick={() => setFullScreenImage(message.image!)}
+                            className="rounded-2xl max-w-xs max-h-48 w-auto h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity"
                           />
                         </div>
                       )}
@@ -414,11 +412,11 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, onViewPr
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 200 }}
-              className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-lg border-t border-slate-500/30 rounded-t-3xl z-50"
+              className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 to-black/90 backdrop-blur-lg border-t border-pink-500/30 rounded-t-3xl z-50"
             >
               <div className="p-6">
                 {/* Drawer Handle */}
-                <div className="w-12 h-1 bg-gray-600 rounded-full mx-auto mb-6"></div>
+                <div className="w-12 h-1 bg-pink-500/60 rounded-full mx-auto mb-6"></div>
                 
                 <h3 className="text-xl font-semibold text-white mb-6 text-center">Share Media</h3>
                 
@@ -426,28 +424,28 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, onViewPr
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <button
                     onClick={() => handleMediaSelect('camera')}
-                    className="flex flex-col items-center justify-center p-6 bg-glass-medium border border-slate-500/30 rounded-2xl text-white hover:bg-slate-500/20 hover:border-slate-400 transition-all duration-300 hover:scale-105"
+                    className="flex flex-col items-center justify-center p-6 bg-glass-dark border border-pink-500/20 rounded-2xl text-white hover:bg-pink-500/10 hover:border-pink-500/40 transition-all duration-300 hover:scale-105"
                   >
-                    <div className="w-12 h-12 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full flex items-center justify-center mb-3">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500/20 to-rose-600/20 border border-pink-500/30 rounded-full flex items-center justify-center mb-3">
+                      <svg className="w-6 h-6 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 1H8.828a2 2 0 00-1.414.586L6.293 2.707A1 1 0 015.586 3H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
                       </svg>
                     </div>
                     <span className="font-medium">Camera</span>
-                    <span className="text-sm text-gray-400 mt-1">Take photo</span>
+                    <span className="text-sm text-pink-400/80 mt-1">Take photo</span>
                   </button>
                   
                   <button
                     onClick={() => handleMediaSelect('gallery')}
-                    className="flex flex-col items-center justify-center p-6 bg-glass-medium border border-slate-500/30 rounded-2xl text-white hover:bg-slate-500/20 hover:border-slate-400 transition-all duration-300 hover:scale-105"
+                    className="flex flex-col items-center justify-center p-6 bg-glass-dark border border-pink-500/20 rounded-2xl text-white hover:bg-pink-500/10 hover:border-pink-500/40 transition-all duration-300 hover:scale-105"
                   >
-                    <div className="w-12 h-12 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full flex items-center justify-center mb-3">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500/20 to-rose-600/20 border border-pink-500/30 rounded-full flex items-center justify-center mb-3">
+                      <svg className="w-6 h-6 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                       </svg>
                     </div>
                     <span className="font-medium">Gallery</span>
-                    <span className="text-sm text-gray-400 mt-1">Choose photo</span>
+                    <span className="text-sm text-pink-400/80 mt-1">Choose photo</span>
                   </button>
                 </div>
                 
@@ -488,6 +486,41 @@ export default function ChatInterface({ user, onBack, onToggleFavorite, onViewPr
                 <p className="text-gray-400 text-sm">Never miss their messages</p>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Full Screen Image Modal */}
+      <AnimatePresence>
+        {fullScreenImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setFullScreenImage(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-full max-h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img 
+                src={fullScreenImage}
+                alt="Full size image"
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
+              <button
+                onClick={() => setFullScreenImage(null)}
+                className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
+                </svg>
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
