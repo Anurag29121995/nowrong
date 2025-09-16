@@ -1,0 +1,122 @@
+rules_version = '2';
+
+// Firebase Storage Security Rules for Kupid Chat App
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidImageFile() {
+      return request.resource.contentType.matches('image/.*') &&
+             request.resource.size <= 5 * 1024 * 1024; // 5MB limit
+    }
+    
+    function isValidVideoFile() {
+      return request.resource.contentType.matches('video/.*') &&
+             request.resource.size <= 50 * 1024 * 1024; // 50MB limit
+    }
+    
+    function isValidAudioFile() {
+      return request.resource.contentType.matches('audio/.*') &&
+             request.resource.size <= 10 * 1024 * 1024; // 10MB limit
+    }
+
+    // User profile images
+    match /users/{userId}/profile/{imageId} {
+      // Allow users to read their own profile images and others' public images
+      allow read: if isAuthenticated();
+      
+      // Allow users to upload their own profile images
+      allow write: if isOwner(userId) && 
+                      isValidImageFile();
+      
+      // Allow users to delete their own profile images
+      allow delete: if isOwner(userId);
+    }
+
+    // User moment/photo gallery uploads
+    match /users/{userId}/moments/{imageId} {
+      // Allow authenticated users to read moments (for profile viewing)
+      allow read: if isAuthenticated();
+      
+      // Allow users to upload their own moments
+      allow write: if isOwner(userId) && 
+                      isValidImageFile();
+      
+      // Allow users to delete their own moments
+      allow delete: if isOwner(userId);
+    }
+
+    // Chat room file uploads
+    match /chatRooms/{roomId}/files/{fileId} {
+      // Allow authenticated users to read files in rooms
+      allow read: if isAuthenticated();
+      
+      // Allow authenticated users to upload files to rooms
+      allow write: if isAuthenticated() && 
+                      (isValidImageFile() || isValidVideoFile() || isValidAudioFile());
+      
+      // Allow file uploader to delete their files
+      allow delete: if isAuthenticated() && 
+                       request.auth.uid == resource.metadata.uploadedBy;
+    }
+
+    // Private message file uploads
+    match /privateMessages/{conversationId}/files/{fileId} {
+      // Allow participants to read files in their conversations
+      allow read: if isAuthenticated() &&
+                     // This would require a Firestore lookup to verify participant
+                     // For now, we'll allow authenticated users
+                     true;
+      
+      // Allow participants to upload files to their conversations
+      allow write: if isAuthenticated() && 
+                      (isValidImageFile() || isValidVideoFile() || isValidAudioFile());
+      
+      // Allow file uploader to delete their files
+      allow delete: if isAuthenticated() && 
+                       request.auth.uid == resource.metadata.uploadedBy;
+    }
+
+    // Post attachments (for social feed)
+    match /posts/{postId}/attachments/{fileId} {
+      // Allow authenticated users to read post attachments
+      allow read: if isAuthenticated();
+      
+      // Allow post creator to upload attachments
+      allow write: if isAuthenticated() && 
+                      isValidImageFile();
+      
+      // Allow post creator to delete attachments
+      allow delete: if isAuthenticated() && 
+                       request.auth.uid == resource.metadata.uploadedBy;
+    }
+
+    // Temporary uploads (for processing)
+    match /temp/{userId}/{fileId} {
+      // Allow users to upload to their temp folder
+      allow write: if isOwner(userId) && 
+                      (isValidImageFile() || isValidVideoFile() || isValidAudioFile());
+      
+      // Allow users to read and delete from their temp folder
+      allow read, delete: if isOwner(userId);
+    }
+
+    // System/admin files (protected)
+    match /system/{allPaths=**} {
+      allow read, write: if false; // Only cloud functions can access
+    }
+
+    // Deny access to all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

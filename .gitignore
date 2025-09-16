@@ -33,3 +33,4 @@ pids
 *.tmp
 *.temp
 .vercel
+webapp/frontend/node_modules/@next/swc-darwin-arm64/

@@ -7,8 +7,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+      },
       colors: {
-        // NoWrong Brand Colors (matching landing page)
+        // Kupid Brand Colors (matching landing page)
         primary: {
           50: '#fdf2f8',
           100: '#fce7f3',
