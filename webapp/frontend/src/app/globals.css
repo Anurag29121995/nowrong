@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
 
 :root {
-  /* NoWrong Brand Colors (matching landing page) */
+  /* Kupid Brand Colors (matching landing page) */
   --bg-primary: #000000;
   --bg-secondary: #0A0A0A;
   --bg-tertiary: #111111;
@@ -146,7 +146,7 @@ body::before {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Homepage-matching gradient shift animation for NoWrong branding */
+/* Homepage-matching gradient shift animation for Kupid branding */
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

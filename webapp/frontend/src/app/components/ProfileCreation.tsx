@@ -34,6 +34,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
 
   const steps = [
     'Basic Info',
+    'Sexual Preferences',
     'Body Count',
     'Secret',
     'Avatar',
@@ -43,7 +44,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
   ]
 
   // Preference-based body type options
-  const getBodyTypesForPreference = (interest: string) => {
+  const getBodyTypesForPreference = (interest: string): Array<{ id: string; name: string; description: string; icon: React.ReactElement }> => {
     if (interest === 'women') {
       // Male preference options - what males are attracted to in females
       return [
@@ -294,12 +295,13 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
   const canProceed = () => {
     switch (currentStep) {
       case 0: return profileData.username && profileData.age && profileData.gender && profileData.interest
-      case 1: return profileData.bodyCount !== null
-      case 2: return true // Secret is optional
-      case 3: return profileData.avatar !== '' // Avatar is required
-      case 4: return profileData.bodyTypePreference.length > 0
-      case 5: return true // Location is optional
-      case 6: return true // Moments are optional
+      case 1: return true // Sexual preferences are optional (allow proceeding even if empty)
+      case 2: return profileData.bodyCount !== null
+      case 3: return true // Secret is optional
+      case 4: return profileData.avatar !== '' // Avatar is required
+      case 5: return profileData.bodyTypePreference.length > 0
+      case 6: return true // Location is optional
+      case 7: return true // Moments are optional
       default: return false
     }
   }
@@ -371,15 +373,21 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
             {/* Age */}
             <div>
               <label className="block text-white font-medium mb-2">Age</label>
-              <input
-                type="number"
-                min="18"
-                max="65"
+              <select
                 value={profileData.age || ''}
                 onChange={(e) => setProfileData({...profileData, age: parseInt(e.target.value)})}
-                className="w-full p-3 bg-glass-medium border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-pink-500 focus:outline-none"
-                placeholder="Your age"
-              />
+                className="w-full p-3 bg-glass-medium border border-gray-600 rounded-xl text-white focus:border-pink-500 focus:outline-none appearance-none"
+              >
+                <option value="" disabled className="bg-gray-800">Select your age</option>
+                {Array.from({length: 48}, (_, i) => i + 18).map((age) => (
+                  <option key={age} value={age} className="bg-gray-800 text-white">
+                    {age}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-400 mt-1">
+                ⚠️ You must be 18 or older to use this platform
+              </p>
             </div>
 
             {/* Gender */}
@@ -429,6 +437,55 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl md:text-3xl font-light mb-3 bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
+                Sexual Preferences
+              </h2>
+              <p className="text-gray-400">Review and edit your preferences from onboarding</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { id: 'rough', name: 'Rough Sex', description: 'Pound me rough' },
+                { id: 'bdsm', name: 'BDSM', description: 'Tie me up' },
+                { id: 'anal', name: 'Anal Sex', description: 'Anal play' },
+                { id: 'creampie', name: 'Creampie', description: 'Finish inside' },
+                { id: 'oral', name: 'Oral Sex', description: 'Oral pleasure' },
+                { id: 'fetish', name: 'Fetishes', description: 'Special kinks' },
+                { id: 'threesome', name: 'Threesome', description: 'Three\'s company' },
+                { id: 'roleplay', name: 'Role Play', description: 'Acting fantasies' }
+              ].map((pref) => (
+                <button
+                  key={pref.id}
+                  onClick={() => {
+                    const newPreferences = profileData.preferences.includes(pref.id)
+                      ? profileData.preferences.filter(p => p !== pref.id)
+                      : [...profileData.preferences, pref.id]
+                    setProfileData({...profileData, preferences: newPreferences})
+                  }}
+                  className={`p-4 rounded-xl border-2 transition-all text-left ${
+                    profileData.preferences.includes(pref.id)
+                      ? 'border-pink-500 bg-pink-500/20'
+                      : 'border-gray-600 bg-glass-medium hover:border-pink-400'
+                  }`}
+                >
+                  <div className="text-white font-medium">{pref.name}</div>
+                  <div className="text-gray-400 text-sm mt-1">{pref.description}</div>
+                </button>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <p className="text-gray-400 text-sm">
+                Selected: {profileData.preferences.length} preferences
+              </p>
+            </div>
+          </div>
+        )
+
+      case 2:
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-light mb-3 bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
                 Body Count
               </h2>
               <p className="text-gray-400">How many people have you been with?</p>
@@ -465,7 +522,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )
 
-      case 2:
+      case 3:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -515,7 +572,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )
 
-      case 3:
+      case 4:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -556,7 +613,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )
 
-      case 4:
+      case 5:
         return (
           <div className="px-6 space-y-8">
             <div className="text-center mb-12">
@@ -622,7 +679,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )
 
-      case 5:
+      case 6:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -653,7 +710,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </div>
         )
 
-      case 6:
+      case 7:
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
@@ -750,8 +807,8 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
           </AnimatePresence>
         </div>
 
-        {/* Navigation - Hide continue button on body count page (step 1) and avatar page (step 3) */}
-        {currentStep !== 1 && currentStep !== 3 && (
+        {/* Navigation - Hide continue button on body count page (step 2) and avatar page (step 4) */}
+        {currentStep !== 2 && currentStep !== 4 && (
           <div className="max-w-2xl mx-auto mt-12">
             <div className="flex items-center justify-between">
               <button
@@ -777,7 +834,7 @@ export default function ProfileCreation({ onComplete, onBack, existingData = {} 
         )}
         
         {/* Show only back button on body count page and avatar page */}
-        {(currentStep === 1 || currentStep === 3) && (
+        {(currentStep === 2 || currentStep === 4) && (
           <div className="max-w-2xl mx-auto mt-12">
             <div className="flex items-center justify-center">
               <button

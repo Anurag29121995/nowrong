@@ -6,6 +6,7 @@ interface ProfileData {
   username: string
   age: number
   gender: 'male' | 'female'
+  preferences?: string[] // Sexual preferences like anal, creampie, etc.
   secret?: string
   showSecret?: boolean
   bodyTypePreference?: string // Single body type selection
@@ -19,14 +20,14 @@ interface User {
   username: string
   age: number
   gender: 'male' | 'female'
-  location: string
-  isOnline: boolean
-  lastSeen: string
-  preferences: string[]
-  bodyType: string
-  secretMessage: string
-  bodyCount: number
-  turnOns: string[]
+  location?: string
+  isOnline?: boolean
+  lastSeen?: string
+  preferences: string[] // Sexual preferences like ["anal", "creampie"]
+  bodyTypePreference?: string // Single body type preference
+  secret?: string // Secret message
+  bodyCount?: number
+  uid?: string
 }
 
 interface ProfileViewerProps {
@@ -43,10 +44,12 @@ export default function ProfileViewer({ user, profile, onBack, onStartChat, show
     username: user.username,
     age: user.age,
     gender: user.gender,
+    preferences: user.preferences,
     location: user.location,
     bodyCount: user.bodyCount,
-    secret: user.secretMessage,
-    bodyTypePreference: user.bodyType,
+    secret: user.secret,
+    showSecret: true, // Default to show secret if it exists
+    bodyTypePreference: user.bodyTypePreference,
     moments: []
   } : null)
   
@@ -93,13 +96,18 @@ export default function ProfileViewer({ user, profile, onBack, onStartChat, show
     if (!profileData.bodyCount) return []
     const count = profileData.bodyCount > 12 ? 12 : profileData.bodyCount
     
-    // Determine figures based on user's actual interest from user preferences
+    // Determine figures based on user's gender (since we don't have explicit interest field)
+    // Default assumption: show opposite gender figures, or both if unclear
     let interest = 'both' // default
-    if (user?.preferences && user.preferences.includes('men')) {
-      interest = 'men'
-    } else if (user?.preferences && user.preferences.includes('women')) {
+
+    // For heterosexual assumption: males interested in females, females in males
+    if (profileData.gender === 'male') {
       interest = 'women'
+    } else if (profileData.gender === 'female') {
+      interest = 'men'
     }
+
+    // Note: In a real app, you'd want an explicit "interested in" field
     
     return Array.from({ length: count }, (_, i) => {
       let gender: 'male' | 'female'
@@ -204,7 +212,37 @@ export default function ProfileViewer({ user, profile, onBack, onStartChat, show
           {/* Profile Content - Proper Layout */}
           <div className="p-4">
             <div className="space-y-5">
-              
+
+              {/* Sexual Preferences */}
+              {profileData.preferences && profileData.preferences.length > 0 && (
+                <motion.div
+                  className="bg-glass-light border border-purple-500/30 rounded-xl p-5"
+                  whileHover={{ scale: 1.01 }}
+                >
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-white font-semibold text-base">Sexual Interests</h3>
+                      <p className="text-gray-400 text-sm">What turns them on</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {profileData.preferences.map((preference, index) => (
+                      <div key={index} className="px-3 py-2 bg-purple-500/20 border border-purple-500/30 rounded-lg">
+                        <span className="text-purple-300 text-sm font-medium capitalize">
+                          {preference.replace('_', ' ')}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
               {/* Body Count - Proper Structure */}
               {profileData.bodyCount !== undefined && (
                 <motion.div 
@@ -405,7 +443,7 @@ export default function ProfileViewer({ user, profile, onBack, onStartChat, show
             </div>
             
             {/* Secret Section - Compact Full Width */}
-            {profileData.secret && (
+            {profileData.secret && (profileData.showSecret !== false) && (
               <motion.div 
                 className="bg-gradient-to-br from-rose-500/10 to-pink-600/5 border border-rose-500/30 rounded-xl p-4"
                 whileHover={{ scale: 1.01 }}

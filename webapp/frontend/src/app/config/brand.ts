@@ -1,8 +1,8 @@
-// NoWrong Brand Configuration - Production Level Consistency
+// Kupid Brand Configuration - Production Level Consistency
 
 export const BRAND_CONFIG = {
   // Brand Identity
-  name: 'NoWrong',
+  name: 'Kupid',
   tagline: 'Anonymous Intimate Conversations',
   
   // Logo Configuration

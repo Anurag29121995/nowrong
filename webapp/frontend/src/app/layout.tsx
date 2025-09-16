@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import Providers from '@/components/Providers'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import './globals.css'
 
 const inter = Inter({ 
@@ -9,10 +11,10 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'NoWrong - Anonymous Intimate Chat',
+  title: 'Kupid - Anonymous Intimate Chat',
   description: 'Connect anonymously with like-minded people for intimate conversations',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/Kupid.png',
   },
 }
 
@@ -30,7 +32,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased bg-black text-white min-h-screen">
-        {children}
+        <ErrorBoundary>
+          <Providers>
+            {children}
+          </Providers>
+        </ErrorBoundary>
       </body>
     </html>
   )

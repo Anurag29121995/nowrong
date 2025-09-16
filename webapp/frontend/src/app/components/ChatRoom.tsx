@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { formatOnlineCount } from '../config/brand'
 import ChatInterface from './ChatInterface'
@@ -8,6 +10,8 @@ import ProfileCreation from './ProfileCreation'
 import ProfileViewer from './ProfileViewer'
 import ProfileScreen from './ProfileScreen'
 import PostsFeed from './PostsFeed'
+import ConfirmationModal from './ConfirmationModal'
+import AccountConflictModal from './AccountConflictModal'
 
 interface ChatRoomProps {
   roomName: string
@@ -121,6 +125,19 @@ const generateUsers = (count: number, interest?: string) => {
 }
 
 export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, formData, onUpdateFormData }: ChatRoomProps) {
+  const router = useRouter()
+  const {
+    user,
+    userProfile,
+    signInWithGoogle,
+    upgradeToGoogleUser,
+    switchToExistingGoogleAccount,
+    signOut,
+    loading,
+    isGoogleUser,
+    isAnonymousUser,
+    shouldShowGoogleLogin
+  } = useAuth()
   const [currentFormData, setCurrentFormData] = useState(formData)
   const [users] = useState(() => generateUsers(onlineCount, formData.interest))
   const [selectedUser, setSelectedUser] = useState<any>(null)
@@ -129,6 +146,71 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
   const [viewingProfile, setViewingProfile] = useState<any>(null)
   const [showPostsFeed, setShowPostsFeed] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false)
+  const [accountConflict, setAccountConflict] = useState<{ username: string; email: string } | null>(null)
+
+  const handleGoogleSignIn = async () => {
+    try {
+      // Since this is called from ChatRoom, user is already anonymous and wants to upgrade
+      if (isAnonymousUser() && userProfile) {
+        const result = await upgradeToGoogleUser()
+
+        if (result.conflictData) {
+          // Show account conflict modal
+          setAccountConflict({
+            username: result.conflictData.username,
+            email: user?.email || 'Unknown Email'
+          })
+        } else if (result.isNewUser) {
+          // Redirect to profile setup for new Google user
+          router.push('/profile-setup')
+        }
+      } else {
+        // Fallback to regular Google sign in (shouldn't happen in normal flow)
+        await signInWithGoogle()
+      }
+    } catch (error) {
+      // Show user-friendly error message
+      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Google. Please try again.'
+      alert(errorMessage)
+    }
+  }
+
+  const handleLogoutClick = () => {
+    setShowLogoutConfirmation(true)
+  }
+
+  const handleLogoutConfirm = async () => {
+    try {
+      await signOut()
+      setShowLogoutConfirmation(false)
+    } catch (error) {
+      setShowLogoutConfirmation(false)
+      // Don't show any error - logout always clears local state successfully
+      // User will be redirected automatically
+    }
+  }
+
+  const handleLogoutCancel = () => {
+    setShowLogoutConfirmation(false)
+  }
+
+  const handleUseExistingAccount = async () => {
+    if (accountConflict) {
+      try {
+        await switchToExistingGoogleAccount(accountConflict.email)
+        setAccountConflict(null)
+        // User will be automatically redirected by auth state change
+      } catch (error) {
+        alert('Failed to switch to existing account. Please try again.')
+      }
+    }
+  }
+
+  const handleCancelAccountConflict = () => {
+    setAccountConflict(null)
+    // User stays on current page as anonymous user
+  }
 
   const handleUserClick = (user: any) => {
     setSelectedUser(user)
@@ -159,6 +241,10 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
     setShowProfileCreation(false)
   }
 
+  const handlePrivateSpace = () => {
+    setShowPostsFeed(true)
+  }
+
   const generateUserProfile = (user: any) => {
     // Convert old preferences array to single bodyTypePreference selection
     const bodyTypes = ['slim', 'athletic', 'curvy', 'bbw', 'daddy', 'twink']
@@ -182,12 +268,26 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
     setViewingProfile(profile)
   }
 
-  const handleBackFromProfile = () => {
+  const handleBackFromViewingProfile = () => {
     setViewingProfile(null)
   }
 
   const handleBackFromPostsFeed = () => {
     setShowPostsFeed(false)
+  }
+
+  const handleBackFromProfile = () => {
+    setShowProfile(false)
+  }
+
+  const handleProfileSave = (updatedData: any) => {
+    // Update local state
+    setCurrentFormData(updatedData)
+    // Update the parent component's form data
+    if (onUpdateFormData) {
+      onUpdateFormData(updatedData)
+    }
+    // Don't redirect - stay on profile screen after save
   }
 
   // Show PostsFeed if selected
@@ -200,12 +300,44 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
     )
   }
 
+  // Show ProfileScreen if selected
+  if (showProfile) {
+    // Helper function to determine interest from preferences (for backward compatibility)
+    const determineInterestFromPreferences = (preferences: string[]): string => {
+      return currentFormData.interest || 'both'
+    }
+
+    // Use userProfile from Firebase if available, otherwise fall back to currentFormData
+    const profileData = userProfile ? {
+      username: userProfile.username,
+      age: userProfile.age,
+      gender: userProfile.gender as string,
+      interest: determineInterestFromPreferences(userProfile.preferences || []),
+      preferences: userProfile.preferences || [],
+      bodyCount: userProfile.bodyCount,
+      secret: userProfile.secret,
+      showSecret: userProfile.showSecret,
+      avatar: userProfile.avatar,
+      bodyTypePreference: userProfile.bodyTypePreference,
+      location: userProfile.location,
+      moments: userProfile.moments || [] // moments are URLs from Firebase
+    } : currentFormData
+
+    return (
+      <ProfileScreen
+        onBack={handleBackFromProfile}
+        formData={profileData}
+        onSave={handleProfileSave}
+      />
+    )
+  }
+
   // Show ProfileViewer if viewing a profile
   if (viewingProfile) {
     return (
       <ProfileViewer
         profile={viewingProfile}
-        onBack={handleBackFromProfile}
+        onBack={handleBackFromViewingProfile}
       />
     )
   }
@@ -257,78 +389,162 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
       
       <div className="relative z-10 min-h-screen">
         {/* Header */}
-        <div className="sticky top-0 bg-black/50 backdrop-blur-lg border-b border-pink-500/20 p-4 pt-6">
+        <div className="sticky top-0 bg-black/50 backdrop-blur-lg border-b border-pink-500/20 px-4 py-4 sm:px-6 sm:py-5">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={onBack}
-                className="p-2 text-gray-400 hover:text-white transition-colors duration-300"
+            {/* Back Button & Logo */}
+            <button
+              onClick={onBack}
+              className="flex items-center space-x-3 sm:space-x-4 hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none min-w-0 flex-shrink"
+            >
+              <svg className="w-6 h-6 sm:w-7 sm:h-7 text-gray-400 hover:text-white transition-colors flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              <img 
+                src="/Kupid.png" 
+                alt="Kupid" 
+                className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0" 
+              />
+            </button>
+
+            {/* Header Actions */}
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+              {/* Login with Google Button - Only show for anonymous users */}
+              {shouldShowGoogleLogin() && (
+                <button 
+                  onClick={handleGoogleSignIn}
+                  className="group flex items-center space-x-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-glass-medium backdrop-blur-lg border border-gray-600 hover:border-blue-400 rounded-lg transition-all duration-300 hover:bg-glass-dark"
+                  title="Login with Google"
+                >
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 flex-shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                  </svg>
+                  <span className="hidden sm:inline text-white text-sm font-medium group-hover:text-blue-100 transition-colors">Login</span>
+                </button>
+              )}
+
+              {/* Profile Button */}
+              <button 
+                onClick={() => setShowProfile(true)}
+                className="group p-2 sm:p-3 bg-glass-medium backdrop-blur-lg border border-gray-600 hover:border-pink-400 rounded-lg transition-all duration-300 hover:bg-glass-dark"
+                title="Profile"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-pink-400 group-hover:text-pink-300 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd" />
                 </svg>
               </button>
-              
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-pink-500/20 rounded-lg text-pink-400">
-                  {roomIcon}
-                </div>
-                <div>
-                  <h1 className="text-xl font-semibold text-white">{roomName}</h1>
-                  <p className="text-sm text-gray-400">{formatOnlineCount(onlineCount)} • Active now</p>
-                </div>
-              </div>
-            </div>
 
+              {/* Private Space Button */}
+              <motion.button
+                onClick={handlePrivateSpace}
+                className="group flex items-center space-x-2 px-2 py-2 sm:px-3 sm:py-2.5 bg-gradient-to-r from-pink-500/30 to-rose-600/30 border-2 border-pink-500/50 hover:border-pink-400 rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-pink-500/40 hover:to-rose-600/40"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                animate={{
+                  boxShadow: [
+                    '0 0 0 0 rgba(236, 72, 153, 0)',
+                    '0 0 0 8px rgba(236, 72, 153, 0.15)',
+                    '0 0 0 0 rgba(236, 72, 153, 0)'
+                  ]
+                }}
+                transition={{
+                  boxShadow: {
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                title="Private Space"
+              >
+                <span className="text-pink-300 text-xs sm:text-sm font-semibold group-hover:text-pink-200 transition-colors whitespace-nowrap">Private Space</span>
+                <motion.svg 
+                  className="w-3 h-3 sm:w-4 sm:h-4 text-pink-300 group-hover:text-pink-200 transition-colors flex-shrink-0" 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                  animate={{ x: [0, 3, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </motion.svg>
+              </motion.button>
+
+              {/* Logout Button */}
+              <button 
+                onClick={handleLogoutClick}
+                className="group p-2 sm:p-3 bg-red-500/10 backdrop-blur-lg border border-red-500/30 hover:border-red-400 hover:bg-red-500/20 rounded-lg transition-all duration-300"
+                title="Logout"
+              >
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-red-400 group-hover:text-red-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Room Info Section */}
+        <div className="bg-black/30 backdrop-blur-sm border-b border-pink-500/10 px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex items-center space-x-3 sm:space-x-4 max-w-4xl mx-auto">
+            <div className="p-2 sm:p-2.5 bg-pink-500/20 rounded-xl text-pink-400 flex-shrink-0">
+              {roomIcon}
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-semibold text-white truncate">{roomName}</h1>
+              <p className="text-sm sm:text-base text-gray-300 truncate">{formatOnlineCount(onlineCount)} • Active now</p>
+            </div>
           </div>
         </div>
 
         {/* Users List */}
         <div className="p-4 pb-20">
           <div className="max-w-4xl mx-auto">
-            {/* Google Login CTA - Always on top */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mb-6"
-            >
-              <button
-                onClick={handleGoogleLogin}
-                className="group w-full p-3 bg-glass-medium backdrop-blur-lg border border-gray-600 hover:border-blue-400 rounded-xl transition-all duration-300 hover:bg-glass-dark hover:scale-[1.01]"
+            {/* Google Login CTA - Only show for anonymous users */}
+            {shouldShowGoogleLogin() && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="mb-6"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    {/* Google G Icon */}
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300">
-                      <svg className="w-5 h-5" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                      </svg>
+                <button
+                  onClick={handleGoogleLogin}
+                  className="group w-full p-3 bg-glass-medium backdrop-blur-lg border border-gray-600 hover:border-blue-400 rounded-xl transition-all duration-300 hover:bg-glass-dark hover:scale-[1.01]"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      {/* Google G Icon */}
+                      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300">
+                        <svg className="w-5 h-5" viewBox="0 0 24 24">
+                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                      </div>
+                      
+                      {/* Text Content */}
+                      <div className="text-left">
+                        <h3 className="text-white font-medium text-sm group-hover:text-pink-100 transition-colors">
+                          Connect with Google
+                        </h3>
+                        <p className="text-gray-400 text-xs group-hover:text-gray-300 transition-colors">
+                          Unlock unlimited conversations & premium features
+                        </p>
+                      </div>
                     </div>
                     
-                    {/* Text Content */}
-                    <div className="text-left">
-                      <h3 className="text-white font-medium text-sm group-hover:text-pink-100 transition-colors">
-                        Connect with Google
-                      </h3>
-                      <p className="text-gray-400 text-xs group-hover:text-gray-300 transition-colors">
-                        Unlock unlimited conversations & premium features
-                      </p>
+                    {/* Arrow */}
+                    <div className="text-gray-500 group-hover:text-blue-400 transition-colors">
+                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                      </svg>
                     </div>
                   </div>
-                  
-                  {/* Arrow */}
-                  <div className="text-gray-500 group-hover:text-blue-400 transition-colors">
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                </div>
-              </button>
-            </motion.div>
+                </button>
+              </motion.div>
+            )}
 
             {/* Favorites Section */}
             {favoriteUsers.length > 0 && (
@@ -530,25 +746,26 @@ export default function ChatRoom({ roomName, roomIcon, onlineCount, onBack, form
           </div>
         </div>
       </div>
+      
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showLogoutConfirmation}
+        onClose={handleLogoutCancel}
+        onConfirm={handleLogoutConfirm}
+        title="Confirm Logout"
+        message="Are you sure you want to logout? You will be redirected to the onboarding page."
+        confirmText="Logout"
+        cancelText="Cancel"
+        confirmColor="red"
+      />
 
-      {/* Profile Screen */}
-      <AnimatePresence>
-        {showProfile && (
-          <ProfileScreen 
-            formData={currentFormData} 
-            onBack={() => setShowProfile(false)} 
-            onSave={(updatedData) => {
-              // Update local state
-              setCurrentFormData(updatedData)
-              // Update the parent component's form data
-              if (onUpdateFormData) {
-                onUpdateFormData(updatedData)
-              }
-              setShowProfile(false)
-            }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Account Conflict Modal */}
+      <AccountConflictModal
+        isOpen={!!accountConflict}
+        existingUsername={accountConflict?.username || ''}
+        onUseExisting={handleUseExistingAccount}
+        onCancel={handleCancelAccountConflict}
+      />
     </div>
   )
 }

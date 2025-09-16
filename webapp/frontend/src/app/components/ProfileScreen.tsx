@@ -18,7 +18,7 @@ interface ProfileScreenProps {
     avatar?: string
     bodyTypePreference?: string
     location?: string
-    moments?: File[]
+    moments?: File[] | string[] // Support both File[] (new uploads) and string[] (Firebase URLs)
   }
   onSave: (updatedData: any) => void
 }

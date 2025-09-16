@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import { getFirebaseFirestore } from '@/lib/firebase'
 import { USERNAME_SUGGESTIONS } from '../config/brand'
 
 interface UsernameSelectionProps {
@@ -12,49 +14,56 @@ interface UsernameSelectionProps {
 }
 
 export default function UsernameSelection({ onNext, onBack, canGoBack, formData }: UsernameSelectionProps) {
-  const [username, setUsername] = useState(formData.username || '')
+  const [username, setUsername] = useState('') // Don't prefill
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null)
   const [isChecking, setIsChecking] = useState(false)
   const [suggestions, setSuggestions] = useState<string[]>([])
+  const [availableSuggestions, setAvailableSuggestions] = useState<string[]>([])
 
   const getGenderSuggestions = () => {
     const gender = formData.gender?.toLowerCase() as 'male' | 'female' | 'other'
     return USERNAME_SUGGESTIONS[gender] || USERNAME_SUGGESTIONS.other
   }
 
-  const generateSuggestions = (baseWord = '') => {
+  const checkUsernameAvailability = async (usernameToCheck: string): Promise<boolean> => {
+    try {
+      const db = getFirebaseFirestore()
+      const usersRef = collection(db, 'users')
+      const q = query(usersRef, where('username', '==', usernameToCheck))
+      const querySnapshot = await getDocs(q)
+      
+      return querySnapshot.empty // Returns true if no documents found (available)
+    } catch (error) {
+      return false // Assume unavailable on error
+    }
+  }
+
+  const generateSuggestions = async (baseWord = '') => {
     const { prefixes, suffixes, adjectives } = getGenderSuggestions()
     const suggestions = []
-    const maxLength = 12 // Keep usernames under 12 characters
+    const maxLength = 12
     
     if (baseWord && baseWord.length >= 2) {
-      // Clean base word - take first 6 chars max
       const cleanBase = baseWord.substring(0, 6)
       
-      // Generate suggestions based on user input
-      for (let i = 0; i < 6; i++) {
-        if (i < 2) {
-          // Base + number (shortest)
+      for (let i = 0; i < 8; i++) {
+        if (i < 3) {
           const number = Math.floor(Math.random() * 999) + 1
           suggestions.push(`${cleanBase}${number}`)
-        } else if (i < 4) {
-          // Base + suffix
+        } else if (i < 6) {
           const suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
           if ((cleanBase + suffix).length <= maxLength) {
             suggestions.push(`${cleanBase}${suffix}`)
           } else {
-            // Fallback to number if too long
             const number = Math.floor(Math.random() * 99) + 1
             suggestions.push(`${cleanBase}${number}`)
           }
         } else {
-          // Prefix + shortened base
           const prefix = prefixes[Math.floor(Math.random() * prefixes.length)]
           const shortBase = cleanBase.substring(0, 4)
           if ((prefix + shortBase).length <= maxLength) {
             suggestions.push(`${prefix}${shortBase}`)
           } else {
-            // Fallback to adjective + number
             const adj = adjectives[Math.floor(Math.random() * adjectives.length)]
             const number = Math.floor(Math.random() * 99) + 1
             suggestions.push(`${adj}${number}`)
@@ -62,21 +71,17 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
         }
       }
     } else {
-      // Default suggestions when no input - short and logical
       const patterns = [
-        // Prefix + number
         () => {
           const prefix = prefixes[Math.floor(Math.random() * prefixes.length)]
           const number = Math.floor(Math.random() * 999) + 1
           return `${prefix}${number}`
         },
-        // Adjective + suffix
         () => {
           const adj = adjectives[Math.floor(Math.random() * adjectives.length)]
           const suffix = suffixes[Math.floor(Math.random() * suffixes.length)]
           return `${adj}${suffix}`
         },
-        // Single word + number
         () => {
           const words = [...prefixes, ...adjectives]
           const word = words[Math.floor(Math.random() * words.length)]
@@ -85,7 +90,7 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
         }
       ]
       
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 8; i++) {
         const pattern = patterns[i % patterns.length]
         const suggestion = pattern()
         if (suggestion.length <= maxLength) {
@@ -94,12 +99,21 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
       }
     }
     
-    // Remove duplicates and ensure all suggestions are within length limit
     const uniqueSuggestions = Array.from(new Set(suggestions))
       .filter(s => s.length >= 3 && s.length <= maxLength)
-      .slice(0, 6)
+      .slice(0, 8)
     
     setSuggestions(uniqueSuggestions)
+    
+    // Check availability for all suggestions
+    const availabilityPromises = uniqueSuggestions.map(async (suggestion) => {
+      const available = await checkUsernameAvailability(suggestion)
+      return available ? suggestion : null
+    })
+    
+    const results = await Promise.all(availabilityPromises)
+    const available = results.filter(Boolean) as string[]
+    setAvailableSuggestions(available.slice(0, 6)) // Show only 6 available suggestions
   }
 
   useEffect(() => {
@@ -113,13 +127,7 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
     }
 
     setIsChecking(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800))
-    
-    // Simple availability logic - some names are "taken"
-    const takenNames = ['admin', 'test', 'user', 'guest', 'root', 'anonymous']
-    const available = !takenNames.includes(value.toLowerCase()) && Math.random() > 0.3
-    
+    const available = await checkUsernameAvailability(value)
     setIsAvailable(available)
     setIsChecking(false)
   }
@@ -128,7 +136,6 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
     if (username) {
       const debounce = setTimeout(() => {
         checkAvailability(username)
-        // Also regenerate suggestions based on current input
         if (username.length >= 2) {
           generateSuggestions(username)
         }
@@ -136,7 +143,7 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
       return () => clearTimeout(debounce)
     } else {
       setIsAvailable(null)
-      generateSuggestions('') // Generate default suggestions when input is empty
+      generateSuggestions('')
     }
   }, [username])
 
@@ -214,37 +221,40 @@ export default function UsernameSelection({ onNext, onBack, canGoBack, formData 
         </div>
       </div>
 
-      {/* Suggestions */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium text-white">
-            {username && username.length >= 2 ? `Based on "${username}"` : 'Suggested Usernames'}
-          </h3>
-          <button
-            onClick={() => generateSuggestions(username)}
-            className="text-primary-400 hover:text-primary-300 text-sm transition-colors duration-300"
-          >
-            Refresh
-          </button>
-        </div>
-        
-        <div className="grid grid-cols-2 gap-3">
-          {suggestions.map((suggestion, index) => (
-            <motion.button
-              key={`${suggestion}-${index}`}
-              onClick={() => selectSuggestion(suggestion)}
-              className="p-3 bg-glass-light border border-gray-600 rounded-xl text-gray-300 hover:text-white hover:border-primary-400 hover:bg-glass-medium transition-all duration-300 text-sm"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+      {/* Available Suggestions Only */}
+      {availableSuggestions.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-medium text-white">
+              {username && username.length >= 2 ? `Available options for "${username}"` : 'Available Usernames'}
+            </h3>
+            <button
+              onClick={() => generateSuggestions(username)}
+              className="text-primary-400 hover:text-primary-300 text-sm transition-colors duration-300"
             >
-              {suggestion}
-            </motion.button>
-          ))}
+              Refresh
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            {availableSuggestions.map((suggestion, index) => (
+              <motion.button
+                key={`${suggestion}-${index}`}
+                onClick={() => selectSuggestion(suggestion)}
+                className="p-3 bg-glass-light border border-green-500/30 rounded-xl text-gray-300 hover:text-white hover:border-primary-400 hover:bg-glass-medium transition-all duration-300 text-sm relative"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <span className="absolute top-1 right-2 text-green-400 text-xs">✓</span>
+                {suggestion}
+              </motion.button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Navigation */}
       <div className="flex justify-between items-center">
