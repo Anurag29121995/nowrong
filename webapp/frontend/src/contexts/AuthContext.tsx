@@ -176,13 +176,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             lastActive: Timestamp.now()
           }, { merge: true })
         } else {
-          // New Google user - store temp data for profile creation
+          // New Google user - extract all available data from Google account
+          // Note: Gender and birthday require additional API calls as Firebase Auth doesn't provide them directly
           const tempUserData = {
             uid: result.user.uid,
             email: result.user.email,
             displayName: result.user.displayName,
             photoURL: result.user.photoURL,
-            isGoogleUser: true
+            isGoogleUser: true,
+            // Firebase Auth provides limited data - displayName, email, photoURL
+            // For more data (age, gender), we'd need to use Google People API separately
+            // Storing what's available for now
+            phoneNumber: result.user.phoneNumber || undefined
           }
 
           if (typeof window !== 'undefined') {

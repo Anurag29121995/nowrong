@@ -80,10 +80,13 @@ export const initAuth = (): Auth => {
     const app = initializeFirebaseApp()
     auth = getAuth(app)
 
-    // Setup Google provider
+    // Setup Google provider with extended scopes for more user data
     googleProvider = new GoogleAuthProvider()
     googleProvider.addScope('email')
     googleProvider.addScope('profile')
+    googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile')
+    googleProvider.addScope('https://www.googleapis.com/auth/user.birthday.read')
+    googleProvider.addScope('https://www.googleapis.com/auth/user.gender.read')
     googleProvider.setCustomParameters({
       prompt: 'select_account'
     })
